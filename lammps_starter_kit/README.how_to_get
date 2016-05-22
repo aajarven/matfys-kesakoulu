@@ -1,0 +1,84 @@
+
+
+--------------------------------
+ How to get and compile LAMMPS
+--------------------------------
+
+Home page: http://lammps.sandia.gov/
+
+
+
+1) Page http://lammps.sandia.gov/download.html includes many prebuilt
+   binaries for different flavors of Linux and instructions for
+   installing in on OS X.
+
+
+
+2) Windows installer at http://rpm.lammps.org/windows.html
+
+
+
+3) If you compile it on Linux:
+
+Download source code either using subversion (svn)
+	 svn co svn://svn.lammps.org/lammps-ro/trunk mylammps
+or downloading the package as a tarball from
+   	 http://www.acclab.helsinki.fi/~aakurone/download/mylammps.tgz
+and unpacking it
+    	 tar xzvf mylammps.tgz
+
+Compilation from sources:
+	    Move to folder 'mylammps/src' 
+	    Give the following commands:
+	    make clean-all
+	    make yes-manybody 
+	    make serial
+
+
+The following is not necessary for completing the hands-on exercises,
+it's only cool.
+[If you want to run LAMMPS on many cores (parallel) at the same time
+on your Linux laptop you should have an MPI library installed. OpenMPI
+is recommended. It is available for most Linux distributions. For
+Ubuntu you need the install the following packages:
+
+	libopenmpi-dev
+	libopenmpi1.6 (or whatever version you happen to have)
+	openmpi-bin
+	openmpi-common
+
+Compilation command is then
+
+	make mpi
+
+This creates exetutable lmp_mpi in mylammps/src/.
+
+Parallel run is started then with command (in this case using 4
+cores):
+
+	mpirun /my/poath/to/lammps/mylammps/src/lmp_mpi -np 4 -in lammps_input_file
+
+]
+
+
+
+
+
+------------------
+ How to get Ovito
+------------------
+
+Go to http://ovito.org/index.php/download and download the desired
+package. Unpack the package (the exact version number may of course
+vary):
+
+	 tar xzvf ovito­2.5.1­x86_64.tar.gz
+
+If you get error message 'gzip: stdin: not in gzip format' leave the z
+out of the command , i.e.
+
+         tar xvf ovito­2.5.1­x86_64.tar.gz
+
+You can start Ovito by command
+
+    	 ./ovito­2.5.1­x86_64/bin/ovito

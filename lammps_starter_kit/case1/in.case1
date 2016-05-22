@@ -1,0 +1,31 @@
+# NVE simulation of a cubic box of EAM copper
+
+variable	NAME string case1
+log	     	${NAME}.log
+
+units		metal
+atom_style	atomic
+boundary	p p p
+
+lattice		fcc 3.61
+region		mycube block 0 6 0 6 0 6
+create_box	1 mycube
+create_atoms	1 box
+mass		1 63.55
+
+pair_style	eam
+pair_coeff	1 1 Cu_u3.eam 
+
+neighbor	0.3 bin
+neigh_modify	every 10 delay 0 check yes
+
+compute		ep all pe/atom
+dump		mydump all custom 100 ${NAME}.dump type x y z c_ep
+
+thermo		10
+thermo_style	custom step temp pe etotal press vol
+thermo_modify 	line one flush yes format 1 "ec %8lu" format float "%20.10g"
+
+fix		MYFIX all nve
+velocity	all create 300.0 87287
+run		10000

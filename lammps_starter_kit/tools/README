@@ -1,0 +1,3 @@
+
+lmpplot.gp	: Gnuplot script to plot thermo data in LAMMPS log files
+
