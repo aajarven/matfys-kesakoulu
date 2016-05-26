@@ -1,0 +1,193 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ovito.anim &mdash; OVITO 2.6.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/rtd.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.6.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/ovito.ico"/>
+    <link rel="top" title="OVITO 2.6.2 documentation" href="../index.html" />
+    <link rel="next" title="ovito.data" href="ovito_data.html" />
+    <link rel="prev" title="ovito" href="ovito.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ovito_data.html" title="ovito.data"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ovito.html" title="ovito"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ovito.anim">
+<span id="ovito-anim"></span><h1><code class="docutils literal"><span class="pre">ovito.anim</span></code><a class="headerlink" href="#module-ovito.anim" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="ovito.anim.AnimationSettings">
+<em class="property">class </em><code class="descclassname">ovito.anim.</code><code class="descname">AnimationSettings</code><a class="headerlink" href="#ovito.anim.AnimationSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores animation-related settings of the current <a class="reference internal" href="ovito.html#ovito.DataSet" title="ovito.DataSet"><code class="xref py py-attr docutils literal"><span class="pre">DataSet</span></code></a>. You can access an instance of this class through the dataset&#8217;s <a class="reference internal" href="ovito.html#ovito.DataSet.anim" title="ovito.DataSet.anim"><code class="xref py py-attr docutils literal"><span class="pre">anim</span></code></a> attribute.</p>
+<p>Animation settings comprise the animation length (number of frames) and the current animation time. For example, to step through each animation frame and perform some action:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">anim</span><span class="o">.</span><span class="n">last_frame</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">dataset</span><span class="o">.</span><span class="n">anim</span><span class="o">.</span><span class="n">current_frame</span> <span class="o">=</span> <span class="n">frame</span>    <span class="c"># Jump to the animation frame.</span>
+    <span class="n">performSomething</span><span class="p">()</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="ovito.anim.AnimationSettings.current_frame">
+<code class="descname">current_frame</code><a class="headerlink" href="#ovito.anim.AnimationSettings.current_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>The current animation frame. This parameter controls the position of the time slider in OVITO&#8217;s main window and determines which animation frame is shown in the viewports.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.anim.AnimationSettings.first_frame">
+<code class="descname">first_frame</code><a class="headerlink" href="#ovito.anim.AnimationSettings.first_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>The index of the first animation frame.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.anim.AnimationSettings.frames_per_second">
+<code class="descname">frames_per_second</code><a class="headerlink" href="#ovito.anim.AnimationSettings.frames_per_second" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controls the playback speed of the animation. This parameter also determines the playback speed of movie files generated by OVITO.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">10</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.anim.AnimationSettings.last_frame">
+<code class="descname">last_frame</code><a class="headerlink" href="#ovito.anim.AnimationSettings.last_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>The index of the last animation frame. You can change this property to set a new animation length.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/running.html">Running scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/file_io.html">File I/O</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/modifiers.html">Modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/particle_properties.html">Particle properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/rendering.html">Rendering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/custom_modifiers.html">Writing new modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/examples.html">Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ovito.html"><code class="docutils literal"><span class="pre">ovito</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href=""><code class="docutils literal"><span class="pre">ovito.anim</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_data.html"><code class="docutils literal"><span class="pre">ovito.data</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_io.html"><code class="docutils literal"><span class="pre">ovito.io</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_modifiers.html"><code class="docutils literal"><span class="pre">ovito.modifiers</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_vis.html"><code class="docutils literal"><span class="pre">ovito.vis</span></code></a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ovito_data.html" title="ovito.data"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ovito.html" title="ovito"
+             >previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Alexander Stukowski.
+    </div>
+  </body>
+</html>

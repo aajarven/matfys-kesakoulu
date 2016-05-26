@@ -1,0 +1,89 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Common neighbor analysis</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="particles.modifiers.html" title="Modifiers"><link rel="prev" href="particles.modifiers.color_coding.html" title="Color coding"><link rel="next" href="particles.modifiers.compute_property.html" title="Compute property"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Common neighbor analysis</th><td width="20%" align="right"><a accesskey="u" href="particles.modifiers.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="particles.modifiers.color_coding.html">Prev</a> </td><th width="60%" align="center">Modifiers</th><td width="20%" align="right"> <a accesskey="n" href="particles.modifiers.compute_property.html">Next</a></td></tr></table></div><div class="section" id="particles.modifiers.common_neighbor_analysis"><div class="titlepage"><div><div><h3 class="title">Common neighbor analysis</h3></div></div></div>
+  
+
+  <p>
+  
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/modifiers/common_neighbor_analysis_panel.png"></div></div></div><p>
+  
+  This analysis modifier performs the <span class="emphasis"><em>Common Neighbor Analysis</em></span> (CNA) [<a class="ulink" href="http://dx.doi.org/10.1021/j100303a014" target="_top">Honeycutt and Andersen, J. Phys. Chem. 91, 4950</a>] 
+  for a particle system. The CNA is an algorithm to compute a fingerprint for
+  pairs of atoms, which is designed to characterize the local structural environment. 
+  Typically, the CNA is used as an effective filtering method to classify atoms in crystalline systems 
+  [<a class="ulink" href="http://dx.doi.org/10.1016/0927-0256(94)90109-0" target="_top">Faken and Jonsson, Comput. Mater. Sci. 2, 279</a>], 
+  with the goal to get a precise understanding of which atoms are associated with which phases, 
+  and which are associated with defects.
+  </p>
+  
+  <p>
+  The modifier supports three different modes of operation:
+  </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Conventional CNA (with fixed cutoff)</span></dt><dd>
+  <p>Here, a threshold distance criterion is used to determine whether a pair of atoms
+  is bonded or not. The cutoff distance must be chosen
+  according to the crystal structure at hand. For face-centered cubic (FCC)
+  and hexagonal close-packed (HCP) structures the cutoff radius must lie midway between 
+  the first and the second shell of neighbors. 
+  For body-centered cubic (BCC) structures the cutoff radius should be positioned
+  between the second and the third neighbor shell. OVITO provides a list of
+  optimal cutoff distances for FCC and BCC crystal structures formed by common pure
+  elements. These optimal radii can be found in the <span class="guilabel">Presets</span>
+  drop-down list.</p>
+  </dd><dt><span class="term">Adaptive CNA (with variable cutoff)</span></dt><dd>
+  <p>Sometimes it may be difficult to choose the right cutoff radius for the conventional CNA, in particular in the
+  case of multiphase systems. This is why an adaptive version of the CNA has been
+  developed that works without a fixed cutoff. The
+  <span class="emphasis"><em>Adaptive Common Neighbor Analysis</em></span> (a-CNA) method [<a class="ulink" href="http://dx.doi.org/10.1088/0965-0393/20/4/045021" target="_top">Stukowski,
+  Modell. Simul. Mater. Sci. Eng. 20, 045021</a>] determines the optimal cutoff radius automatically 
+  for each individual particle.</p>
+  </dd><dt><span class="term">Bond-based CNA (without cutoff)</span></dt><dd>
+  <p>The modifier also supports a <span class="emphasis"><em>bond-based</em></span> mode of operation. Then the CNA indices 
+  are computed based on the existing network of bonds between particles (without using a cutoff radius
+  and irrespective of the distance between particles). This mode requires that bonds between
+  particles have previously been defined, for example using a <a class="link" href="particles.modifiers.create_bonds.html" title="Create bonds">Create Bonds</a> modifier
+  or by loading them from a data file. Furthermore, in the bond-based mode, the modifier
+  outputs the computed per-bond CNA indices as a new bond property named <code class="literal">CNA indices</code>,
+  which can be used for further statistical analyses.
+  The computed CNA bond indices may be accessed from a Python script, <a class="ulink" href="python/introduction/examples.html#example-compute-cna-bond-indices" target="_top">see this example</a>.
+  </p>
+  </dd></dl></div><p>
+  </p>
+
+  <p>
+  The modifier classifies each particle according to its structural environment and stores 
+  the results in a new particle property named <code class="literal">Structure Type</code>.
+  This allows you to subsequently select and filter out particles of a certain structural type, e.g. by using the 
+  <a class="link" href="particles.modifiers.select_particle_type.html" title="Select particle type">Select Particle Type</a> modifier.
+  The structural types are encoded as integer values:
+    </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+        <p>0 = Other, unknown coordination structure</p>
+      </li><li class="listitem">
+        <p>1 = FCC, face-centered cubic</p>
+      </li><li class="listitem">
+        <p>2 = HCP, hexagonal close-packed</p>
+      </li><li class="listitem">
+        <p>3 = BCC, body-centered cubic</p>
+      </li><li class="listitem">
+        <p>4 = ICO, icosahedral coordination</p>
+      </li></ul></div><p>
+  </p>
+  
+  <p>
+    To identify diamond lattice structures, please use the 
+    <a class="link" href="particles.modifiers.identify_diamond_structure.html" title="Identify diamond structure">Identify Diamond Structure</a> modifier instead.
+  </p>
+
+  <p>
+    The CNA modifier requires access to the complete set of input particles to perform the analysis. It should therefore be placed at the 
+    beginning of the processing pipeline, preceding any modifiers that delete particles.
+  </p>
+  
+  <p>
+    The <span class="emphasis"><em>Use only selected particles</em></span> option restricts the analysis to the
+    currently selected particles. If this option is activated, unselected particles will be ignored 
+    (as if they did not exist) and will be assigned the structure type "Other".
+    This option can be useful if you want to identify defects in a crystal structure
+    not supported by the CNA method, but which has a sublattice that can be identified by the CNA
+    (and you do not want to delete particles belonging to the other sublattice(s) for some reason).
+    This option has no effect in <span class="emphasis"><em>bond-based</em></span> mode.
+  </p>
+  
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="particles.modifiers.color_coding.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="particles.modifiers.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="particles.modifiers.compute_property.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Color coding </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Compute property</td></tr></table></div></body></html>

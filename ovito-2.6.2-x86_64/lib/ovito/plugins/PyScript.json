@@ -1,0 +1,6 @@
+{
+  "plugin-id" : "PyScript",
+  "plugin-version" : "2.6.2",
+  "dependencies" : [  ],
+  "native-library" : "PyScript"
+}

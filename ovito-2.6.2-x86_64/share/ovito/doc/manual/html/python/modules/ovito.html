@@ -1,0 +1,252 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ovito &mdash; OVITO 2.6.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/rtd.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.6.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/ovito.ico"/>
+    <link rel="top" title="OVITO 2.6.2 documentation" href="../index.html" />
+    <link rel="next" title="ovito.anim" href="ovito_anim.html" />
+    <link rel="prev" title="Examples" href="../introduction/examples.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ovito_anim.html" title="ovito.anim"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../introduction/examples.html" title="Examples"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ovito">
+<span id="ovito"></span><h1><code class="docutils literal"><span class="pre">ovito</span></code><a class="headerlink" href="#module-ovito" title="Permalink to this headline">¶</a></h1>
+<dl class="data">
+<dt id="ovito.dataset">
+<code class="descclassname">ovito.</code><code class="descname">dataset</code><a class="headerlink" href="#ovito.dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>This module-level attribute holds the current <a class="reference internal" href="#ovito.DataSet" title="ovito.DataSet"><code class="xref py py-class docutils literal"><span class="pre">DataSet</span></code></a>,
+a global object representing the state of the program.
+It provides access to OVITO&#8217;s viewports, the objects in the scene,
+and the current animation and render settings.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="ovito.version">
+<code class="descclassname">ovito.</code><code class="descname">version</code><a class="headerlink" href="#ovito.version" title="Permalink to this definition">¶</a></dt>
+<dd><p>This module-level attribute contains the OVITO program version (encoded as a 3-tuple).</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.DataSet">
+<em class="property">class </em><code class="descclassname">ovito.</code><code class="descname">DataSet</code><a class="headerlink" href="#ovito.DataSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>A container object holding all data associated with an OVITO program session. It provides access to the scene data, the viewports, the current selection, and the animation settings. Basically everything that would get saved in an OVITO file.</p>
+<p>There exists only one global instance of this class, which can be accessed via the <a class="reference internal" href="#ovito.dataset" title="ovito.dataset"><code class="xref py py-data docutils literal"><span class="pre">ovito.dataset</span></code></a> module-level attribute.</p>
+<dl class="attribute">
+<dt id="ovito.DataSet.anim">
+<code class="descname">anim</code><a class="headerlink" href="#ovito.DataSet.anim" title="Permalink to this definition">¶</a></dt>
+<dd><p>An <a class="reference internal" href="ovito_anim.html#ovito.anim.AnimationSettings" title="ovito.anim.AnimationSettings"><code class="xref py py-class docutils literal"><span class="pre">AnimationSettings</span></code></a> object, which manages various animation-related settings in OVITO such as the number of frames, the current frame, playback speed etc.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.DataSet.render_settings">
+<code class="descname">render_settings</code><a class="headerlink" href="#ovito.DataSet.render_settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>The global <a class="reference internal" href="ovito_vis.html#ovito.vis.RenderSettings" title="ovito.vis.RenderSettings"><code class="xref py py-class docutils literal"><span class="pre">RenderSettings</span></code></a> object, which stores the current settings for rendering pictures and movies. These are the settings the user can edit in the graphical version of OVITO.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.DataSet.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.DataSet.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves the dataset, including the viewports, all objects that are part of the scene, modification pipelines, and other settings, to an OVITO file.
+This function works like the <em>Save State As</em> function in OVITO&#8217;s file menu.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.DataSet.scene_nodes">
+<code class="descname">scene_nodes</code><a class="headerlink" href="#ovito.DataSet.scene_nodes" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list-like object containing the <a class="reference internal" href="#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a> instances that are part of the three-dimensional scene. Only nodes in this list are visible in the viewports. You can add or remove nodes from this list.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.DataSet.selected_node">
+<code class="descname">selected_node</code><a class="headerlink" href="#ovito.DataSet.selected_node" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a> that is currently selected in OVITO&#8217;s graphical user interface, 
+or <code class="docutils literal"><span class="pre">None</span></code> if no node is selected.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.DataSet.viewports">
+<code class="descname">viewports</code><a class="headerlink" href="#ovito.DataSet.viewports" title="Permalink to this definition">¶</a></dt>
+<dd><p>A <a class="reference internal" href="ovito_vis.html#ovito.vis.ViewportConfiguration" title="ovito.vis.ViewportConfiguration"><code class="xref py py-class docutils literal"><span class="pre">ViewportConfiguration</span></code></a> object managing the viewports in OVITO&#8217;s main window.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.ObjectNode">
+<em class="property">class </em><code class="descclassname">ovito.</code><code class="descname">ObjectNode</code><a class="headerlink" href="#ovito.ObjectNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages a data source, a modification pipeline, and the output of the pipeline.</p>
+<p>An <code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code> is created when a new object is inserted into the scene, for example, as a result of calling py:func:<cite>~ovito.io.import_file</cite>.The node maintains a modification pipeline, which allows applying modifiers to the input data. The output of the modification pipeline is displayed by the <code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code> in the three-dimensional scene shown by the viewport.</p>
+<p>The data entering the modification pipeline is provided by the node&#8217;s <a class="reference internal" href="#ovito.ObjectNode.source" title="ovito.ObjectNode.source"><code class="xref py py-attr docutils literal"><span class="pre">ObjectNode.source</span></code></a> object,which can be a <a class="reference internal" href="ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a> or a <a class="reference internal" href="ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a>, for example. The node&#8217;s modification pipeline can be accessed through the <a class="reference internal" href="#ovito.ObjectNode.modifiers" title="ovito.ObjectNode.modifiers"><code class="xref py py-attr docutils literal"><span class="pre">ObjectNode.modifiers</span></code></a> attribute. An evaluation of the modification pipeline can be requested by calling the <a class="reference internal" href="#ovito.ObjectNode.compute" title="ovito.ObjectNode.compute"><code class="xref py py-meth docutils literal"><span class="pre">ObjectNode.compute()</span></code></a> method. Finally, the cached output of the pipeline can be accessed through the the node&#8217;s <a class="reference internal" href="#ovito.ObjectNode.output" title="ovito.ObjectNode.output"><code class="xref py py-attr docutils literal"><span class="pre">ObjectNode.output</span></code></a> attribute.</p>
+<dl class="method">
+<dt id="ovito.ObjectNode.compute">
+<code class="descname">compute</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ovito.ObjectNode.compute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes and returns the results of the node&#8217;s modification pipeline.</p>
+<p>This method requests an update of the node&#8217;s modification pipeline and waits until the effect of all modifiers in the 
+node&#8217;s modification pipeline has been computed. If the modification pipeline is already up to date, i.e., results are already 
+available in the node&#8217;s pipeline cache, the method returns immediately.</p>
+<p>Even if you are not interested in the final data that leaves the modification pipeline, you should call this method in case you are going to 
+directly access information provided by individual modifiers in the pipeline. This method will ensure that all modifiers 
+have been computed and their output fields are up to date.</p>
+<p>This function raises a <code class="docutils literal"><span class="pre">RuntimeError</span></code> when the modification pipeline could not be successfully evaluated for some reason.
+This may happen due to invalid modifier parameters for example.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A reference to the node&#8217;s internal <a class="reference internal" href="ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a> containing the output of the modification pipeline.
+It is also accessible via the <a class="reference internal" href="#ovito.ObjectNode.output" title="ovito.ObjectNode.output"><code class="xref py py-attr docutils literal"><span class="pre">output</span></code></a> attribute after calling <a class="reference internal" href="#ovito.ObjectNode.compute" title="ovito.ObjectNode.compute"><code class="xref py py-meth docutils literal"><span class="pre">compute()</span></code></a>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.ObjectNode.modifiers">
+<code class="descname">modifiers</code><a class="headerlink" href="#ovito.ObjectNode.modifiers" title="Permalink to this definition">¶</a></dt>
+<dd><p>The node&#8217;s modification pipeline.</p>
+<p>This list contains the modifiers that are applied to the input data provided by the node&#8217;s <a class="reference internal" href="#ovito.ObjectNode.source" title="ovito.ObjectNode.source"><code class="xref py py-attr docutils literal"><span class="pre">source</span></code></a> object. You
+can add and remove modifiers from this list as needed. The first modifier in the list is
+always evaluated first, and its output is passed on to the second modifier and so on. 
+The results of the last modifier are displayed in the viewports and can be access through the 
+<a class="reference internal" href="#ovito.ObjectNode.output" title="ovito.ObjectNode.output"><code class="xref py py-attr docutils literal"><span class="pre">output</span></code></a> field.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WrapPeriodicImagesModifier</span><span class="p">())</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.ObjectNode.output">
+<code class="descname">output</code><a class="headerlink" href="#ovito.ObjectNode.output" title="Permalink to this definition">¶</a></dt>
+<dd><p>Provides access to the last results computed by the node&#8217;s data modification pipeline.</p>
+<p>After calling the <a class="reference internal" href="#ovito.ObjectNode.compute" title="ovito.ObjectNode.compute"><code class="xref py py-meth docutils literal"><span class="pre">compute()</span></code></a> method, this attribute holds a <a class="reference internal" href="ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a>
+with the output of the node&#8217;s modification pipeline.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.ObjectNode.remove_from_scene">
+<code class="descname">remove_from_scene</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ovito.ObjectNode.remove_from_scene" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes the node from the scene by deleting it from the <a class="reference internal" href="#ovito.DataSet.scene_nodes" title="ovito.DataSet.scene_nodes"><code class="xref py py-attr docutils literal"><span class="pre">ovito.DataSet.scene_nodes</span></code></a> list.
+The visual representation of the node will disappear from the viewports after calling this method.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.ObjectNode.source">
+<code class="descname">source</code><a class="headerlink" href="#ovito.ObjectNode.source" title="Permalink to this definition">¶</a></dt>
+<dd><p>The object that provides or generates the data that enters the node&#8217;s modification pipeline. This typically is a <a class="reference internal" href="ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a> instance if the node was created by a call to <a class="reference internal" href="ovito_io.html#ovito.io.import_file" title="ovito.io.import_file"><code class="xref py py-func docutils literal"><span class="pre">import_file()</span></code></a>.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/running.html">Running scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/file_io.html">File I/O</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/modifiers.html">Modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/particle_properties.html">Particle properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/rendering.html">Rendering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/custom_modifiers.html">Writing new modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/examples.html">Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href=""><code class="docutils literal"><span class="pre">ovito</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_anim.html"><code class="docutils literal"><span class="pre">ovito.anim</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_data.html"><code class="docutils literal"><span class="pre">ovito.data</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_io.html"><code class="docutils literal"><span class="pre">ovito.io</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_modifiers.html"><code class="docutils literal"><span class="pre">ovito.modifiers</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_vis.html"><code class="docutils literal"><span class="pre">ovito.vis</span></code></a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ovito_anim.html" title="ovito.anim"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../introduction/examples.html" title="Examples"
+             >previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Alexander Stukowski.
+    </div>
+  </body>
+</html>

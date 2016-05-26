@@ -1,0 +1,87 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Viewports</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="usage.html" title="Usage"><link rel="prev" href="usage.import.html" title="Importing data"><link rel="next" href="usage.particle_properties.html" title="Particle properties"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Viewports</th><td width="20%" align="right"><a accesskey="u" href="usage.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="usage.import.html">Prev</a> </td><th width="60%" align="center">Usage</th><td width="20%" align="right"> <a accesskey="n" href="usage.particle_properties.html">Next</a></td></tr></table></div><div class="section" id="usage.viewports"><div class="titlepage"><div><div><h2 class="title">Viewports</h2></div></div></div>
+  
+
+  <p>
+    OVITO's main window contains four viewports, which are laid out in a 2 by 2
+    grid. Each viewport shows the same three-dimensional scene from a different angle.
+    The caption in the upper left corner and an axis tripod in the lower left corner of every viewport 
+    indicate the current viewing direction, i.e. the orientation of the virtual camera.
+  </p> 
+
+  <div class="simplesect" id="usage.viewports.navigation"><div class="titlepage"><div><div><h3 class="title">Navigation</h3></div></div></div>
+       
+  <p>
+    </p><div class="figure" id="idp145104"><p class="title"><b>Figure 2. The colored cross marks the center of rotation of the camera. Double-click on a particle to reposition the marker.</b></p><div class="figure-contents">
+      
+      <div class="screenshot"><div class="mediaobject"><img src="images/viewport_control_toolbar/viewport_screenshot.png" alt="The colored cross marks the center of rotation of the camera. Double-click on a particle to reposition the marker."></div></div>
+    </div></div><p><br class="figure-break"> 
+    Use the mouse to navigate within a viewport and to move the virtual camera around:
+    </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>
+      Left-click and drag to rotate the camera around the current orbit center, which, by default, is the center of the simulation box.
+    </p></li><li class="listitem"><p>
+      Right-click and drag to move the camera parallel to the current projection plane. You can also use the middle mouse button for this.
+    </p></li><li class="listitem"><p>
+      Use the mouse wheel to zoom in and out.
+    </p></li><li class="listitem"><p>
+      Double-click on a particle or other object to set a new orbit center. From now on the camera will rotate around that position, which is marked by a colored cross.
+    </p></li><li class="listitem"><p>
+      Double-click in an empty region to reset the orbit center to the center of the active object (typically the simulation box).
+    </p></li></ul></div><p>
+
+     By default, the z-axis is considered the "up" (=vertical) direction, and OVITO ensures that it always points upward when you rotate or move the camera. 
+     Depending on your simulation setup this might not be the best choice. In such a case you can define the x or y axis to be the vertical axis in the 
+     application settings dialog.
+  </p>
+  </div>
+  
+  <div class="simplesect" id="usage.viewports.toolbar"><div class="titlepage"><div><div><h3 class="title">Viewport toolbar</h3></div></div></div>
+       
+   <p>
+     </p><div class="figure" id="idp153728"><p class="title"><b>Figure 3. The viewport toolbar.</b></p><div class="figure-contents">
+      
+      <div class="screenshot"><div class="mediaobject"><img src="images/viewport_control_toolbar/viewport_toolbar.png" alt="The viewport toolbar."></div></div>
+     </div></div><p><br class="figure-break"> 
+     The viewport toolbar is located below the viewports and contains buttons to explicitly activate various navigation input modes.
+     The <span class="emphasis"><em>Maximize Active Viewport</em></span> button enlarges the current viewport such that it fills the entire main window. 
+     Pressing the button a second time restores the original 2x2 viewport layout. The active viewport is marked by a yellow border.
+   </p>
+   <p>
+     The <span class="emphasis"><em>Zoom Scene Extents</em></span> button adjusts the zoom level and repositions the viewport camera
+     such that the complete scene becomes fully visible.
+   </p>
+  </div>
+
+  <div class="simplesect" id="usage.viewports.menu"><div class="titlepage"><div><div><h3 class="title">Viewport menu</h3></div></div></div>
+  
+   <p>
+     Each of OVITO's viewports has a caption in its upper left corner, e.g. <span class="emphasis"><em>Perspective</em></span>, <span class="emphasis"><em>Top</em></span>, etc.
+     Clicking on the caption opens the viewport context menu as shown in the screenshot. 
+     The menu allows you to switch between the standard view types.
+   </p>
+   <p>
+     </p><div class="figure" id="idp161680"><p class="title"><b>Figure 4. The viewport menu.</b></p><div class="figure-contents">
+      
+      <div class="screenshot"><div class="mediaobject"><img src="images/viewport_control_toolbar/viewport_menu_screenshot.png" width="270" alt="The viewport menu."></div></div>
+     </div></div><p><br class="figure-break"> 
+     <span class="guimenuitem">Adjust View</span> opens a <a class="link" href="viewports.adjust_view_dialog.html" title="Adjust view dialog">dialog box</a> that lets you enter the view position and orientation 
+     of the virtual camera numerically.
+   </p>
+   <p>
+     The <span class="guimenuitem">Create Camera</span> function creates a camera object in the three-dimensional
+     scene. The camera is linked to the viewport, and moving the camera object will automatically update the viewport's 
+     view accordingly. It is even possible to <a class="link" href="usage.animation.html#usage.animation.camera" title="Animating the camera">animate the camera object</a> to create movies with
+     a moving camera. Creating a camera object is also useful to fix the current viewport view and protect it against
+     inadvertent or automatic changes, e.g. the automatic adjustment that is performed by OVITO when loading a new simulation dataset.
+   </p>
+   <p>
+     The <span class="guimenuitem">Preview Mode</span> option activates a frame, which
+     indicates the area that will be visible in the final output picture. The aspect ratio of the render frame can be 
+     adjusted in the <a class="link" href="core.render_settings.html" title="Render settings">Render settings</a> panel by changing the width and height
+     of the output image or movie. 
+     When the <span class="guimenuitem">Preview Mode</span>
+     is active for a viewport, everything (including the background and <a class="link" href="viewport_overlays.html" title="Viewport overlays">overlays</a>) will 
+     be rendered as in the final output image.
+   </p>
+  </div>     
+
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="usage.import.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="usage.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="usage.particle_properties.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Importing data </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Particle properties</td></tr></table></div></body></html>

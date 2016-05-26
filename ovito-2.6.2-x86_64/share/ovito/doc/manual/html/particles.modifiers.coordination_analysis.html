@@ -1,0 +1,25 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Coordination analysis</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="particles.modifiers.html" title="Modifiers"><link rel="prev" href="particles.modifiers.construct_surface_mesh.html" title="Construct surface mesh"><link rel="next" href="particles.modifiers.create_bonds.html" title="Create bonds"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Coordination analysis</th><td width="20%" align="right"><a accesskey="u" href="particles.modifiers.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="particles.modifiers.construct_surface_mesh.html">Prev</a> </td><th width="60%" align="center">Modifiers</th><td width="20%" align="right"> <a accesskey="n" href="particles.modifiers.create_bonds.html">Next</a></td></tr></table></div><div class="section" id="particles.modifiers.coordination_analysis"><div class="titlepage"><div><div><h3 class="title">Coordination analysis</h3></div></div></div>
+  
+
+  <p>
+  
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/modifiers/coordination_analysis_panel.png"></div></div></div><p>
+  
+    This modifier determines the number of neighbors of each particle which are within 
+    a given cutoff radius. This is the so-called <span class="emphasis"><em>coordination number</em></span> of a particle.
+    The modifier stores the results in the <code class="literal">Coordination</code> particle property.
+  </p>
+
+  <p>
+    In addition, the modifier also computes the radial pair distribution function (RDF) of the particle system.
+    The pair distribution function is normalized by the number density of particles (i.e. total number of
+    particles divided by the simulation cell volume).
+  </p>
+  
+  <p>
+    The current program version cannot compute partial pair distribution functions, which take into account
+    the type of particles. If this is a program feature you are interested in, please let the developer
+    of OVITO know.
+  </p>
+
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="particles.modifiers.construct_surface_mesh.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="particles.modifiers.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="particles.modifiers.create_bonds.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Construct surface mesh </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Create bonds</td></tr></table></div></body></html>

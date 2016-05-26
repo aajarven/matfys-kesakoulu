@@ -1,0 +1,32 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Bonds display</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="display_objects.html" title="Display objects"><link rel="prev" href="display_objects.html" title="Display objects"><link rel="next" href="display_objects.particles.html" title="Particle display"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Bonds display</th><td width="20%" align="right"><a accesskey="u" href="display_objects.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="display_objects.html">Prev</a> </td><th width="60%" align="center">Display objects</th><td width="20%" align="right"> <a accesskey="n" href="display_objects.particles.html">Next</a></td></tr></table></div><div class="section" id="display_objects.bonds"><div class="titlepage"><div><div><h3 class="title">Bonds display</h3></div></div></div>
+  
+
+  <p>
+      
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/display_objects/bonds_panel.png"></div></div></div><p>
+    
+    This display object is responsible for rendering bonds between particles.
+    Bonds can be loaded from a simulation file created within OVITO using the 
+    <a class="link" href="particles.modifiers.create_bonds.html" title="Create bonds">Create bonds</a> modifier.
+  </p>
+
+   <div class="simplesect" id="idp1584768"><div class="titlepage"><div><div><h4 class="title">Parameters</h4></div></div></div>
+    
+
+    <div class="variablelist"><dl class="variablelist"><dt><span class="term">Shading mode</span></dt><dd>
+          <p>Switches between a three-dimensional display mode, where bonds are rendered as cylinders, and a flat
+          representation, where bonds are rendered as lines.</p>
+        </dd><dt><span class="term">Rendering quality</span></dt><dd>
+          <p>This parameter controls the method used to render the bonds. The following modes are available and affect only the rendering of cylindrical bonds:
+		    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Low</span></dt><dd><p>Bonds are rendered using triangular facets.</p></dd><dt><span class="term">Medium</span></dt><dd><p>Same as <span class="emphasis"><em>Low</em></span> quality.</p></dd><dt><span class="term">High</span></dt><dd><p>Bonds are rendered as true cylinders using a ray-tracing algorithm, which is implemented as a OpenGL fragment shader.</p></dd></dl></div><p>
+          </p>
+        </dd><dt><span class="term">Bond width</span></dt><dd>
+          <p>Controls the display width of bonds (both cylinders and lines).</p>
+        </dd><dt><span class="term">Bond color</span></dt><dd>
+          <p>The rendering color of bonds. This color parameter is only used if <span class="emphasis"><em>Use particle colors</em></span> is not selected.</p>
+        </dd><dt><span class="term">Use particle colors</span></dt><dd>
+          <p>If selected, bonds are rendered in the same colors as the particles they connect.</p>
+        </dd></dl></div>
+    </div>
+    
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="display_objects.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="display_objects.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="display_objects.particles.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Display objects </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Particle display</td></tr></table></div></body></html>

@@ -1,0 +1,48 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Cluster analysis</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="particles.modifiers.html" title="Modifiers"><link rel="prev" href="particles.modifiers.clear_selection.html" title="Clear selection"><link rel="next" href="particles.modifiers.color_coding.html" title="Color coding"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Cluster analysis</th><td width="20%" align="right"><a accesskey="u" href="particles.modifiers.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="particles.modifiers.clear_selection.html">Prev</a> </td><th width="60%" align="center">Modifiers</th><td width="20%" align="right"> <a accesskey="n" href="particles.modifiers.color_coding.html">Next</a></td></tr></table></div><div class="section" id="particles.modifiers.cluster_analysis"><div class="titlepage"><div><div><h3 class="title">Cluster analysis</h3></div></div></div>
+  
+
+  <p>
+  
+    </p><div class="informalfigure">
+      <div class="informaltable">
+        <table class="informaltable" border="0"><colgroup><col><col></colgroup><tbody><tr valign="bottom"><td valign="bottom">Input:</td><td valign="bottom">Output:</td></tr><tr valign="top"><td valign="top">
+		        <div class="mediaobject"><img src="images/modifiers/cluster_analysis_example_input.png"></div>
+              </td><td valign="top">
+		        <div class="mediaobject"><img src="images/modifiers/cluster_analysis_example_output.png"></div>
+              </td></tr></tbody></table>
+      </div>
+    </div><p>
+      
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/modifiers/cluster_analysis_panel.png"></div></div></div><p>
+  
+    This modifier decomposes a particle system into disconnected sets of particles (clusters) based on a distance criterion.
+  </p>
+  
+  <p>
+    A cluster is defined as a set of connected particles, each of which is within the cutoff distance from one or more 
+    other particles from the same cluster. Conversely, two particles will not belong to the same cluster, if 
+    there is no continuous path on the neighbor network leading from the first particle to the second.
+  </p>
+  <p>
+    If a particle has no neighbors at all within the cutoff distance, then it forms a 1-particle cluster.
+  </p>
+
+  <p>
+     The modifier writes its results to the <code class="literal">Cluster</code> particle property, which stores the
+     cluster each particle is assigned to. Cluster IDs range from 1 to <span class="emphasis"><em>N</em></span>, where <span class="emphasis"><em>N</em></span> 
+     is the number of clusters found by the modifier.
+  </p>
+
+  <div class="simplesect" id="idp721616"><div class="titlepage"><div><div><h4 class="title">Parameters</h4></div></div></div>
+    
+    <div class="variablelist"><dl class="variablelist"><dt><span class="term">Cutoff radius</span></dt><dd>
+          <p>The threshold up to which two particles are considered direct neighbors.
+          </p>
+        </dd><dt><span class="term">Use only selected particles</span></dt><dd>
+          <p>If this option is active, the clustering algorithm is restricted to selected
+          particles. Unselected particles will be treated as if they do not exist and will be assigned
+          the cluster ID 0. 
+          </p>
+        </dd></dl></div>
+  </div>
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="particles.modifiers.clear_selection.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="particles.modifiers.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="particles.modifiers.color_coding.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Clear selection </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Color coding</td></tr></table></div></body></html>

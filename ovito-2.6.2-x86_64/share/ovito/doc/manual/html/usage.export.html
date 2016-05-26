@@ -1,0 +1,24 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Exporting data</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="usage.html" title="Usage"><link rel="prev" href="usage.miscellaneous.html" title="Miscellaneous"><link rel="next" href="usage.scripting.html" title="Python scripting"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Exporting data</th><td width="20%" align="right"><a accesskey="u" href="usage.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="usage.miscellaneous.html">Prev</a> </td><th width="60%" align="center">Usage</th><td width="20%" align="right"> <a accesskey="n" href="usage.scripting.html">Next</a></td></tr></table></div><div class="section" id="usage.export"><div class="titlepage"><div><div><h2 class="title">Exporting data</h2></div></div></div>
+  
+
+  <p>To export particles to a file (or a series of files), select <span class="guimenu">File</span> &#8594; <span class="guimenuitem">Export File</span> from the menu.
+  After choosing an output filename and a file format, the export settings dialog lets you specify the animation frames and the particle properties to be exported.
+  </p>
+  
+  <p>If you pick an output filename that ends with the <code class="filename">.gz</code> suffix, the file will be automatically compressed by OVITO.</p>
+  
+  <p>
+  Note that OVITO exports the output of the modification pipeline. That means, for instance, if you have deleted some particles using a modifier, OVITO will export
+  only the remaining particles to the output file. The modification pipeline is re-evaluated for every animation frame being exported.
+  </p>
+  
+  <div class="simplesect" id="usage.export.formats"><div class="titlepage"><div><div><h3 class="title">Supported output formats</h3></div></div></div>
+  
+  <p>
+    </p><div class="informaltable">
+        <table class="informaltable" border="1"><colgroup><col><col></colgroup><thead><tr><th>File format</th><th>Description</th></tr></thead><tbody><tr><td>LAMMPS dump</td><td><p>Text-based file format produced and read by the <a class="ulink" href="http://lammps.sandia.gov" target="_top">LAMMPS molecular dynamics code</a>.</p></td></tr><tr><td>LAMMPS data</td><td><p>File format read by the <a class="ulink" href="http://lammps.sandia.gov" target="_top">LAMMPS molecular dynamics code</a>.</p></td></tr><tr><td>XYZ</td><td><p>A simple column-based text format, which is documented <a class="ulink" href="http://en.wikipedia.org/wiki/XYZ_file_format" target="_top">here</a>.</p></td></tr><tr><td>POSCAR</td><td><p>File format used by the <span class="emphasis"><em>ab initio</em></span> simulation package <a class="ulink" href="http://www.vasp.at/" target="_top">VASP</a>.</p></td></tr><tr><td>IMD</td><td><p>File format used by the molecular dynamics code <a class="ulink" href="http://imd.itap.physik.uni-stuttgart.de/" target="_top">IMD</a>.</p></td></tr><tr><td>FHI-aims</td><td><p>File format used by the <span class="emphasis"><em>ab initio</em></span> simulation package <a class="ulink" href="https://aimsclub.fhi-berlin.mpg.de/index.php" target="_top">FHI-aims</a>.</p></td></tr><tr><td>Crystal Analysis (CA)</td><td><p>A text-based file format used by the <span class="emphasis"><em>Crystal Analysis Tool</em></span>, which can store dislocation line networks extracted by the 
+              <a class="link" href="particles.modifiers.dislocation_analysis.html" title="Dislocation analysis (DXA)">Dislocation Analysis</a> modifier.</p></td></tr></tbody></table>
+      </div><p>  
+  </p>
+  </div>
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="usage.miscellaneous.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="usage.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="usage.scripting.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Miscellaneous </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Python scripting</td></tr></table></div></body></html>

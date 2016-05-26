@@ -1,0 +1,361 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Overview &mdash; OVITO 2.6.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/rtd.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.6.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/ovito.ico"/>
+    <link rel="top" title="OVITO 2.6.2 documentation" href="../index.html" />
+    <link rel="next" title="File I/O" href="file_io.html" />
+    <link rel="prev" title="Running scripts" href="running.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_io.html" title="File I/O"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="running.html" title="Running scripts"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h1>
+<p>OVITO scripting interface provides full access to most of OVITO&#8217;s program features. Using Python scripts, you can
+do many things that are already familiar from the graphical user interface (and even a few more):</p>
+<blockquote>
+<div><ul class="simple">
+<li>Import data from simulation files</li>
+<li>Apply modifiers to the data</li>
+<li>Let OVITO compute the results of the modifier pipeline</li>
+<li>Set up a camera and render pictures or movies of the scene</li>
+<li>Control the visual appearance of particles and other objects</li>
+<li>Access per-particle properties and analysis results computed by OVITO</li>
+<li>Implement new types of modifiers</li>
+<li>Export data to a file</li>
+</ul>
+</div></blockquote>
+<p>The following sections will introduce the essential concepts and walk you through different parts of OVITO&#8217;s
+scripting interface.</p>
+<div class="section" id="ovito-s-data-flow-architecture">
+<h2>OVITO&#8217;s data flow architecture<a class="headerlink" href="#ovito-s-data-flow-architecture" title="Permalink to this headline">¶</a></h2>
+<p>If you have worked with OVITO&#8217;s graphical user interface before, you should already be familiar with
+its key workflow concept: After loading a simulation file into OVITO and typically set up a sequence of modifiers
+that act on that input data. The results of this <em>modification pipeline</em> are computed by OVITO
+and displayed in the interactive viewports.</p>
+<p>To make use of this capability from a script, we first need to understand the basics of OVITO&#8217;s underlying
+data model. In general, there are two different groups of objects that participate in the described system:
+Objects that constitute the modification pipeline (e.g. modifiers and a data source) and <em>data objects</em>, which
+enter the modification pipeline, get modified by it, or are newly produced by modifiers (e.g. particle properties).
+We start by discussing the first group in the next section.</p>
+</div>
+<div class="section" id="data-sources-modifiers-and-more">
+<h2>Data sources, modifiers, and more<a class="headerlink" href="#data-sources-modifiers-and-more" title="Permalink to this headline">¶</a></h2>
+<p>It all starts with a <em>data source</em>, which is an object
+that provides the input data entering a modification pipeline. OVITO currently knows two types of
+data sources: The <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a> and the <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a>.
+In the following we will discuss the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a> class, because that is the type of data source
+typically used. It is responsible for loading data from an external file and passing it on to the modification pipeline.</p>
+<p>The data source and the modification pipeline together form an <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a>. This class
+orchestrates the data flow from the source into the modification pipeline and stores the pipeline&#8217;s output in an internal
+data cache. As we will see later, the <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a> is also responsible for displaying the output
+data in the three-dimensional scene. The data source is stored in the node&#8217;s <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode.source" title="ovito.ObjectNode.source"><code class="xref py py-attr docutils literal"><span class="pre">source</span></code></a>
+property, while the modification pipeline is accessible through the node&#8217;s <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode.modifiers" title="ovito.ObjectNode.modifiers"><code class="xref py py-attr docutils literal"><span class="pre">modifiers</span></code></a>
+property. The pipeline is exposed as a Python list that can be populated with modifiers.</p>
+<p>The <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a> is usually placed in the <em>scene</em>, i.e. the three-dimensional world that is visible
+through OVITO&#8217;s viewports. All objects in the scene, and all other information that would get saved along in
+a <code class="file docutils literal"><span class="pre">.ovito</span></code> file (e.g. current render settings, viewport cameras, etc.), comprise the so-called <a class="reference internal" href="../modules/ovito.html#ovito.DataSet" title="ovito.DataSet"><code class="xref py py-class docutils literal"><span class="pre">DataSet</span></code></a>.
+A Python script always runs in the context of exactly one global <a class="reference internal" href="../modules/ovito.html#ovito.DataSet" title="ovito.DataSet"><code class="xref py py-class docutils literal"><span class="pre">DataSet</span></code></a> instance. This
+instance can be accessed through the <a class="reference internal" href="../modules/ovito.html#ovito.dataset" title="ovito.dataset"><code class="xref py py-data docutils literal"><span class="pre">ovito.dataset</span></code></a> module-level attribute. It provides access to the
+list of object nodes in the scene (<a class="reference internal" href="../modules/ovito.html#ovito.DataSet.scene_nodes" title="ovito.DataSet.scene_nodes"><code class="xref py py-attr docutils literal"><span class="pre">dataset.scene_nodes</span></code></a>),
+the current animation settings (<a class="reference internal" href="../modules/ovito.html#ovito.DataSet.anim" title="ovito.DataSet.anim"><code class="xref py py-attr docutils literal"><span class="pre">dataset.anim</span></code></a>), the four
+viewports in OVITO&#8217;s main window (<a class="reference internal" href="../modules/ovito.html#ovito.DataSet.viewports" title="ovito.DataSet.viewports"><code class="xref py py-attr docutils literal"><span class="pre">dataset.viewports</span></code></a>), and more.</p>
+<a class="reference internal image-reference" href="../_images/ObjectNode.svg"><div align="center" class="align-center"><img src="../_images/ObjectNode.svg" width="86%" /></div>
+</a>
+</div>
+<div class="section" id="loading-data-and-applying-modifiers">
+<h2>Loading data and applying modifiers<a class="headerlink" href="#loading-data-and-applying-modifiers" title="Permalink to this headline">¶</a></h2>
+<p>After the general object model has been described above, it is now time to give some code examples and demonstrate how
+we deal with these things in a script. Typically, we first would like to load a simulation file. This is done
+using the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.import_file" title="ovito.io.import_file"><code class="xref py py-func docutils literal"><span class="pre">ovito.io.import_file()</span></code></a> function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&quot;simulation.dump&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This high-level function does several things: It creates a <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a> (which will subsequently load the data
+from the given file), it creates an <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a> instance with an empty modification pipeline, and assigns the
+<a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a> to the <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode.source" title="ovito.ObjectNode.source"><code class="xref py py-attr docutils literal"><span class="pre">source</span></code></a> property of the node. The function finally returns the
+newly created node to the caller after inserting it into the scene.</p>
+<p>We can now start to populate the node&#8217;s modification pipeline with some modifiers:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ovito.modifiers</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SelectExpressionModifier</span><span class="p">(</span><span class="n">expression</span><span class="o">=</span><span class="s">&quot;PotentialEnergy &lt; -3.9&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DeleteSelectedParticlesModifier</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Here we have created two modifiers and appended them to the modification pipeline. Note how a modifier&#8217;s parameters
+can be initialized in two ways:</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>When constructing new objects such as modifiers it is possible to initialize object
+parameters using an arbitrary number of keyword arguments at construction time. Thus</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CommonNeighborAnalysisModifier</span><span class="p">(</span><span class="n">cutoff</span> <span class="o">=</span> <span class="mf">3.2</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="n">CommonNeighborAnalysisModifier</span><span class="o">.</span><span class="n">Mode</span><span class="o">.</span><span class="n">FixedCutoff</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>is equivalent to:</p>
+<div class="last highlight-python"><div class="highlight"><pre><span class="n">modifier</span> <span class="o">=</span> <span class="n">CommonNeighborAnalysisModifier</span><span class="p">()</span>
+<span class="n">modifier</span><span class="o">.</span><span class="n">cutoff</span> <span class="o">=</span> <span class="mf">3.2</span>
+<span class="n">modifier</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">CommonNeighborAnalysisModifier</span><span class="o">.</span><span class="n">Mode</span><span class="o">.</span><span class="n">FixedCutoff</span>
+<span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">modifier</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>After the modification pipeline has been populated with the desired modifiers, we can basically do three things:
+(i) write the results to a file, (ii) render an image of the data, (iii) or directly work with the pipeline
+data and read out particle properties, for instance.</p>
+</div>
+<div class="section" id="exporting-data-to-a-file">
+<h2>Exporting data to a file<a class="headerlink" href="#exporting-data-to-a-file" title="Permalink to this headline">¶</a></h2>
+<p>Exporting the processed data to a file is simple; we use the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.export_file" title="ovito.io.export_file"><code class="xref py py-func docutils literal"><span class="pre">ovito.io.export_file()</span></code></a> function
+for this:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">export_file</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s">&quot;outputdata.dump&quot;</span><span class="p">,</span> <span class="s">&quot;lammps_dump&quot;</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Position.X&quot;</span><span class="p">,</span> <span class="s">&quot;Position.Y&quot;</span><span class="p">,</span> <span class="s">&quot;Position.Z&quot;</span><span class="p">,</span> <span class="s">&quot;Structure Type&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The first argument passed to this high-level function is the node whose pipeline results should be exported.
+Furthermore, the name of the output file and the format are specified by the second and third parameter.
+Depending on the selected file format, additional keyword parameters such as the list of particle properties to
+be exported must be provided.</p>
+</div>
+<div class="section" id="rendering-images">
+<h2>Rendering images<a class="headerlink" href="#rendering-images" title="Permalink to this headline">¶</a></h2>
+<p>To render an image, we first need a viewport that defines the view on the three-dimensional scene.
+We can either use one of the four predefined viewports of OVITO for this, or simply create an <em>ad hoc</em>
+<a class="reference internal" href="../modules/ovito_vis.html#ovito.vis.Viewport" title="ovito.vis.Viewport"><code class="xref py py-class docutils literal"><span class="pre">Viewport</span></code></a> instance in Python:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ovito.vis</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vp</span> <span class="o">=</span> <span class="n">Viewport</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vp</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">Viewport</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">PERSPECTIVE</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vp</span><span class="o">.</span><span class="n">camera_pos</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vp</span><span class="o">.</span><span class="n">camera_dir</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vp</span><span class="o">.</span><span class="n">fov</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">60.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>As you can see, the <a class="reference internal" href="../modules/ovito_vis.html#ovito.vis.Viewport" title="ovito.vis.Viewport"><code class="xref py py-class docutils literal"><span class="pre">Viewport</span></code></a> class has several parameters that control the
+position and orientation of the camera, the projection type, and the field of view (FOV) angle. Note that this
+viewport will not be visible in OVITO&#8217;s main window, because it is not part of the current <a class="reference internal" href="../modules/ovito.html#ovito.DataSet" title="ovito.DataSet"><code class="xref py py-class docutils literal"><span class="pre">DataSet</span></code></a>;
+it is only a temporary object used within the script.</p>
+<p>In addition we need to create a <a class="reference internal" href="../modules/ovito_vis.html#ovito.vis.RenderSettings" title="ovito.vis.RenderSettings"><code class="xref py py-class docutils literal"><span class="pre">RenderSettings</span></code></a> object, which controls the rendering
+process (These are the parameters you normally set on the <em class="guilabel">Render</em> tab in OVITO&#8217;s main window):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">settings</span> <span class="o">=</span> <span class="n">RenderSettings</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">settings</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="s">&quot;myimage.png&quot;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">settings</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here we have specified the output filename and the size of the image in pixels. Finally, we can let OVITO render
+the image:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">vp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">settings</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note again how we can instead use the more compact notation to initialize the <a class="reference internal" href="../modules/ovito_vis.html#ovito.vis.Viewport" title="ovito.vis.Viewport"><code class="xref py py-class docutils literal"><span class="pre">Viewport</span></code></a>
+and the <a class="reference internal" href="../modules/ovito_vis.html#ovito.vis.RenderSettings" title="ovito.vis.RenderSettings"><code class="xref py py-class docutils literal"><span class="pre">RenderSettings</span></code></a> by passing the parameter values to the class constructors:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">vp</span> <span class="o">=</span> <span class="n">Viewport</span><span class="p">(</span>
+    <span class="nb">type</span> <span class="o">=</span> <span class="n">Viewport</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">PERSPECTIVE</span><span class="p">,</span>
+    <span class="n">camera_pos</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="mi">150</span><span class="p">),</span>
+    <span class="n">camera_dir</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">),</span>
+    <span class="n">fov</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="mf">60.0</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">vp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">RenderSettings</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="s">&quot;myimage.png&quot;</span><span class="p">,</span> <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">800</span><span class="p">,</span> <span class="mi">600</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="accessing-computation-results">
+<h2>Accessing computation results<a class="headerlink" href="#accessing-computation-results" title="Permalink to this headline">¶</a></h2>
+<p>OVITO&#8217;s scripting interface allows us to directly access the output data leaving the
+modification pipeline. But first we have to ask OVITO to compute the results of the modification pipeline:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The node&#8217;s <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode.compute" title="ovito.ObjectNode.compute"><code class="xref py py-meth docutils literal"><span class="pre">compute()</span></code></a> method ensures that all modifiers in the pipeline
+have been successfully evaluated. Note that the <a class="reference internal" href="../modules/ovito_vis.html#ovito.vis.Viewport.render" title="ovito.vis.Viewport.render"><code class="xref py py-meth docutils literal"><span class="pre">render()</span></code></a> and
+<a class="reference internal" href="../modules/ovito_io.html#ovito.io.export_file" title="ovito.io.export_file"><code class="xref py py-func docutils literal"><span class="pre">export_file()</span></code></a> functions introduced above implicitly call <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode.compute" title="ovito.ObjectNode.compute"><code class="xref py py-meth docutils literal"><span class="pre">compute()</span></code></a>
+for us. But now, to gain direct access to the results, we have to explicitly request
+an evaluation of the modification pipeline.</p>
+<p>The node caches the results of the last pipeline evaluation in its <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode.output" title="ovito.ObjectNode.output"><code class="xref py py-attr docutils literal"><span class="pre">output</span></code></a> field:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">output</span>
+<span class="go">DataCollection([&#39;Simulation cell&#39;, &#39;Particle Identifier&#39;, &#39;Position&#39;,</span>
+<span class="go">                &#39;Potential Energy&#39;, &#39;Color&#39;, &#39;Structure Type&#39;])</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a> contains the <em>data objects</em> that were produced
+by the modification pipeline. For example, to access the <a class="reference internal" href="../modules/ovito_data.html#ovito.data.SimulationCell" title="ovito.data.SimulationCell"><code class="xref py py-class docutils literal"><span class="pre">simulation</span> <span class="pre">cell</span></code></a> we would write:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">matrix</span>
+<span class="go">[[ 148.147995      0.            0.          -74.0739975 ]</span>
+<span class="go"> [   0.          148.07200623    0.          -74.03600311]</span>
+<span class="go"> [   0.            0.          148.0756073   -74.03780365]]</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">pbc</span>
+<span class="go">(True, True, True)</span>
+</pre></div>
+</div>
+<p>Similarly, the data of individual <a class="reference internal" href="../modules/ovito_data.html#ovito.data.ParticleProperty" title="ovito.data.ParticleProperty"><code class="xref py py-class docutils literal"><span class="pre">particle</span> <span class="pre">properties</span></code></a> may be accessed as NumPy arrays:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">particle_properties</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">array</span>
+<span class="go">[[ 73.24230194  -5.77583981  -0.87618297]</span>
+<span class="go"> [-49.00170135 -35.47610092 -27.92519951]</span>
+<span class="go"> [-50.36349869 -39.02569962 -25.61310005]</span>
+<span class="go"> ...,</span>
+<span class="go"> [ 42.71210098  59.44919968  38.6432991 ]</span>
+<span class="go"> [ 42.9917984   63.53770065  36.33330154]</span>
+<span class="go"> [ 44.17670059  61.49860001  37.5401001 ]]</span>
+</pre></div>
+</div>
+<p>Sometimes we might be more interested in the data that <em>enters</em> the modification pipeline.
+The input data, which was read from the external file, is cached by the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a>,
+which is a <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a> itself:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">source</span>
+<span class="go">DataCollection([&#39;Simulation cell&#39;, &#39;Particle Identifier&#39;, &#39;Position&#39;])</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="controlling-the-visual-appearance-of-objects">
+<h2>Controlling the visual appearance of objects<a class="headerlink" href="#controlling-the-visual-appearance-of-objects" title="Permalink to this headline">¶</a></h2>
+<p>So far we have only looked at objects that represent data, e.g. particle properties or the simulation cell.
+How is this data displayed, and how can we control the visual appearance?</p>
+<p>Every data object that can be visualized in OVITO is associated with a matching <a class="reference internal" href="../modules/ovito_vis.html#ovito.vis.Display" title="ovito.vis.Display"><code class="xref py py-class docutils literal"><span class="pre">Display</span></code></a>
+object. The display object is stored in the data object&#8217;s <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataObject.display" title="ovito.data.DataObject.display"><code class="xref py py-attr docutils literal"><span class="pre">display</span></code></a> property. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cell</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">cell</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cell</span>                               <span class="c"># This is the data object</span>
+<span class="go">&lt;SimulationCell at 0x7f9a414c8060&gt;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cell</span><span class="o">.</span><span class="n">display</span>                       <span class="c"># This is its attached display object</span>
+<span class="go">&lt;SimulationCellDisplay at 0x7fc3650a1c20&gt;</span>
+</pre></div>
+</div>
+<p>The py:class:<cite>~ovito.vis.SimulationCellDisplay</cite> instance is responsible for rendering the simulation
+cell and provides parameters that allow us to influence the visual appearance. For example, to change the
+display color of the simulation box:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cell</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">rendering_color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can also turn off the display of any object completely by setting the <a class="reference internal" href="../modules/ovito_vis.html#ovito.vis.Display.enabled" title="ovito.vis.Display.enabled"><code class="xref py py-attr docutils literal"><span class="pre">enabled</span></code></a>
+attribute of the display to <code class="docutils literal"><span class="pre">False</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cell</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="bp">False</span>
+</pre></div>
+</div>
+<p>The particles are rendered by a corresponding <a class="reference internal" href="../modules/ovito_vis.html#ovito.vis.ParticleDisplay" title="ovito.vis.ParticleDisplay"><code class="xref py py-class docutils literal"><span class="pre">ParticleDisplay</span></code></a> object. It is always attached to the
+<a class="reference internal" href="../modules/ovito_data.html#ovito.data.ParticleProperty" title="ovito.data.ParticleProperty"><code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code></a> data object storing the particle positions (the only mandatory particle
+property that is always defined). Thus, to change the visual appearance of particles,
+we have to access the particle positions property in the <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">pos_prop</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">particle_properties</span><span class="o">.</span><span class="n">position</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pos_prop</span>
+<span class="go">&lt;ParticleProperty at 0x7ff5fc868b30&gt;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pos_prop</span><span class="o">.</span><span class="n">display</span>
+<span class="go">&lt;ParticleDisplay at 0x7ff5fc868c40&gt;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pos_prop</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">shading</span> <span class="o">=</span> <span class="n">ParticleDisplay</span><span class="o">.</span><span class="n">Shading</span><span class="o">.</span><span class="n">Flat</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pos_prop</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="mf">1.4</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="running.html">Running scripts</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_io.html">File I/O</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifiers.html">Modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particle_properties.html">Particle properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rendering.html">Rendering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_modifiers.html">Writing new modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito.html"><code class="docutils literal"><span class="pre">ovito</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_anim.html"><code class="docutils literal"><span class="pre">ovito.anim</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_data.html"><code class="docutils literal"><span class="pre">ovito.data</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_io.html"><code class="docutils literal"><span class="pre">ovito.io</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_modifiers.html"><code class="docutils literal"><span class="pre">ovito.modifiers</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_vis.html"><code class="docutils literal"><span class="pre">ovito.vis</span></code></a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="file_io.html" title="File I/O"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="running.html" title="Running scripts"
+             >previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Alexander Stukowski.
+    </div>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+{
+  "plugin-id" : "Tachyon",
+  "plugin-version" : "2.6.2",
+  "dependencies" : [ "PyScript" ],
+  "native-library" : "Tachyon"
+}

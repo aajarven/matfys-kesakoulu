@@ -1,0 +1,44 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Centrosymmetry parameter</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="particles.modifiers.html" title="Modifiers"><link rel="prev" href="particles.modifiers.bond_angle_analysis.html" title="Bond-angle analysis"><link rel="next" href="particles.modifiers.clear_selection.html" title="Clear selection"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Centrosymmetry parameter</th><td width="20%" align="right"><a accesskey="u" href="particles.modifiers.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="particles.modifiers.bond_angle_analysis.html">Prev</a> </td><th width="60%" align="center">Modifiers</th><td width="20%" align="right"> <a accesskey="n" href="particles.modifiers.clear_selection.html">Next</a></td></tr></table></div><div class="section" id="particles.modifiers.centrosymmetry"><div class="titlepage"><div><div><h3 class="title">Centrosymmetry parameter</h3></div></div></div>
+  
+
+  <p>
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/modifiers/centrosymmetry_panel.png"></div></div></div><p>
+      
+  This modifier calculates the centro-symmetry parameter of each particle [<a class="ulink" href="http://link.aps.org/doi/10.1103/PhysRevB.58.11085" target="_top">Kelchner, Plimpton, Hamilton, Phys Rev B, 58, 11085 (1998)</a>].
+  In solid-state systems the centro-symmetry parameter is a useful measure of the local 
+  lattice disorder around an atom and can be used to characterize whether the atom is 
+  part of a perfect lattice, a local defect (e.g. a dislocation or stacking fault), or at a surface.
+  </p>
+  
+  <p>
+    OVITO uses the same <a class="ulink" href="http://lammps.sandia.gov/doc/compute_centro_atom.html" target="_top">algorithm as LAMMPS</a>
+    to calculate the centro-symmetry parameter.
+  </p>
+  
+  <p>
+    The modifier needs to know the number of neighbors that should be taken into account for the computation of the centrosymmetry value.
+    It should correspond to the number of nearest neighbors in the underlying lattice of atoms. 
+    For fcc and bcc lattices, it should be set to 12 and 8 respectively. More generally, the parameter can be set to a positive, even integer.
+  </p>
+  
+  <p>
+    For an atom on a lattice site, surrounded by atoms on a perfect lattice, 
+    the centro-symmetry parameter will be zero. It will be near zero for small thermal perturbations 
+    of a perfect lattice. At a point defect the symmetry is broken, and the parameter 
+    will be a larger positive value. An atom at a surface will have a large positive parameter too.
+  </p>
+  
+  <p>
+    Note that this modifier requires access to the complete set of particles to perform the analysis. It should therefore be placed at the 
+    beginning of the processing pipeline, preceding any modifiers that delete particles.
+  </p>
+  
+  <p>
+    After you have computed the centro-symmetry parameter (CSP) values with this analysis modifier, you can use the 
+    <a class="link" href="particles.modifiers.color_coding.html" title="Color coding">Color Coding</a> modifier to color atoms according to their CSP value.
+    Or you can use the <a class="link" href="particles.modifiers.expression_select.html" title="Expression select">Expression Select</a> modifier to select atoms 
+    having a low CSP value. These undisturbed atoms can then be hidden using the <a class="link" href="particles.modifiers.delete_selected_particles.html" title="Delete selected particles">Delete Selected Particles</a>
+    modifier to reveal crystal defect atoms.
+  </p>
+  
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="particles.modifiers.bond_angle_analysis.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="particles.modifiers.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="particles.modifiers.clear_selection.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Bond-angle analysis </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Clear selection</td></tr></table></div></body></html>

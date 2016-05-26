@@ -1,0 +1,54 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Particle display</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="display_objects.html" title="Display objects"><link rel="prev" href="display_objects.bonds.html" title="Bonds display"><link rel="next" href="display_objects.surface_mesh.html" title="Surface mesh display"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Particle display</th><td width="20%" align="right"><a accesskey="u" href="display_objects.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="display_objects.bonds.html">Prev</a> </td><th width="60%" align="center">Display objects</th><td width="20%" align="right"> <a accesskey="n" href="display_objects.surface_mesh.html">Next</a></td></tr></table></div><div class="section" id="display_objects.particles"><div class="titlepage"><div><div><h3 class="title">Particle display</h3></div></div></div>
+  
+
+  <p>
+      
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/display_objects/particles_panel.png"></div></div></div><p>
+    
+    This <a class="link" href="display_objects.html" title="Display objects">display object</a> is responsible for rendering particles, and its parameters control the visual appearance
+    of particles. You can open this parameter panel
+    by selecting the <span class="emphasis"><em>Particles</em></span> entry in the <a class="link" href="usage.modification_pipeline.html#usage.modification_pipeline.pipeline_listbox" title="The pipeline editor">pipeline editor</a>.  
+  </p>
+
+   <div class="simplesect" id="idp1607008"><div class="titlepage"><div><div><h4 class="title">Parameters</h4></div></div></div>
+    
+
+    <div class="variablelist"><dl class="variablelist"><dt><span class="term">Shape</span></dt><dd>
+          <p>Selects the visual shape of particles.
+          Note that spherical particles can be turned into <a class="link" href="howto.aspherical_particles.html" title="Non-spherical particles">ellipsoidal particles</a>
+          by setting the <code class="literal">Aspherical Shape</code> particle property. Similarly,
+          the size of box-shaped particles can be controlled with the same property.
+          </p>
+          <p>
+          The size of cylindrical and spherocylindrical particles is also controlled by the 
+          <code class="literal">Aspherical Shape</code> property. Here, the component <code class="literal">Aspherical Shape.X</code>
+          determines the radius of the cylinder, and <code class="literal">Aspherical Shape.Z</code> determines its
+          length. The vector component <code class="literal">Aspherical Shape.Y</code> is ignored.
+          </p>
+          <p>
+          The orientation of ellipsoidal, box, and cylindrical particles can be controlled 
+          using the <code class="literal">Orientation</code> particle property. With this property,
+          a quaternion can be specified for each particle which determines its orientation in space.
+          If the <code class="literal">Orientation</code> property is not defined, all particles
+          will be aligned with the global simulation coordinate axes.
+          </p>
+        </dd><dt><span class="term">Default particle radius</span></dt><dd>
+          <p>Specifies the display size of particles that have an otherwise unspecified size. 
+          This size value is only used for particles for which <span class="emphasis"><em>none</em></span> of the following applies:
+          </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem"><p>The <code class="literal">Radius</code> property has been set.</p></li><li class="listitem"><p>A non-zero type-specific radius has been set for the particle's type.</p></li></ul></div><p>
+          In other words, this parameter provides a fallback value if no display size has been set on a 
+          per-particle basis or on a per-type basis.
+          </p>
+        </dd><dt><span class="term">Rendering quality</span></dt><dd>
+          <p>This parameter controls the method used to render the particles. The following modes are available and affect only the rendering of spherical particles:
+		    </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Low</span></dt><dd><p>Particles are rendered as texture-mapped imposters facing the viewer. Particles do not have depth in this mode, 
+		        and intersections between spherical particles may not be displayed correctly. This mode is the fastest.</p></dd><dt><span class="term">Medium</span></dt><dd><p>Particles are rendered as texture-mapped imposters facing the viewer. An OpenGL fragment shader is used
+		        to compute depth information for each rendered pixel to produce reasonable looking sphere-sphere intersections for overlapping particles.</p></dd><dt><span class="term">High</span></dt><dd><p>Particles are rendered as true spheres using an OpenGL fragment shader, which computes the ray-sphere intersection for every
+		        rendered pixel.</p></dd><dt><span class="term">Automatic</span></dt><dd><p>OVITO automatically switches between the three quality levels above depending on the number of particles to render in the interactive viewports. For
+		        less than 2,000 particles, the high-quality method is used. For more than 100,000 particles, the lowest quality mode is used. Irrespective of the
+		        particle number, high-quality mode is always used to produce a final output image.</p></dd></dl></div><p>
+          </p>
+        </dd></dl></div>
+    </div>
+    
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="display_objects.bonds.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="display_objects.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="display_objects.surface_mesh.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Bonds display </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Surface mesh display</td></tr></table></div></body></html>

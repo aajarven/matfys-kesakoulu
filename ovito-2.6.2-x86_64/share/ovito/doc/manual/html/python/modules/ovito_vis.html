@@ -1,0 +1,1154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ovito.vis &mdash; OVITO 2.6.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/rtd.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.6.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/ovito.ico"/>
+    <link rel="top" title="OVITO 2.6.2 documentation" href="../index.html" />
+    <link rel="prev" title="ovito.modifiers" href="ovito_modifiers.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ovito_modifiers.html" title="ovito.modifiers"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ovito.vis">
+<span id="ovito-vis"></span><h1><code class="docutils literal"><span class="pre">ovito.vis</span></code><a class="headerlink" href="#module-ovito.vis" title="Permalink to this headline">¶</a></h1>
+<p>This module contains classes related to data visualization and rendering.</p>
+<p><strong>Rendering:</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#ovito.vis.RenderSettings" title="ovito.vis.RenderSettings"><code class="xref py py-class docutils literal"><span class="pre">RenderSettings</span></code></a></li>
+<li><a class="reference internal" href="#ovito.vis.Viewport" title="ovito.vis.Viewport"><code class="xref py py-class docutils literal"><span class="pre">Viewport</span></code></a></li>
+<li><a class="reference internal" href="#ovito.vis.ViewportConfiguration" title="ovito.vis.ViewportConfiguration"><code class="xref py py-class docutils literal"><span class="pre">ViewportConfiguration</span></code></a></li>
+</ul>
+</div></blockquote>
+<p><strong>Render engines:</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#ovito.vis.OpenGLRenderer" title="ovito.vis.OpenGLRenderer"><code class="xref py py-class docutils literal"><span class="pre">OpenGLRenderer</span></code></a></li>
+<li><a class="reference internal" href="#ovito.vis.TachyonRenderer" title="ovito.vis.TachyonRenderer"><code class="xref py py-class docutils literal"><span class="pre">TachyonRenderer</span></code></a></li>
+</ul>
+</div></blockquote>
+<p><strong>Data visualization:</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#ovito.vis.Display" title="ovito.vis.Display"><code class="xref py py-class docutils literal"><span class="pre">Display</span></code></a> (base class of all display classes below)</li>
+<li><a class="reference internal" href="#ovito.vis.BondsDisplay" title="ovito.vis.BondsDisplay"><code class="xref py py-class docutils literal"><span class="pre">BondsDisplay</span></code></a></li>
+<li><a class="reference internal" href="#ovito.vis.DislocationDisplay" title="ovito.vis.DislocationDisplay"><code class="xref py py-class docutils literal"><span class="pre">DislocationDisplay</span></code></a></li>
+<li><a class="reference internal" href="#ovito.vis.ParticleDisplay" title="ovito.vis.ParticleDisplay"><code class="xref py py-class docutils literal"><span class="pre">ParticleDisplay</span></code></a></li>
+<li><a class="reference internal" href="#ovito.vis.SimulationCellDisplay" title="ovito.vis.SimulationCellDisplay"><code class="xref py py-class docutils literal"><span class="pre">SimulationCellDisplay</span></code></a></li>
+<li><a class="reference internal" href="#ovito.vis.SurfaceMeshDisplay" title="ovito.vis.SurfaceMeshDisplay"><code class="xref py py-class docutils literal"><span class="pre">SurfaceMeshDisplay</span></code></a></li>
+<li><a class="reference internal" href="#ovito.vis.VectorDisplay" title="ovito.vis.VectorDisplay"><code class="xref py py-class docutils literal"><span class="pre">VectorDisplay</span></code></a></li>
+</ul>
+</div></blockquote>
+<p><strong>Viewport overlays:</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#ovito.vis.CoordinateTripodOverlay" title="ovito.vis.CoordinateTripodOverlay"><code class="xref py py-class docutils literal"><span class="pre">CoordinateTripodOverlay</span></code></a></li>
+<li><a class="reference internal" href="#ovito.vis.PythonViewportOverlay" title="ovito.vis.PythonViewportOverlay"><code class="xref py py-class docutils literal"><span class="pre">PythonViewportOverlay</span></code></a></li>
+</ul>
+</div></blockquote>
+<dl class="class">
+<dt id="ovito.vis.BondsDisplay">
+<em class="property">class </em><code class="descclassname">ovito.vis.</code><code class="descname">BondsDisplay</code><a class="headerlink" href="#ovito.vis.BondsDisplay" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Base class:</th><td class="field-body"><a class="reference internal" href="#ovito.vis.Display" title="ovito.vis.Display"><code class="xref py py-class docutils literal"><span class="pre">ovito.vis.Display</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>Controls the visual appearance of particle bonds. An instance of this class is attached to every <a class="reference internal" href="ovito_data.html#ovito.data.Bonds" title="ovito.data.Bonds"><code class="xref py py-class docutils literal"><span class="pre">Bonds</span></code></a> data object.</p>
+<dl class="attribute">
+<dt id="ovito.vis.BondsDisplay.color">
+<code class="descname">color</code><a class="headerlink" href="#ovito.vis.BondsDisplay.color" title="Permalink to this definition">¶</a></dt>
+<dd><p>The display color of bonds. Used only if <a class="reference internal" href="#ovito.vis.BondsDisplay.use_particle_colors" title="ovito.vis.BondsDisplay.use_particle_colors"><code class="xref py py-attr docutils literal"><span class="pre">use_particle_colors</span></code></a> == False.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">(0.6,</span> <span class="pre">0.6,</span> <span class="pre">0.6)</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.BondsDisplay.shading">
+<code class="descname">shading</code><a class="headerlink" href="#ovito.vis.BondsDisplay.shading" title="Permalink to this definition">¶</a></dt>
+<dd><p>The shading style used for bonds.
+Possible values:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">BondsDisplay.Shading.Normal</span></code> (default)</li>
+<li><code class="docutils literal"><span class="pre">BondsDisplay.Shading.Flat</span></code></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.BondsDisplay.use_particle_colors">
+<code class="descname">use_particle_colors</code><a class="headerlink" href="#ovito.vis.BondsDisplay.use_particle_colors" title="Permalink to this definition">¶</a></dt>
+<dd><p>If <code class="docutils literal"><span class="pre">True</span></code>, bonds are assigned the same color as the particles they are adjacent to.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.BondsDisplay.width">
+<code class="descname">width</code><a class="headerlink" href="#ovito.vis.BondsDisplay.width" title="Permalink to this definition">¶</a></dt>
+<dd><p>The display width of bonds (in natural length units).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0.4</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.vis.CoordinateTripodOverlay">
+<em class="property">class </em><code class="descclassname">ovito.vis.</code><code class="descname">CoordinateTripodOverlay</code><a class="headerlink" href="#ovito.vis.CoordinateTripodOverlay" title="Permalink to this definition">¶</a></dt>
+<dd><p>Displays a coordinate tripod in the rendered image of a viewport. You can attach an instance of this class to a viewport by adding it to the viewport&#8217;s <a class="reference internal" href="#ovito.vis.Viewport.overlays" title="ovito.vis.Viewport.overlays"><code class="xref py py-attr docutils literal"><span class="pre">overlays</span></code></a> collection:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ovito</span>
+<span class="kn">from</span> <span class="nn">ovito.vis</span> <span class="kn">import</span> <span class="n">CoordinateTripodOverlay</span>
+
+<span class="c"># Create an overlay.</span>
+<span class="n">tripod</span> <span class="o">=</span> <span class="n">CoordinateTripodOverlay</span><span class="p">()</span>
+<span class="n">tripod</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="mf">0.07</span>
+
+<span class="c"># Attach overlay to the active viewport.</span>
+<span class="n">viewport</span> <span class="o">=</span> <span class="n">ovito</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">viewports</span><span class="o">.</span><span class="n">active_vp</span>
+<span class="n">viewport</span><span class="o">.</span><span class="n">overlays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tripod</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Some properties of this class interface have not been exposed and are not accessible from Python yet.   Please let the developer know if you would like them to be added.</p>
+</div>
+<dl class="attribute">
+<dt id="ovito.vis.CoordinateTripodOverlay.alignment">
+<code class="descname">alignment</code><a class="headerlink" href="#ovito.vis.CoordinateTripodOverlay.alignment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects the corner of the viewport where the tripod is displayed. This must be a valid <code class="docutils literal"><span class="pre">Qt::Alignment</span></code> value.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.CoordinateTripodOverlay.font_size">
+<code class="descname">font_size</code><a class="headerlink" href="#ovito.vis.CoordinateTripodOverlay.font_size" title="Permalink to this definition">¶</a></dt>
+<dd><p>The font size for rendering the text labels of the tripod. The font size is specified in terms of the tripod size.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0.4</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.CoordinateTripodOverlay.line_width">
+<code class="descname">line_width</code><a class="headerlink" href="#ovito.vis.CoordinateTripodOverlay.line_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controls the width of axis arrows. The line width is specified relative to the tripod size.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0.06</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.CoordinateTripodOverlay.offset_x">
+<code class="descname">offset_x</code><a class="headerlink" href="#ovito.vis.CoordinateTripodOverlay.offset_x" title="Permalink to this definition">¶</a></dt>
+<dd><p>This parameter allows to displace the tripod horizontally. The offset is specified as a fraction of the output image width.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0.0</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.CoordinateTripodOverlay.offset_y">
+<code class="descname">offset_y</code><a class="headerlink" href="#ovito.vis.CoordinateTripodOverlay.offset_y" title="Permalink to this definition">¶</a></dt>
+<dd><p>This parameter allows to displace the tripod vertically. The offset is specified as a fraction of the output image height.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0.0</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.CoordinateTripodOverlay.size">
+<code class="descname">size</code><a class="headerlink" href="#ovito.vis.CoordinateTripodOverlay.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>The scaling factor that controls the size of the tripod. The size is specified as a fraction of the output image height.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0.075</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.vis.DislocationDisplay">
+<em class="property">class </em><code class="descclassname">ovito.vis.</code><code class="descname">DislocationDisplay</code><a class="headerlink" href="#ovito.vis.DislocationDisplay" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Base class:</th><td class="field-body"><a class="reference internal" href="#ovito.vis.Display" title="ovito.vis.Display"><code class="xref py py-class docutils literal"><span class="pre">ovito.vis.Display</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>Controls the visual appearance of dislocation lines extracted by a <code class="xref py py-class docutils literal"><span class="pre">DislocationAnalysisModifier</span></code>. An instance of this class is attached to every <a class="reference internal" href="ovito_data.html#ovito.data.DislocationNetwork" title="ovito.data.DislocationNetwork"><code class="xref py py-class docutils literal"><span class="pre">DislocationNetwork</span></code></a> data object.</p>
+<dl class="attribute">
+<dt id="ovito.vis.DislocationDisplay.burgers_vector_color">
+<code class="descname">burgers_vector_color</code><a class="headerlink" href="#ovito.vis.DislocationDisplay.burgers_vector_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>The color of Burgers vector arrows.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">(0.7,</span> <span class="pre">0.7,</span> <span class="pre">0.7)</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.DislocationDisplay.burgers_vector_width">
+<code class="descname">burgers_vector_width</code><a class="headerlink" href="#ovito.vis.DislocationDisplay.burgers_vector_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>The scaling factor applied to displayed Burgers vectors. This can be used to exaggerate the arrow size.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">1.0</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.DislocationDisplay.shading">
+<code class="descname">shading</code><a class="headerlink" href="#ovito.vis.DislocationDisplay.shading" title="Permalink to this definition">¶</a></dt>
+<dd><p>The shading style used for the lines.
+Possible values:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">DislocationDisplay.Shading.Normal</span></code> (default)</li>
+<li><code class="docutils literal"><span class="pre">DislocationDisplay.Shading.Flat</span></code></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.DislocationDisplay.show_burgers_vectors">
+<code class="descname">show_burgers_vectors</code><a class="headerlink" href="#ovito.vis.DislocationDisplay.show_burgers_vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Boolean flag that enables the display of Burgers vector arrows.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">False</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.DislocationDisplay.show_line_directions">
+<code class="descname">show_line_directions</code><a class="headerlink" href="#ovito.vis.DislocationDisplay.show_line_directions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Boolean flag that enables the visualization of line directions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">False</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.vis.Display">
+<em class="property">class </em><code class="descclassname">ovito.vis.</code><code class="descname">Display</code><a class="headerlink" href="#ovito.vis.Display" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for display setting objects that control the visual appearance of data. <a class="reference internal" href="ovito_data.html#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">DataObjects</span></code></a> may be associated with an instance of this class, which can be accessed via their <a class="reference internal" href="ovito_data.html#ovito.data.DataObject.display" title="ovito.data.DataObject.display"><code class="xref py py-attr docutils literal"><span class="pre">display</span></code></a> property.</p>
+<dl class="attribute">
+<dt id="ovito.vis.Display.enabled">
+<code class="descname">enabled</code><a class="headerlink" href="#ovito.vis.Display.enabled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Boolean flag controlling the visibility of the data. If set to <code class="docutils literal"><span class="pre">False</span></code>, the data will not be visible in the viewports or in rendered images.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.vis.OpenGLRenderer">
+<em class="property">class </em><code class="descclassname">ovito.vis.</code><code class="descname">OpenGLRenderer</code><a class="headerlink" href="#ovito.vis.OpenGLRenderer" title="Permalink to this definition">¶</a></dt>
+<dd><p>The standard OpenGL-based renderer.</p>
+<p>This is the default built-in rendering engine that is also used by OVITO to render the contents of the interactive viewports. Since it accelerates the generation of images by using the computer&#8217;s graphics hardware, it is very fast.</p>
+<dl class="attribute">
+<dt id="ovito.vis.OpenGLRenderer.antialiasing_level">
+<code class="descname">antialiasing_level</code><a class="headerlink" href="#ovito.vis.OpenGLRenderer.antialiasing_level" title="Permalink to this definition">¶</a></dt>
+<dd><p>A positive integer controlling the level of supersampling. If 1, no supersampling is performed. For larger values, the image in rendered at a higher resolution and then scaled back to the output size to reduce aliasing artifacts.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">3</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.vis.ParticleDisplay">
+<em class="property">class </em><code class="descclassname">ovito.vis.</code><code class="descname">ParticleDisplay</code><a class="headerlink" href="#ovito.vis.ParticleDisplay" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Base class:</th><td class="field-body"><a class="reference internal" href="#ovito.vis.Display" title="ovito.vis.Display"><code class="xref py py-class docutils literal"><span class="pre">ovito.vis.Display</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>Controls the visual appearance of particles.</p>
+<dl class="attribute">
+<dt id="ovito.vis.ParticleDisplay.radius">
+<code class="descname">radius</code><a class="headerlink" href="#ovito.vis.ParticleDisplay.radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>The default display radius of particles. This setting only takes effect if no per-particle or per-type radii are defined.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">1.2</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.ParticleDisplay.shape">
+<code class="descname">shape</code><a class="headerlink" href="#ovito.vis.ParticleDisplay.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p>The display shape of particles.
+Possible values:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">ParticleDisplay.Shape.Sphere</span></code> (default)</li>
+<li><code class="docutils literal"><span class="pre">ParticleDisplay.Shape.Box</span></code></li>
+<li><code class="docutils literal"><span class="pre">ParticleDisplay.Shape.Circle</span></code></li>
+<li><code class="docutils literal"><span class="pre">ParticleDisplay.Shape.Square</span></code></li>
+<li><code class="docutils literal"><span class="pre">ParticleDisplay.Shape.Cylinder</span></code></li>
+<li><code class="docutils literal"><span class="pre">ParticleDisplay.Shape.Spherocylinder</span></code></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.vis.PythonViewportOverlay">
+<em class="property">class </em><code class="descclassname">ovito.vis.</code><code class="descname">PythonViewportOverlay</code><a class="headerlink" href="#ovito.vis.PythonViewportOverlay" title="Permalink to this definition">¶</a></dt>
+<dd><p>This overlay type can be attached to a viewport to run a Python script every time an image of the viewport is rendered. The Python script can execute arbitrary drawing commands to paint on top of the rendered image.</p>
+<p>Note that an alternative to using the <code class="xref py py-class docutils literal"><span class="pre">PythonViewportOverlay</span></code> class is to directly manipulate the static image returned by the <a class="reference internal" href="#ovito.vis.Viewport.render" title="ovito.vis.Viewport.render"><code class="xref py py-meth docutils literal"><span class="pre">Viewport.render()</span></code></a> method before saving it to disk.</p>
+<p>You can attach a Python overlay to a viewport by adding an instance of this class to the viewport&#8217;s <a class="reference internal" href="#ovito.vis.Viewport.overlays" title="ovito.vis.Viewport.overlays"><code class="xref py py-attr docutils literal"><span class="pre">overlays</span></code></a> collection:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ovito</span>
+<span class="kn">from</span> <span class="nn">ovito.vis</span> <span class="kn">import</span> <span class="n">PythonViewportOverlay</span>
+
+<span class="c"># Define a function that paints on top of the rendered image.</span>
+<span class="k">def</span> <span class="nf">render_overlay</span><span class="p">(</span><span class="n">painter</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="n">painter</span><span class="o">.</span><span class="n">drawText</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="s">&quot;Hello world&quot;</span><span class="p">)</span>
+
+<span class="c"># Create the overlay.</span>
+<span class="n">overlay</span> <span class="o">=</span> <span class="n">PythonViewportOverlay</span><span class="p">(</span><span class="n">function</span> <span class="o">=</span> <span class="n">render_overlay</span><span class="p">)</span>
+
+<span class="c"># Attach overlay to the active viewport.</span>
+<span class="n">viewport</span> <span class="o">=</span> <span class="n">ovito</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">viewports</span><span class="o">.</span><span class="n">active_vp</span>
+<span class="n">viewport</span><span class="o">.</span><span class="n">overlays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">overlay</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="ovito.vis.PythonViewportOverlay.function">
+<code class="descname">function</code><a class="headerlink" href="#ovito.vis.PythonViewportOverlay.function" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Python function to be called every time the viewport is repainted or when an output image is being rendered.</p>
+<p>The function must have a signature as shown in the example above. The <em>painter</em> parameter passed to the user-defined function contains a <a class="reference external" href="http://pyqt.sourceforge.net/Docs/PyQt5/api/qpainter.html">QPainter</a> object, which provides painting methods to draw arbitrary 2D graphics on top of the image rendered by OVITO.</p>
+<p>Additional keyword arguments are passed to the function in the <em>args</em> dictionary. The following keys are defined:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">viewport</span></code>: The <a class="reference internal" href="#ovito.vis.Viewport" title="ovito.vis.Viewport"><code class="xref py py-class docutils literal"><span class="pre">Viewport</span></code></a> being rendered.</li>
+<li><code class="docutils literal"><span class="pre">render_settings</span></code>: The active <a class="reference internal" href="#ovito.vis.RenderSettings" title="ovito.vis.RenderSettings"><code class="xref py py-class docutils literal"><span class="pre">RenderSettings</span></code></a>.</li>
+<li><code class="docutils literal"><span class="pre">is_perspective</span></code>: Flag indicating whether projection is perspective or parallel.</li>
+<li><code class="docutils literal"><span class="pre">fov</span></code>: The field of view.</li>
+<li><code class="docutils literal"><span class="pre">view_tm</span></code>: The camera transformation matrix.</li>
+<li><code class="docutils literal"><span class="pre">proj_tm</span></code>: The projection matrix.</li>
+</ul>
+</div></blockquote>
+<p>Implementation note: Exceptions raised by the custom rendering function are not propagated to the calling context.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">None</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.PythonViewportOverlay.output">
+<code class="descname">output</code><a class="headerlink" href="#ovito.vis.PythonViewportOverlay.output" title="Permalink to this definition">¶</a></dt>
+<dd><p>The output text generated when compiling/running the Python function. Contain the error message when the most recent execution of the custom rendering function failed.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.PythonViewportOverlay.script">
+<code class="descname">script</code><a class="headerlink" href="#ovito.vis.PythonViewportOverlay.script" title="Permalink to this definition">¶</a></dt>
+<dd><p>The source code of the user-defined Python script that defines the <code class="docutils literal"><span class="pre">render()</span></code> function. Note that this property returns the source code entered by the user through the graphical user interface, not the callable Python function.</p>
+<p>If you want to set the render function from an already running Python script, you should set the <a class="reference internal" href="#ovito.vis.PythonViewportOverlay.function" title="ovito.vis.PythonViewportOverlay.function"><code class="xref py py-attr docutils literal"><span class="pre">function</span></code></a> property instead as demonstrated in the example above.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.vis.RenderSettings">
+<em class="property">class </em><code class="descclassname">ovito.vis.</code><code class="descname">RenderSettings</code><a class="headerlink" href="#ovito.vis.RenderSettings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores settings and parameters for rendering images and movies.</p>
+<p>A instance of this class can be passed to the <a class="reference internal" href="#ovito.vis.Viewport.render" title="ovito.vis.Viewport.render"><code class="xref py py-func docutils literal"><span class="pre">render()</span></code></a> function of the <a class="reference internal" href="#ovito.vis.Viewport" title="ovito.vis.Viewport"><code class="xref py py-class docutils literal"><span class="pre">Viewport</span></code></a> class to control various aspects such as the resolution of the generated image. The <code class="docutils literal"><span class="pre">RenderSettings</span></code> object contains a <a class="reference internal" href="#ovito.vis.RenderSettings.renderer" title="ovito.vis.RenderSettings.renderer"><code class="xref py py-attr docutils literal"><span class="pre">renderer</span></code></a>, which is the rendering engine that will be used to generate images of the three-dimensional scene. OVITO comes with two different rendering engines:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#ovito.vis.OpenGLRenderer" title="ovito.vis.OpenGLRenderer"><code class="xref py py-class docutils literal"><span class="pre">OpenGLRenderer</span></code></a> &#8211; An OpenGL-based renderer, which is also used for the interactive display in OVITO&#8217;s viewports.</li>
+<li><a class="reference internal" href="#ovito.vis.TachyonRenderer" title="ovito.vis.TachyonRenderer"><code class="xref py py-class docutils literal"><span class="pre">TachyonRenderer</span></code></a> &#8211; A software-based, high-quality raytracing renderer.</li>
+</ul>
+</div></blockquote>
+<p>Usage example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rs</span> <span class="o">=</span> <span class="n">RenderSettings</span><span class="p">(</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="s">&#39;image.png&#39;</span><span class="p">,</span>
+    <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1024</span><span class="p">,</span><span class="mi">768</span><span class="p">),</span>
+    <span class="n">background_color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.8</span><span class="p">,</span><span class="mf">0.8</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">rs</span><span class="o">.</span><span class="n">renderer</span><span class="o">.</span><span class="n">antialiasing</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">viewports</span><span class="o">.</span><span class="n">active_vp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">rs</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="ovito.vis.RenderSettings.background_color">
+<code class="descname">background_color</code><a class="headerlink" href="#ovito.vis.RenderSettings.background_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controls the background color of the rendered image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">(1,1,1)</span></code> &#8211; white</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.RenderSettings.custom_range">
+<code class="descname">custom_range</code><a class="headerlink" href="#ovito.vis.RenderSettings.custom_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies the range of animation frames to render if <a class="reference internal" href="#ovito.vis.RenderSettings.range" title="ovito.vis.RenderSettings.range"><code class="xref py py-attr docutils literal"><span class="pre">range</span></code></a> is <code class="docutils literal"><span class="pre">CUSTOM_INTERVAL</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">(0,100)</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.RenderSettings.filename">
+<code class="descname">filename</code><a class="headerlink" href="#ovito.vis.RenderSettings.filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>A string specifying the file path under which the rendered image or movie should be saved.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">None</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.RenderSettings.generate_alpha">
+<code class="descname">generate_alpha</code><a class="headerlink" href="#ovito.vis.RenderSettings.generate_alpha" title="Permalink to this definition">¶</a></dt>
+<dd><p>When saving the generated image to a file format that can store transparency information (e.g. PNG), this option will make those parts of the output image transparent that are not covered by an object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">False</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.RenderSettings.range">
+<code class="descname">range</code><a class="headerlink" href="#ovito.vis.RenderSettings.range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Selects the animation frames to be rendered.</p>
+<dl class="docutils">
+<dt>Possible values:</dt>
+<dd><ul class="first last simple">
+<li><code class="docutils literal"><span class="pre">RenderSettings.Range.CURRENT_FRAME</span></code> (default): Renders a single image at the current animation time.</li>
+<li><code class="docutils literal"><span class="pre">RenderSettings.Range.ANIMATION</span></code>: Renders a movie of the entire animation sequence.</li>
+<li><code class="docutils literal"><span class="pre">RenderSettings.Range.CUSTOM_INTERVAL</span></code>: Renders a movie of the animation interval given by the <a class="reference internal" href="#ovito.vis.RenderSettings.custom_range" title="ovito.vis.RenderSettings.custom_range"><code class="xref py py-attr docutils literal"><span class="pre">custom_range</span></code></a> attribute.</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.RenderSettings.renderer">
+<code class="descname">renderer</code><a class="headerlink" href="#ovito.vis.RenderSettings.renderer" title="Permalink to this definition">¶</a></dt>
+<dd><p>The renderer that is used to generate the image or movie. Depending on the selected renderer you can use this to set additional parameters such as the anti-aliasing level.</p>
+<p>See the <a class="reference internal" href="#ovito.vis.OpenGLRenderer" title="ovito.vis.OpenGLRenderer"><code class="xref py py-class docutils literal"><span class="pre">OpenGLRenderer</span></code></a> and <a class="reference internal" href="#ovito.vis.TachyonRenderer" title="ovito.vis.TachyonRenderer"><code class="xref py py-class docutils literal"><span class="pre">TachyonRenderer</span></code></a> classes for a list of renderer-specific parameters.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.RenderSettings.size">
+<code class="descname">size</code><a class="headerlink" href="#ovito.vis.RenderSettings.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>The size of the image or movie to be generated in pixels.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">(640,480)</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.RenderSettings.skip_existing_images">
+<code class="descname">skip_existing_images</code><a class="headerlink" href="#ovito.vis.RenderSettings.skip_existing_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controls whether animation frames for which the output image file already exists will be skipped when rendering an animation sequence. This flag is ignored when directly rendering to a movie file and not an image file sequence. Use this flag when the image sequence has already been partially rendered and you want to render just the missing frames.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">False</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.vis.SimulationCellDisplay">
+<em class="property">class </em><code class="descclassname">ovito.vis.</code><code class="descname">SimulationCellDisplay</code><a class="headerlink" href="#ovito.vis.SimulationCellDisplay" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Base class:</th><td class="field-body"><a class="reference internal" href="#ovito.vis.Display" title="ovito.vis.Display"><code class="xref py py-class docutils literal"><span class="pre">ovito.vis.Display</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>Controls the visual appearance of <code class="xref py py-class docutils literal"><span class="pre">SimulationCellObject</span></code> data objects.</p>
+<dl class="attribute">
+<dt id="ovito.vis.SimulationCellDisplay.line_width">
+<code class="descname">line_width</code><a class="headerlink" href="#ovito.vis.SimulationCellDisplay.line_width" title="Permalink to this definition">¶</a></dt>
+<dd><p>The width of the simulation cell line (in natural length units).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0.14% of the simulation box diameter</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.SimulationCellDisplay.render_cell">
+<code class="descname">render_cell</code><a class="headerlink" href="#ovito.vis.SimulationCellDisplay.render_cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Boolean flag controlling the cell&#8217;s visibility in rendered images. If <code class="docutils literal"><span class="pre">False</span></code>, the cell will only be visible in the interactive viewports.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.SimulationCellDisplay.rendering_color">
+<code class="descname">rendering_color</code><a class="headerlink" href="#ovito.vis.SimulationCellDisplay.rendering_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>The line color used when rendering the cell.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">0)</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.vis.SurfaceMeshDisplay">
+<em class="property">class </em><code class="descclassname">ovito.vis.</code><code class="descname">SurfaceMeshDisplay</code><a class="headerlink" href="#ovito.vis.SurfaceMeshDisplay" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Base class:</th><td class="field-body"><a class="reference internal" href="#ovito.vis.Display" title="ovito.vis.Display"><code class="xref py py-class docutils literal"><span class="pre">ovito.vis.Display</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>Controls the visual appearance of a surface mesh computed by the <a class="reference internal" href="ovito_modifiers.html#ovito.modifiers.ConstructSurfaceModifier" title="ovito.modifiers.ConstructSurfaceModifier"><code class="xref py py-class docutils literal"><span class="pre">ConstructSurfaceModifier</span></code></a>.</p>
+<dl class="attribute">
+<dt id="ovito.vis.SurfaceMeshDisplay.cap_color">
+<code class="descname">cap_color</code><a class="headerlink" href="#ovito.vis.SurfaceMeshDisplay.cap_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>The display color of the cap polygons at periodic boundaries.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">(0.8,</span> <span class="pre">0.8,</span> <span class="pre">1.0)</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.SurfaceMeshDisplay.cap_transparency">
+<code class="descname">cap_transparency</code><a class="headerlink" href="#ovito.vis.SurfaceMeshDisplay.cap_transparency" title="Permalink to this definition">¶</a></dt>
+<dd><p>The level of transparency of the displayed cap polygons. Valid range is 0.0 &#8211; 1.0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0.0</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.SurfaceMeshDisplay.reverse_orientation">
+<code class="descname">reverse_orientation</code><a class="headerlink" href="#ovito.vis.SurfaceMeshDisplay.reverse_orientation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flips the orientation of the surface. This affects the generation of cap polygons.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">False</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.SurfaceMeshDisplay.show_cap">
+<code class="descname">show_cap</code><a class="headerlink" href="#ovito.vis.SurfaceMeshDisplay.show_cap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controls the visibility of cap polygons, which are created at the intersection of the surface mesh with periodic box boundaries.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.SurfaceMeshDisplay.smooth_shading">
+<code class="descname">smooth_shading</code><a class="headerlink" href="#ovito.vis.SurfaceMeshDisplay.smooth_shading" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables smooth shading of the triangulated surface mesh.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.SurfaceMeshDisplay.surface_color">
+<code class="descname">surface_color</code><a class="headerlink" href="#ovito.vis.SurfaceMeshDisplay.surface_color" title="Permalink to this definition">¶</a></dt>
+<dd><p>The display color of the surface mesh.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">(1.0,</span> <span class="pre">1.0,</span> <span class="pre">1.0)</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.SurfaceMeshDisplay.surface_transparency">
+<code class="descname">surface_transparency</code><a class="headerlink" href="#ovito.vis.SurfaceMeshDisplay.surface_transparency" title="Permalink to this definition">¶</a></dt>
+<dd><p>The level of transparency of the displayed surface. Valid range is 0.0 &#8211; 1.0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0.0</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.vis.TachyonRenderer">
+<em class="property">class </em><code class="descclassname">ovito.vis.</code><code class="descname">TachyonRenderer</code><a class="headerlink" href="#ovito.vis.TachyonRenderer" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the software-based raytracing renderer of OVITO.</p>
+<p>It can render scenes with ambient occlusion lighting and semi-transparent objects.</p>
+<dl class="attribute">
+<dt id="ovito.vis.TachyonRenderer.ambient_occlusion">
+<code class="descname">ambient_occlusion</code><a class="headerlink" href="#ovito.vis.TachyonRenderer.ambient_occlusion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables ambient occlusion shading. Enabling this lighting technique mimics some of the effects that occur under conditions of omnidirectional diffuse illumination, e.g. outdoors on an overcast day.</p>
+<p>Default: <code class="docutils literal"><span class="pre">True</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.TachyonRenderer.ambient_occlusion_brightness">
+<code class="descname">ambient_occlusion_brightness</code><a class="headerlink" href="#ovito.vis.TachyonRenderer.ambient_occlusion_brightness" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controls the brightness of the sky light source used for ambient occlusion.</p>
+<p>Default: 0.8</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.TachyonRenderer.ambient_occlusion_samples">
+<code class="descname">ambient_occlusion_samples</code><a class="headerlink" href="#ovito.vis.TachyonRenderer.ambient_occlusion_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ambient occlusion is implemented using a Monte Carlo technique. This parameters controls the number of samples to compute. A higher sample count leads to a more even shading, but requires more computation time.</p>
+<p>Default: 12</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.TachyonRenderer.antialiasing">
+<code class="descname">antialiasing</code><a class="headerlink" href="#ovito.vis.TachyonRenderer.antialiasing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables supersampling to reduce aliasing effects.</p>
+<p>Default: <code class="docutils literal"><span class="pre">True</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.TachyonRenderer.antialiasing_samples">
+<code class="descname">antialiasing_samples</code><a class="headerlink" href="#ovito.vis.TachyonRenderer.antialiasing_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of supersampling rays to generate per pixel to reduce aliasing effects.</p>
+<p>Default: 12</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.TachyonRenderer.direct_light">
+<code class="descname">direct_light</code><a class="headerlink" href="#ovito.vis.TachyonRenderer.direct_light" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables the parallel light source, which is positioned at an angle behind the camera.</p>
+<p>Default: <code class="docutils literal"><span class="pre">True</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.TachyonRenderer.direct_light_intensity">
+<code class="descname">direct_light_intensity</code><a class="headerlink" href="#ovito.vis.TachyonRenderer.direct_light_intensity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controls the brightness of the directional light source.</p>
+<p>Default: 0.9</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.TachyonRenderer.shadows">
+<code class="descname">shadows</code><a class="headerlink" href="#ovito.vis.TachyonRenderer.shadows" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enables cast shadows for the directional light source.</p>
+<p>Default: <code class="docutils literal"><span class="pre">True</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.vis.VectorDisplay">
+<em class="property">class </em><code class="descclassname">ovito.vis.</code><code class="descname">VectorDisplay</code><a class="headerlink" href="#ovito.vis.VectorDisplay" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Base class:</th><td class="field-body"><a class="reference internal" href="#ovito.vis.Display" title="ovito.vis.Display"><code class="xref py py-class docutils literal"><span class="pre">ovito.vis.Display</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>Controls the visual appearance of vectors (arrows).</p>
+<dl class="attribute">
+<dt id="ovito.vis.VectorDisplay.alignment">
+<code class="descname">alignment</code><a class="headerlink" href="#ovito.vis.VectorDisplay.alignment" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controls the positioning of arrows with respect to the particles.
+Possible values:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">VectorDisplay.Alignment.Base</span></code> (default)</li>
+<li><code class="docutils literal"><span class="pre">VectorDisplay.Alignment.Center</span></code></li>
+<li><code class="docutils literal"><span class="pre">VectorDisplay.Alignment.Head</span></code></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.VectorDisplay.color">
+<code class="descname">color</code><a class="headerlink" href="#ovito.vis.VectorDisplay.color" title="Permalink to this definition">¶</a></dt>
+<dd><p>The display color of arrows.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">(1.0,</span> <span class="pre">1.0,</span> <span class="pre">0.0)</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.VectorDisplay.reverse">
+<code class="descname">reverse</code><a class="headerlink" href="#ovito.vis.VectorDisplay.reverse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Boolean flag controlling the reversal of arrow directions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">False</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.VectorDisplay.scaling">
+<code class="descname">scaling</code><a class="headerlink" href="#ovito.vis.VectorDisplay.scaling" title="Permalink to this definition">¶</a></dt>
+<dd><p>The uniform scaling factor applied to vectors.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">1.0</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.VectorDisplay.shading">
+<code class="descname">shading</code><a class="headerlink" href="#ovito.vis.VectorDisplay.shading" title="Permalink to this definition">¶</a></dt>
+<dd><p>The shading style used for the arrows.
+Possible values:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">VectorDisplay.Shading.Normal</span></code> (default)</li>
+<li><code class="docutils literal"><span class="pre">VectorDisplay.Shading.Flat</span></code></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.VectorDisplay.width">
+<code class="descname">width</code><a class="headerlink" href="#ovito.vis.VectorDisplay.width" title="Permalink to this definition">¶</a></dt>
+<dd><p>Controls the width of arrows (in natural length units).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body">0.5</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.vis.Viewport">
+<em class="property">class </em><code class="descclassname">ovito.vis.</code><code class="descname">Viewport</code><a class="headerlink" href="#ovito.vis.Viewport" title="Permalink to this definition">¶</a></dt>
+<dd><p>A viewport defines the view on the three-dimensional scene.</p>
+<p>You can create an instance of this class to define a camera position from which a picture of the three-dimensional scene should be generated. After the camera has been set up, you can render an image or movie using the viewport&#8217;s <a class="reference internal" href="#ovito.vis.Viewport.render" title="ovito.vis.Viewport.render"><code class="xref py py-meth docutils literal"><span class="pre">render()</span></code></a> method:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">vp</span> <span class="o">=</span> <span class="n">Viewport</span><span class="p">()</span>
+<span class="n">vp</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">Viewport</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">PERSPECTIVE</span>
+<span class="n">vp</span><span class="o">.</span><span class="n">camera_pos</span> <span class="o">=</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">vp</span><span class="o">.</span><span class="n">camera_dir</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">)</span>
+
+<span class="n">rs</span> <span class="o">=</span> <span class="n">RenderSettings</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">800</span><span class="p">,</span><span class="mi">600</span><span class="p">),</span> <span class="n">filename</span><span class="o">=</span><span class="s">&quot;image.png&quot;</span><span class="p">)</span>
+<span class="n">vp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">rs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that the four interactive viewports in OVITO&#8217;s main window are instances of this class. If you want to manipulate these existing viewports, you can access them through the <a class="reference internal" href="ovito.html#ovito.DataSet.viewports" title="ovito.DataSet.viewports"><code class="xref py py-attr docutils literal"><span class="pre">DataSet.viewports</span></code></a> attribute.</p>
+<dl class="attribute">
+<dt id="ovito.vis.Viewport.camera_dir">
+<code class="descname">camera_dir</code><a class="headerlink" href="#ovito.vis.Viewport.camera_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>The viewing direction vector of the viewport&#8217;s camera. This can be an arbitrary vector with non-zero length.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.Viewport.camera_pos">
+<code class="descname">camera_pos</code><a class="headerlink" href="#ovito.vis.Viewport.camera_pos" title="Permalink to this definition">¶</a></dt>
+<dd><p>The position of the viewport&#8217;s camera. For example, to move the camera of the active viewport in OVITO&#8217;s main window to a new location in space:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dataset</span><span class="o">.</span><span class="n">viewports</span><span class="o">.</span><span class="n">active_vp</span><span class="o">.</span><span class="n">camera_pos</span> <span class="o">=</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="o">-</span><span class="mi">30</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.Viewport.fov">
+<code class="descname">fov</code><a class="headerlink" href="#ovito.vis.Viewport.fov" title="Permalink to this definition">¶</a></dt>
+<dd><p>The field of view of the viewport&#8217;s camera. For perspective projections this is the camera&#8217;s angle in the vertical direction (in radians). For orthogonal projections this is the visible range in the vertical direction (in world units).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.Viewport.overlays">
+<code class="descname">overlays</code><a class="headerlink" href="#ovito.vis.Viewport.overlays" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list-like sequence of viewport overlay objects that are attached to this viewport.
+See the <a class="reference internal" href="#ovito.vis.CoordinateTripodOverlay" title="ovito.vis.CoordinateTripodOverlay"><code class="xref py py-class docutils literal"><span class="pre">CoordinateTripodOverlay</span></code></a> and <a class="reference internal" href="#ovito.vis.PythonViewportOverlay" title="ovito.vis.PythonViewportOverlay"><code class="xref py py-class docutils literal"><span class="pre">PythonViewportOverlay</span></code></a> classes
+for more information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.vis.Viewport.render">
+<code class="descname">render</code><span class="sig-paren">(</span><em>settings=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.vis.Viewport.render" title="Permalink to this definition">¶</a></dt>
+<dd><p>Renders an image or movie of the viewport&#8217;s view.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>settings</strong> (<a class="reference internal" href="#ovito.vis.RenderSettings" title="ovito.vis.RenderSettings"><code class="xref py py-class docutils literal"><span class="pre">RenderSettings</span></code></a>) &#8211; A settings object, which specifies the resolution, background color, output filename etc. of the image to be rendered. 
+If <code class="docutils literal"><span class="pre">None</span></code>, the global settings are used (given by <a class="reference internal" href="ovito.html#ovito.DataSet.render_settings" title="ovito.DataSet.render_settings"><code class="xref py py-attr docutils literal"><span class="pre">DataSet.render_settings</span></code></a>).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A <a class="reference external" href="http://pyqt.sourceforge.net/Docs/PyQt5/api/qimage.html">QImage</a> object on success, which contains the rendered picture; 
+<code class="docutils literal"><span class="pre">None</span></code> if the rendering operation has been canceled by the user.</td>
+</tr>
+</tbody>
+</table>
+<p>The rendered image of movie will automatically be saved to disk when the <a class="reference internal" href="#ovito.vis.RenderSettings.filename" title="ovito.vis.RenderSettings.filename"><code class="xref py py-attr docutils literal"><span class="pre">RenderSettings.filename</span></code></a> attribute has been set to a non-empty string.
+Alternatively, the returned <a class="reference external" href="http://pyqt.sourceforge.net/Docs/PyQt5/api/qimage.html">QImage</a> object can be saved explicitly from the script. 
+You may even paint additional graphics on top of the image before saving it. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ovito</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">ovito.vis</span> <span class="kn">import</span> <span class="n">RenderSettings</span>
+<span class="kn">from</span> <span class="nn">PyQt5.QtGui</span> <span class="kn">import</span> <span class="n">QPainter</span>
+
+<span class="c"># Let OVITO render an image of the active viewport.</span>
+<span class="n">vp</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">viewports</span><span class="o">.</span><span class="n">active_vp</span>
+<span class="n">rs</span> <span class="o">=</span> <span class="n">RenderSettings</span><span class="p">(</span><span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">320</span><span class="p">,</span><span class="mi">240</span><span class="p">))</span>
+<span class="n">image</span> <span class="o">=</span> <span class="n">vp</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">rs</span><span class="p">)</span>
+
+<span class="c"># Paint something on top of the rendered image.</span>
+<span class="n">painter</span> <span class="o">=</span> <span class="n">QPainter</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+<span class="n">painter</span><span class="o">.</span><span class="n">drawText</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="s">&quot;Hello world!&quot;</span><span class="p">)</span>
+<span class="k">del</span> <span class="n">painter</span>
+
+<span class="c"># Save image to disk.</span>
+<span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s">&quot;image.png&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.Viewport.title">
+<code class="descname">title</code><a class="headerlink" href="#ovito.vis.Viewport.title" title="Permalink to this definition">¶</a></dt>
+<dd><p>The title string of the viewport shown in its top left corner (read-only).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.Viewport.type">
+<code class="descname">type</code><a class="headerlink" href="#ovito.vis.Viewport.type" title="Permalink to this definition">¶</a></dt>
+<dd><p>The type of projection:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">Viewport.Type.PERSPECTIVE</span></code></li>
+<li><code class="docutils literal"><span class="pre">Viewport.Type.ORTHO</span></code></li>
+<li><code class="docutils literal"><span class="pre">Viewport.Type.TOP</span></code></li>
+<li><code class="docutils literal"><span class="pre">Viewport.Type.BOTTOM</span></code></li>
+<li><code class="docutils literal"><span class="pre">Viewport.Type.FRONT</span></code></li>
+<li><code class="docutils literal"><span class="pre">Viewport.Type.BACK</span></code></li>
+<li><code class="docutils literal"><span class="pre">Viewport.Type.LEFT</span></code></li>
+<li><code class="docutils literal"><span class="pre">Viewport.Type.RIGHT</span></code></li>
+<li><code class="docutils literal"><span class="pre">Viewport.Type.NONE</span></code></li>
+</ul>
+</div></blockquote>
+<p>The first two types (<code class="docutils literal"><span class="pre">PERSPECTIVE</span></code> and <code class="docutils literal"><span class="pre">ORTHO</span></code>) allow you to set up custom views with arbitrary camera orientation.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.vis.Viewport.zoom_all">
+<code class="descname">zoom_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ovito.vis.Viewport.zoom_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Repositions the viewport camera such that all objects in the scene become completely visible. The camera direction is not changed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.vis.ViewportConfiguration">
+<em class="property">class </em><code class="descclassname">ovito.vis.</code><code class="descname">ViewportConfiguration</code><a class="headerlink" href="#ovito.vis.ViewportConfiguration" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages the viewports in OVITO&#8217;s main window.</p>
+<p>This list-like object can be accessed through the <a class="reference internal" href="ovito.html#ovito.DataSet.viewports" title="ovito.DataSet.viewports"><code class="xref py py-attr docutils literal"><span class="pre">viewports</span></code></a> attribute of the <a class="reference internal" href="ovito.html#ovito.DataSet" title="ovito.DataSet"><code class="xref py py-attr docutils literal"><span class="pre">DataSet</span></code></a> class. It contains all viewports in OVITO&#8217;s main window:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">viewport</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">viewports</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">viewport</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>By default OVITO creates four predefined <a class="reference internal" href="#ovito.vis.Viewport" title="ovito.vis.Viewport"><code class="xref py py-class docutils literal"><span class="pre">Viewport</span></code></a> instances. Note that in the current program version it is not possible to add or remove viewports from the main window. The <code class="docutils literal"><span class="pre">ViewportConfiguration</span></code> object also manages the <a class="reference internal" href="#ovito.vis.ViewportConfiguration.active_vp" title="ovito.vis.ViewportConfiguration.active_vp"><code class="xref py py-attr docutils literal"><span class="pre">active</span></code></a> and the <a class="reference internal" href="#ovito.vis.ViewportConfiguration.maximized_vp" title="ovito.vis.ViewportConfiguration.maximized_vp"><code class="xref py py-attr docutils literal"><span class="pre">maximized</span></code></a> viewport.</p>
+<dl class="attribute">
+<dt id="ovito.vis.ViewportConfiguration.active_vp">
+<code class="descname">active_vp</code><a class="headerlink" href="#ovito.vis.ViewportConfiguration.active_vp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The viewport that is currently active. It is marked with a colored border in OVITO&#8217;s main window.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.vis.ViewportConfiguration.maximized_vp">
+<code class="descname">maximized_vp</code><a class="headerlink" href="#ovito.vis.ViewportConfiguration.maximized_vp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The viewport that is currently maximized; or <code class="docutils literal"><span class="pre">None</span></code> if no viewport is maximized.
+Assign a viewport to this attribute to maximize it, e.g.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">dataset</span><span class="o">.</span><span class="n">viewports</span><span class="o">.</span><span class="n">maximized_vp</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">viewports</span><span class="o">.</span><span class="n">active_vp</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/running.html">Running scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/file_io.html">File I/O</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/modifiers.html">Modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/particle_properties.html">Particle properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/rendering.html">Rendering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/custom_modifiers.html">Writing new modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/examples.html">Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ovito.html"><code class="docutils literal"><span class="pre">ovito</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_anim.html"><code class="docutils literal"><span class="pre">ovito.anim</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_data.html"><code class="docutils literal"><span class="pre">ovito.data</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_io.html"><code class="docutils literal"><span class="pre">ovito.io</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_modifiers.html"><code class="docutils literal"><span class="pre">ovito.modifiers</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href=""><code class="docutils literal"><span class="pre">ovito.vis</span></code></a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ovito_modifiers.html" title="ovito.modifiers"
+             >previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Alexander Stukowski.
+    </div>
+  </body>
+</html>

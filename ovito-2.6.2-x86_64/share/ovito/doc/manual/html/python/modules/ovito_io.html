@@ -1,0 +1,353 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ovito.io &mdash; OVITO 2.6.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/rtd.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.6.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/ovito.ico"/>
+    <link rel="top" title="OVITO 2.6.2 documentation" href="../index.html" />
+    <link rel="next" title="ovito.modifiers" href="ovito_modifiers.html" />
+    <link rel="prev" title="ovito.data" href="ovito_data.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ovito_modifiers.html" title="ovito.modifiers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ovito_data.html" title="ovito.data"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ovito.io">
+<span id="ovito-io"></span><h1><code class="docutils literal"><span class="pre">ovito.io</span></code><a class="headerlink" href="#module-ovito.io" title="Permalink to this headline">¶</a></h1>
+<p>This module contains functions and classes related to file input and output.</p>
+<p>It primarily provides two high-level functions for reading and writing
+external files:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#ovito.io.import_file" title="ovito.io.import_file"><code class="xref py py-func docutils literal"><span class="pre">import_file()</span></code></a></li>
+<li><a class="reference internal" href="#ovito.io.export_file" title="ovito.io.export_file"><code class="xref py py-func docutils literal"><span class="pre">export_file()</span></code></a></li>
+</ul>
+</div></blockquote>
+<p>In addition, it contains the <a class="reference internal" href="#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a> class, which is a data source object
+that reads its input data from an external file.</p>
+<dl class="class">
+<dt id="ovito.io.FileSource">
+<em class="property">class </em><code class="descclassname">ovito.io.</code><code class="descname">FileSource</code><a class="headerlink" href="#ovito.io.FileSource" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Base class:</th><td class="field-body"><a class="reference internal" href="ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">ovito.data.DataCollection</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>This object serves as a data source for modification pipelines and is responsible for reading the input data from one or more external files.</p>
+<p>You normally do not create an instance of this class yourself. The <a class="reference internal" href="#ovito.io.import_file" title="ovito.io.import_file"><code class="xref py py-func docutils literal"><span class="pre">ovito.io.import_file()</span></code></a> function automatically assigns a <code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code> to the <a class="reference internal" href="ovito.html#ovito.ObjectNode.source" title="ovito.ObjectNode.source"><code class="xref py py-attr docutils literal"><span class="pre">source</span></code></a> attribute of the returned <a class="reference internal" href="ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a>. The file source loads data from the external file given by the <a class="reference internal" href="#ovito.io.FileSource.source_path" title="ovito.io.FileSource.source_path"><code class="xref py py-attr docutils literal"><span class="pre">source_path</span></code></a> attribute. The <a class="reference internal" href="ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a> then feeds that data into its modification pipeline.</p>
+<p>You typically don&#8217;t set the <a class="reference internal" href="#ovito.io.FileSource.source_path" title="ovito.io.FileSource.source_path"><code class="xref py py-attr docutils literal"><span class="pre">source_path</span></code></a> attribute directly. Instead, use the <a class="reference internal" href="#ovito.io.FileSource.load" title="ovito.io.FileSource.load"><code class="xref py py-meth docutils literal"><span class="pre">FileSource.load()</span></code></a> method to load a different input file and hook it into an existing modification pipeline:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="n">import_file</span>
+<span class="kn">from</span> <span class="nn">ovito.modifiers</span> <span class="kn">import</span> <span class="n">ColorCodingModifier</span>
+
+<span class="c"># This creates a new node with an empty modification pipeline:</span>
+<span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&#39;first_file.dump&#39;</span><span class="p">)</span>
+
+<span class="c"># Populate the pipeline with a modifier:</span>
+<span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ColorCodingModifier</span><span class="p">(</span><span class="nb">property</span><span class="o">=</span><span class="s">&#39;Potential Energy&#39;</span><span class="p">))</span>
+
+<span class="c"># Call FileSouce.load() to replace the input data with a different file</span>
+<span class="c"># but keep the node&#39;s current modification pipeline:</span>
+<span class="n">node</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&#39;second_file.dump&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>File sources are also used by certain modifiers to load a reference configuration, e.g. by the <a class="reference internal" href="ovito_modifiers.html#ovito.modifiers.CalculateDisplacementsModifier" title="ovito.modifiers.CalculateDisplacementsModifier"><code class="xref py py-class docutils literal"><span class="pre">CalculateDisplacementsModifier</span></code></a>, whose <a class="reference internal" href="ovito_modifiers.html#ovito.modifiers.CalculateDisplacementsModifier.reference" title="ovito.modifiers.CalculateDisplacementsModifier.reference"><code class="xref py py-attr docutils literal"><span class="pre">reference</span></code></a> attribute contains a <code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code>.</p>
+<p><strong>Example</strong></p>
+<p>The following script receives a list of simulation files on the command line. It loads them one by one and performs a common neighbor analysis to determine the number of face-centered cubic atoms in each structure:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">ovito.modifiers</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">node</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="k">for</span> <span class="nb">file</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">:</span>
+        <span class="c"># Import the first file using import_file().</span>
+        <span class="c"># This creates the ObjectNode and sets up the modification pipeline.</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span>
+        <span class="c"># Insert a modifier into the pipeline.</span>
+        <span class="n">cna</span> <span class="o">=</span> <span class="n">CommonNeighborAnalysisModifier</span><span class="p">()</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cna</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c"># To load subsequent files, call the load() function of the FileSource.</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">file</span><span class="p">)</span>
+
+    <span class="c"># Evaluate pipeline and wait until the analysis results are available.</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Structure </span><span class="si">%s</span><span class="s"> contains </span><span class="si">%i</span><span class="s"> FCC atoms.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">file</span><span class="p">,</span> <span class="n">cna</span><span class="o">.</span><span class="n">counts</span><span class="p">[</span><span class="s">&quot;FCC&quot;</span><span class="p">]))</span>
+</pre></div>
+</div>
+<p><strong>Data access</strong></p>
+<p>The <code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code> class is derived from <a class="reference internal" href="ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a>. Thus, the data loaded from the external file can be accessed as contents of the <a class="reference internal" href="ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a>. The stored data represents the outcome of the last successful loading operation and may change every time a new simulation frame is loaded (see <a class="reference internal" href="#ovito.io.FileSource.loaded_frame" title="ovito.io.FileSource.loaded_frame"><code class="xref py py-attr docutils literal"><span class="pre">loaded_frame</span></code></a>), or after a call to <a class="reference internal" href="#ovito.io.FileSource.load" title="ovito.io.FileSource.load"><code class="xref py py-meth docutils literal"><span class="pre">load()</span></code></a>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="n">import_file</span>
+
+<span class="c"># Load a simulation file. </span>
+<span class="c"># This creates a node with a FileSource, which also is a DataCollection.</span>
+<span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&#39;simulation.dump&#39;</span><span class="p">)</span>
+<span class="n">file_source</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">source</span>
+
+<span class="c"># Access particle data cached in the DataCollection.</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&#39;Simulation cell:&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">file_source</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">matrix</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&#39;Particle coordinates:&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">file_source</span><span class="o">.</span><span class="n">particle_properties</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">array</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="ovito.io.FileSource.adjust_animation_interval">
+<code class="descname">adjust_animation_interval</code><a class="headerlink" href="#ovito.io.FileSource.adjust_animation_interval" title="Permalink to this definition">¶</a></dt>
+<dd><p>A flag that controls whether the animation length in OVITO is automatically adjusted to match the number of frames in the loaded file or file sequence.</p>
+<p>The current length of the animation in OVITO is stored in the <a class="reference internal" href="ovito_anim.html#ovito.anim.AnimationSettings" title="ovito.anim.AnimationSettings"><code class="xref py py-class docutils literal"><span class="pre">AnimationSettings</span></code></a> object. The number of frames in the external file or file sequence is indicated by the <a class="reference internal" href="#ovito.io.FileSource.num_frames" title="ovito.io.FileSource.num_frames"><code class="xref py py-attr docutils literal"><span class="pre">num_frames</span></code></a> attribute of this <code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code>. If <a class="reference internal" href="#ovito.io.FileSource.adjust_animation_interval" title="ovito.io.FileSource.adjust_animation_interval"><code class="xref py py-attr docutils literal"><span class="pre">adjust_animation_interval</span></code></a> is <code class="docutils literal"><span class="pre">True</span></code>, then animation length will be automatically adjusted to match the number of frames in the file input.</p>
+<p>In some situations it makes sense to turn this option off, for example, if you import several data files into OVITO simultaneously, but their frame counts do not match.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">True</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.io.FileSource.load">
+<code class="descname">load</code><span class="sig-paren">(</span><em>location</em>, <em>**params</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.io.FileSource.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads a new external file into this data source object.</p>
+<p>The function auto-detects the format of the file.</p>
+<p>The function accepts additional keyword arguments that are forwarded to the format-specific file importer.
+See the documentation of the <a class="reference internal" href="#ovito.io.import_file" title="ovito.io.import_file"><code class="xref py py-func docutils literal"><span class="pre">import_file()</span></code></a> function for more information.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>location</strong> (<em>str</em>) &#8211; The local file or remote sftp:// URL to load.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.io.FileSource.loaded_frame">
+<code class="descname">loaded_frame</code><a class="headerlink" href="#ovito.io.FileSource.loaded_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>The zero-based index of the frame from the input time series that is currently loaded (read-only).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.io.FileSource.num_frames">
+<code class="descname">num_frames</code><a class="headerlink" href="#ovito.io.FileSource.num_frames" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of frames the loaded file or file sequence contains (read-only).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.io.FileSource.source_path">
+<code class="descname">source_path</code><a class="headerlink" href="#ovito.io.FileSource.source_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>The path or URL of the loaded file.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="ovito.io.export_file">
+<code class="descclassname">ovito.io.</code><code class="descname">export_file</code><span class="sig-paren">(</span><em>node</em>, <em>file</em>, <em>format</em>, <em>**params</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.io.export_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>High-level function that exports data to a file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>node</strong> (<code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code>) &#8211; The node that provides the data to be exported.</li>
+<li><strong>file</strong> (<em>str</em>) &#8211; The name of the output file.</li>
+<li><strong>format</strong> (<em>str</em>) &#8211; <p>The type of file to write:</p>
+<ul>
+<li><code class="docutils literal"><span class="pre">&quot;fhi-aims&quot;</span></code> &#8211; FHI-aims format</li>
+<li><code class="docutils literal"><span class="pre">&quot;lammps_dump&quot;</span></code> &#8211; LAMMPS text-based dump format</li>
+<li><code class="docutils literal"><span class="pre">&quot;lammps_data&quot;</span></code> &#8211; LAMMPS data format</li>
+<li><code class="docutils literal"><span class="pre">&quot;imd&quot;</span></code> &#8211; IMD format</li>
+<li><code class="docutils literal"><span class="pre">&quot;vasp&quot;</span></code> &#8211; POSCAR format</li>
+<li><code class="docutils literal"><span class="pre">&quot;xyz&quot;</span></code> &#8211; XYZ format</li>
+<li><code class="docutils literal"><span class="pre">&quot;ca&quot;</span></code> &#8211; Text-based format for storing dislocation lines (Crystal Analysis Tool)</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The function evaluates the modification pipeline of the given object node and exports
+the results to one or more files. By default, only the current animation frame is exported.</p>
+<p>Depending on the selected export format, additional keyword parameters need to be specified.</p>
+<p><strong>File columns</strong></p>
+<p>When writing files in the <code class="docutils literal"><span class="pre">&quot;lammps_dump&quot;</span></code>, <code class="docutils literal"><span class="pre">&quot;xyz&quot;</span></code>, or <code class="docutils literal"><span class="pre">imd</span></code> formats, you must specify the particle properties to be exported 
+using the <code class="docutils literal"><span class="pre">columns</span></code> keyword parameter:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">export_file</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s">&quot;output.xyz&quot;</span><span class="p">,</span> <span class="s">&quot;xyz&quot;</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> 
+  <span class="p">[</span><span class="s">&quot;Particle Identifier&quot;</span><span class="p">,</span> <span class="s">&quot;Particle Type&quot;</span><span class="p">,</span> <span class="s">&quot;Position.X&quot;</span><span class="p">,</span> <span class="s">&quot;Position.Y&quot;</span><span class="p">,</span> <span class="s">&quot;Position.Z&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>LAMMPS atom style</strong></p>
+<p>When writing files in the <code class="docutils literal"><span class="pre">&quot;lammps_data&quot;</span></code> format, the LAMMPS atom style &#8220;atomic&#8221; is used by default. If a different atom style 
+should be used, it must be explicitly specified as a string using the <code class="docutils literal"><span class="pre">atom_style</span></code> keyword parameter.
+The following LAMMPS atom styles are currently supported by OVITO:
+<code class="docutils literal"><span class="pre">angle</span></code>, <code class="docutils literal"><span class="pre">atomic</span></code>, <code class="docutils literal"><span class="pre">body</span></code>, <code class="docutils literal"><span class="pre">bond</span></code>, <code class="docutils literal"><span class="pre">charge</span></code>, <code class="docutils literal"><span class="pre">dipole</span></code>, <code class="docutils literal"><span class="pre">full</span></code>, <code class="docutils literal"><span class="pre">molecular</span></code>.</p>
+<p><strong>Multi-timestep files</strong></p>
+<p>The <code class="docutils literal"><span class="pre">&quot;lammps_dump&quot;</span></code> and <code class="docutils literal"><span class="pre">&quot;xyz&quot;</span></code> file formats can store multiple frames per file. To let OVITO export all
+frames of the current animation to the output file, pass the keyword argument <code class="docutils literal"><span class="pre">multiple_frames</span> <span class="pre">=</span> <span class="pre">True</span></code> to the <code class="xref py py-func docutils literal"><span class="pre">export_file()</span></code> function.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ovito.io.import_file">
+<code class="descclassname">ovito.io.</code><code class="descname">import_file</code><span class="sig-paren">(</span><em>location</em>, <em>**params</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.io.import_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>This high-level function imports an external data file.</p>
+<p>This Python function corresponds to the <em>Open Local File</em> command in OVITO&#8217;s
+user interface. The format of the imported file is automatically detected.
+However, depending on the file&#8217;s format, additional keyword parameters may need to be supplied to 
+the file parser to specify how the data should be interpreted. 
+These keyword parameters are documented below.</p>
+<p>The function creates a new <a class="reference internal" href="ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a> and adds it to the current scene.
+Thus, the imported dataset will appear as an additional object in the viewports. You can remove the node 
+from the scene again by calling its <a class="reference internal" href="ovito.html#ovito.ObjectNode.remove_from_scene" title="ovito.ObjectNode.remove_from_scene"><code class="xref py py-meth docutils literal"><span class="pre">remove_from_scene()</span></code></a> method.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>location</strong> (<em>str</em>) &#8211; The file to import. This can be a local file path or a remote sftp:// URL.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The <a class="reference internal" href="ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a> that has been created for the imported data.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>File columns</strong></p>
+<p>When importing XYZ files or binary LAMMPS dump files, the mapping of file columns 
+to OVITO&#8217;s particle properties must be specified using the <code class="docutils literal"><span class="pre">columns</span></code> keyword parameter:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">import_file</span><span class="p">(</span><span class="s">&quot;file.xyz&quot;</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span> 
+  <span class="p">[</span><span class="s">&quot;Particle Identifier&quot;</span><span class="p">,</span> <span class="s">&quot;Particle Type&quot;</span><span class="p">,</span> <span class="s">&quot;Position.X&quot;</span><span class="p">,</span> <span class="s">&quot;Position.Y&quot;</span><span class="p">,</span> <span class="s">&quot;Position.Z&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The length of the list must match the number of columns in the input file. To ignore a column 
+during import, specify <code class="docutils literal"><span class="pre">None</span></code> instead of a property name at the corresponding position in the list.</p>
+<p><strong>Multi-timestep files</strong></p>
+<p>Some data formats can store multiple frames in a single file. OVITO cannot know in some cases (e.g. XYZ and LAMMPS dump)
+that a file contains multiple frames (because reading the entire file is avoided for performance reasons). 
+Then it is necessary to explicitly tell OVITO to scan the entire file and load a sequence of frames by supplying the <code class="docutils literal"><span class="pre">multiple_frames</span></code> 
+option:</p>
+<div class="highlight-python"><div class="highlight"><pre>node = import_file(&quot;file.dump&quot;, multiple_frames = True)
+print &quot;Number of frames:&quot;, node.source.num_frames
+</pre></div>
+</div>
+<p><strong>LAMMPS atom style</strong></p>
+<p>When trying to load a LAMMPS data file which is using an atom style other than &#8220;atomic&#8221;, the atom style must be explicitly
+specified as a string using the <code class="docutils literal"><span class="pre">atom_style</span></code> keyword parameter. The following LAMMPS atom styles are currently supported by
+OVITO: <code class="docutils literal"><span class="pre">angle</span></code>, <code class="docutils literal"><span class="pre">atomic</span></code>, <code class="docutils literal"><span class="pre">body</span></code>, <code class="docutils literal"><span class="pre">bond</span></code>, <code class="docutils literal"><span class="pre">charge</span></code>, <code class="docutils literal"><span class="pre">dipole</span></code>, <code class="docutils literal"><span class="pre">full</span></code>, <code class="docutils literal"><span class="pre">molecular</span></code>.</p>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/running.html">Running scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/file_io.html">File I/O</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/modifiers.html">Modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/particle_properties.html">Particle properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/rendering.html">Rendering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/custom_modifiers.html">Writing new modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/examples.html">Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ovito.html"><code class="docutils literal"><span class="pre">ovito</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_anim.html"><code class="docutils literal"><span class="pre">ovito.anim</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_data.html"><code class="docutils literal"><span class="pre">ovito.data</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href=""><code class="docutils literal"><span class="pre">ovito.io</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_modifiers.html"><code class="docutils literal"><span class="pre">ovito.modifiers</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_vis.html"><code class="docutils literal"><span class="pre">ovito.vis</span></code></a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ovito_modifiers.html" title="ovito.modifiers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ovito_data.html" title="ovito.data"
+             >previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Alexander Stukowski.
+    </div>
+  </body>
+</html>

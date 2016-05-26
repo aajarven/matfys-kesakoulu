@@ -1,0 +1,1422 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ovito.data &mdash; OVITO 2.6.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/rtd.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.6.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/ovito.ico"/>
+    <link rel="top" title="OVITO 2.6.2 documentation" href="../index.html" />
+    <link rel="next" title="ovito.io" href="ovito_io.html" />
+    <link rel="prev" title="ovito.anim" href="ovito_anim.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ovito_io.html" title="ovito.io"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ovito_anim.html" title="ovito.anim"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="module-ovito.data">
+<span id="ovito-data"></span><h1><code class="docutils literal"><span class="pre">ovito.data</span></code><a class="headerlink" href="#module-ovito.data" title="Permalink to this headline">¶</a></h1>
+<p>This module contains data container classes that are used by OVITO&#8217;s modification pipeline system.</p>
+<p><strong>Data collection:</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a> (container for data objects)</li>
+</ul>
+</div></blockquote>
+<p><strong>Data objects:</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">DataObject</span></code></a> (base of all data object types)</li>
+<li><a class="reference internal" href="#ovito.data.Bonds" title="ovito.data.Bonds"><code class="xref py py-class docutils literal"><span class="pre">Bonds</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.BondProperty" title="ovito.data.BondProperty"><code class="xref py py-class docutils literal"><span class="pre">BondProperty</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.BondTypeProperty" title="ovito.data.BondTypeProperty"><code class="xref py py-class docutils literal"><span class="pre">BondTypeProperty</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.DislocationNetwork" title="ovito.data.DislocationNetwork"><code class="xref py py-class docutils literal"><span class="pre">DislocationNetwork</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.ParticleProperty" title="ovito.data.ParticleProperty"><code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.ParticleTypeProperty" title="ovito.data.ParticleTypeProperty"><code class="xref py py-class docutils literal"><span class="pre">ParticleTypeProperty</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.SimulationCell" title="ovito.data.SimulationCell"><code class="xref py py-class docutils literal"><span class="pre">SimulationCell</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.SurfaceMesh" title="ovito.data.SurfaceMesh"><code class="xref py py-class docutils literal"><span class="pre">SurfaceMesh</span></code></a></li>
+</ul>
+</div></blockquote>
+<p><strong>Auxiliary classes:</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#ovito.data.ParticleType" title="ovito.data.ParticleType"><code class="xref py py-class docutils literal"><span class="pre">ParticleType</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.BondType" title="ovito.data.BondType"><code class="xref py py-class docutils literal"><span class="pre">BondType</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.CutoffNeighborFinder" title="ovito.data.CutoffNeighborFinder"><code class="xref py py-class docutils literal"><span class="pre">CutoffNeighborFinder</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.NearestNeighborFinder" title="ovito.data.NearestNeighborFinder"><code class="xref py py-class docutils literal"><span class="pre">NearestNeighborFinder</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.DislocationSegment" title="ovito.data.DislocationSegment"><code class="xref py py-class docutils literal"><span class="pre">DislocationSegment</span></code></a></li>
+</ul>
+</div></blockquote>
+<dl class="class">
+<dt id="ovito.data.BondProperty">
+<em class="property">class </em><code class="descclassname">ovito.data.</code><code class="descname">BondProperty</code><a class="headerlink" href="#ovito.data.BondProperty" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Base class:</th><td class="field-body"><a class="reference internal" href="#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">ovito.data.DataObject</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>A data object that stores the per-bond values of a bond property. Bond properties work similar to particle properties (see <a class="reference internal" href="#ovito.data.ParticleProperty" title="ovito.data.ParticleProperty"><code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code></a> class).</p>
+<p>The list of bond properties associated with a particle dataset can be accessed via the <a class="reference internal" href="#ovito.data.DataCollection.bond_properties" title="ovito.data.DataCollection.bond_properties"><code class="xref py py-attr docutils literal"><span class="pre">DataCollection.bond_properties</span></code></a> dictionary.</p>
+<p>The actual list of bonds, i.e. the connectivity information, which is stored in a <a class="reference internal" href="#ovito.data.Bonds" title="ovito.data.Bonds"><code class="xref py py-class docutils literal"><span class="pre">Bonds</span></code></a> data object, can be accessed via the <a class="reference internal" href="#ovito.data.DataCollection.bonds" title="ovito.data.DataCollection.bonds"><code class="xref py py-attr docutils literal"><span class="pre">DataCollection.bonds</span></code></a> property.</p>
+<p>Note that OVITO works with half-bonds, i.e., every full bond is represented as two half-bonds pointing from particle A to particle B, and from B to A, respectively. Thus, the <a class="reference internal" href="#ovito.data.BondProperty.size" title="ovito.data.BondProperty.size"><code class="xref py py-attr docutils literal"><span class="pre">size</span></code></a> of a bond property array is always twice as large as the number of full bonds in a dataset.</p>
+<dl class="attribute">
+<dt id="ovito.data.BondProperty.array">
+<code class="descname">array</code><a class="headerlink" href="#ovito.data.BondProperty.array" title="Permalink to this definition">¶</a></dt>
+<dd><p>This attribute returns a NumPy array, which provides read access to the per-bond data stored in this bond property object.</p>
+<p>The returned array is one-dimensional for scalar bond properties (<a class="reference internal" href="#ovito.data.BondProperty.components" title="ovito.data.BondProperty.components"><code class="xref py py-attr docutils literal"><span class="pre">components</span></code></a> == 1),
+or two-dimensional for vector properties (<a class="reference internal" href="#ovito.data.BondProperty.components" title="ovito.data.BondProperty.components"><code class="xref py py-attr docutils literal"><span class="pre">components</span></code></a> &gt; 1). The outer length of the array is 
+equal to the number of half-bonds in both cases.</p>
+<p>Note that the returned NumPy array is read-only and provides a view of the internal data. 
+No copy of the data, which may be shared by multiple objects, is made. If you want to modify the 
+data stored in this bond property, use <a class="reference internal" href="#ovito.data.BondProperty.marray" title="ovito.data.BondProperty.marray"><code class="xref py py-attr docutils literal"><span class="pre">marray</span></code></a> instead.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.data.BondProperty.changed">
+<code class="descname">changed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.BondProperty.changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Informs the bond property object that its stored data has changed. This function must be called after each direct modification of the per-bond data through the <a class="reference internal" href="#ovito.data.BondProperty.marray" title="ovito.data.BondProperty.marray"><code class="xref py py-attr docutils literal"><span class="pre">marray</span></code></a> attribute.</p>
+<p>Calling this method on an input bond property is necessary to invalidate data caches down the modification pipeline. Forgetting to call this method may result in an incomplete re-evaluation of the modification pipeline. See <a class="reference internal" href="#ovito.data.BondProperty.marray" title="ovito.data.BondProperty.marray"><code class="xref py py-attr docutils literal"><span class="pre">marray</span></code></a> for more information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.BondProperty.components">
+<code class="descname">components</code><a class="headerlink" href="#ovito.data.BondProperty.components" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of vector components (if this is a vector bond property); otherwise 1 (= scalar property).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.BondProperty.marray">
+<code class="descname">marray</code><a class="headerlink" href="#ovito.data.BondProperty.marray" title="Permalink to this definition">¶</a></dt>
+<dd><p>This attribute returns a <em>mutable</em> NumPy array providing read/write access to the internal per-bond data.</p>
+<p>The returned array is one-dimensional for scalar bond properties (<a class="reference internal" href="#ovito.data.BondProperty.components" title="ovito.data.BondProperty.components"><code class="xref py py-attr docutils literal"><span class="pre">components</span></code></a> == 1),
+or two-dimensional for vector properties (<a class="reference internal" href="#ovito.data.BondProperty.components" title="ovito.data.BondProperty.components"><code class="xref py py-attr docutils literal"><span class="pre">components</span></code></a> &gt; 1). The outer length of the array is 
+equal to the number of half-bonds in both cases.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">After you are done modifying the data in the returned NumPy array, you must call
+<a class="reference internal" href="#ovito.data.BondProperty.changed" title="ovito.data.BondProperty.changed"><code class="xref py py-meth docutils literal"><span class="pre">changed()</span></code></a>! Calling this method is necessary to inform the data pipeline system
+that the input bond data has changed and the modification pipeline needs to be re-evaluated.
+The reason is that OVITO cannot automatically detect modifications made by the script to 
+the returned NumPy array. Therefore, an explicit call to <a class="reference internal" href="#ovito.data.BondProperty.changed" title="ovito.data.BondProperty.changed"><code class="xref py py-meth docutils literal"><span class="pre">changed()</span></code></a> is necessary.</p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.BondProperty.name">
+<code class="descname">name</code><a class="headerlink" href="#ovito.data.BondProperty.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The human-readable name of the bond property.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.BondProperty.size">
+<code class="descname">size</code><a class="headerlink" href="#ovito.data.BondProperty.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of stored property values, which is always equal to the number of half-bonds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.BondProperty.type">
+<code class="descname">type</code><a class="headerlink" href="#ovito.data.BondProperty.type" title="Permalink to this definition">¶</a></dt>
+<dd><p id="bond-types-list">The type of the bon property (user-defined or one of the standard types).
+One of the following constants:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="47%" />
+<col width="44%" />
+<col width="9%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type constant</th>
+<th class="head">Property name</th>
+<th class="head">Data type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">BondProperty.Type.User</span></code></td>
+<td>(a user-defined property with a non-standard name)</td>
+<td>int/float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">BondProperty.Type.BondType</span></code></td>
+<td><em class="guilabel">Bond Type</em></td>
+<td>int</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">BondProperty.Type.Selection</span></code></td>
+<td><em class="guilabel">Selection</em></td>
+<td>int</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">BondProperty.Type.Color</span></code></td>
+<td><em class="guilabel">Color</em></td>
+<td>float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.data.BondType">
+<em class="property">class </em><code class="descclassname">ovito.data.</code><code class="descname">BondType</code><a class="headerlink" href="#ovito.data.BondType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores the properties of a bond type.</p>
+<p>The list of bond types is stored in the <a class="reference internal" href="#ovito.data.BondTypeProperty" title="ovito.data.BondTypeProperty"><code class="xref py py-class docutils literal"><span class="pre">BondTypeProperty</span></code></a> class.</p>
+<dl class="attribute">
+<dt id="ovito.data.BondType.color">
+<code class="descname">color</code><a class="headerlink" href="#ovito.data.BondType.color" title="Permalink to this definition">¶</a></dt>
+<dd><p>The display color to use for bonds of this type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.BondType.id">
+<code class="descname">id</code><a class="headerlink" href="#ovito.data.BondType.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The identifier of the bond type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.BondType.name">
+<code class="descname">name</code><a class="headerlink" href="#ovito.data.BondType.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The display name of this bond type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.data.BondTypeProperty">
+<em class="property">class </em><code class="descclassname">ovito.data.</code><code class="descname">BondTypeProperty</code><a class="headerlink" href="#ovito.data.BondTypeProperty" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Base class:</th><td class="field-body"><a class="reference internal" href="#ovito.data.BondProperty" title="ovito.data.BondProperty"><code class="xref py py-class docutils literal"><span class="pre">ovito.data.BondProperty</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>A special <a class="reference internal" href="#ovito.data.BondProperty" title="ovito.data.BondProperty"><code class="xref py py-class docutils literal"><span class="pre">BondProperty</span></code></a> that stores a list of <a class="reference internal" href="#ovito.data.BondType" title="ovito.data.BondType"><code class="xref py py-class docutils literal"><span class="pre">BondType</span></code></a> instances in addition to the per-bond values.</p>
+<p>The bond property <code class="docutils literal"><span class="pre">Bond</span> <span class="pre">Type</span></code> is represented by an instance of this class. In addition to the regular per-bond data (consisting of an integer per half-bond, indicating its type ID), this class holds the list of defined bond types. These are <a class="reference internal" href="#ovito.data.BondType" title="ovito.data.BondType"><code class="xref py py-class docutils literal"><span class="pre">BondType</span></code></a> instances, which store the ID, name, and color of each bond type.</p>
+<dl class="attribute">
+<dt id="ovito.data.BondTypeProperty.type_list">
+<code class="descname">type_list</code><a class="headerlink" href="#ovito.data.BondTypeProperty.type_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>A mutable list of <a class="reference internal" href="#ovito.data.BondType" title="ovito.data.BondType"><code class="xref py py-class docutils literal"><span class="pre">BondType</span></code></a> instances.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.data.Bonds">
+<em class="property">class </em><code class="descclassname">ovito.data.</code><code class="descname">Bonds</code><a class="headerlink" href="#ovito.data.Bonds" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Base class:</th><td class="field-body"><a class="reference internal" href="#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">ovito.data.DataObject</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>This data object stores a list of bonds between pairs of particles. Typically bonds are loaded from a simulation file or are created using the <a class="reference internal" href="ovito_modifiers.html#ovito.modifiers.CreateBondsModifier" title="ovito.modifiers.CreateBondsModifier"><code class="xref py py-class docutils literal"><span class="pre">CreateBondsModifier</span></code></a> in the modification pipeline.</p>
+<p>The following example shows how to access the bond list create by a <a class="reference internal" href="ovito_modifiers.html#ovito.modifiers.CreateBondsModifier" title="ovito.modifiers.CreateBondsModifier"><code class="xref py py-class docutils literal"><span class="pre">CreateBondsModifier</span></code></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="n">import_file</span>
+<span class="kn">from</span> <span class="nn">ovito.modifiers</span> <span class="kn">import</span> <span class="n">CreateBondsModifier</span>
+<span class="kn">from</span> <span class="nn">ovito.vis</span> <span class="kn">import</span> <span class="n">BondsDisplay</span>
+
+<span class="c"># Load a set of atoms and create bonds between pairs of atoms</span>
+<span class="c"># that are within a given cutoff distance of each other</span>
+<span class="c"># using the Create Bonds modifier.</span>
+<span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&#39;simulation.dump&#39;</span><span class="p">)</span>
+<span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CreateBondsModifier</span><span class="p">(</span><span class="n">cutoff</span> <span class="o">=</span> <span class="mf">3.4</span><span class="p">))</span>
+<span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="c"># Read out list of generated bonds.</span>
+<span class="n">bonds_list</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">bonds</span><span class="o">.</span><span class="n">array</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Number of generated bonds: &quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">bonds_list</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>OVITO represents each bond as two half-bonds, one pointing from a particle <em>A</em> to a particle <em>B</em>, and the other half-bond pointing back from <em>B</em> to <em>A</em>. Thus, for a given number of bonds, you will find twice as many half-bonds in the <code class="xref py py-class docutils literal"><span class="pre">Bonds</span></code> object. 
+The <a class="reference internal" href="#ovito.data.Bonds.array" title="ovito.data.Bonds.array"><code class="xref py py-attr docutils literal"><span class="pre">array</span></code></a> attribute returns a (read-only) NumPy array that contains the list of half-bonds, which are defined by pairs of particle indices (the first one specifying the particle the half-bond is pointing away from).</p>
+<p>Furthermore, every <code class="xref py py-class docutils literal"><span class="pre">Bonds</span></code> object is associated with a <a class="reference internal" href="ovito_vis.html#ovito.vis.BondsDisplay" title="ovito.vis.BondsDisplay"><code class="xref py py-class docutils literal"><span class="pre">BondsDisplay</span></code></a> instance, which controls the visual appearance of the bonds. It can be accessed through the <a class="reference internal" href="#ovito.data.DataObject.display" title="ovito.data.DataObject.display"><code class="xref py py-attr docutils literal"><span class="pre">display</span></code></a> attribute:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Change appearance of bonds.</span>
+<span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">bonds</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">enabled</span> <span class="o">=</span> <span class="bp">True</span>
+<span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">bonds</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">shading</span> <span class="o">=</span> <span class="n">BondsDisplay</span><span class="o">.</span><span class="n">Shading</span><span class="o">.</span><span class="n">Flat</span>
+<span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">bonds</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">0.3</span>
+</pre></div>
+</div>
+<dl class="class">
+<dt id="ovito.data.Bonds.Enumerator">
+<em class="property">class </em><code class="descname">Enumerator</code><span class="sig-paren">(</span><em>bonds</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.Bonds.Enumerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility class that allows to efficiently iterate over the bonds that are adjacent to a particular particle.</p>
+<p>The class constructor takes the <a class="reference internal" href="#ovito.data.Bonds" title="ovito.data.Bonds"><code class="xref py py-class docutils literal"><span class="pre">Bonds</span></code></a> object for which it will first build a lookup table.
+After the <code class="xref py py-class docutils literal"><span class="pre">Enumerator</span></code> has been constructed, the half-bonds of a
+particular particle can be found using the <a class="reference internal" href="#ovito.data.Bonds.Enumerator.bonds_of_particle" title="ovito.data.Bonds.Enumerator.bonds_of_particle"><code class="xref py py-meth docutils literal"><span class="pre">bonds_of_particle()</span></code></a> method.</p>
+<p>Warning: Do not modify the underlying <a class="reference internal" href="#ovito.data.Bonds" title="ovito.data.Bonds"><code class="xref py py-class docutils literal"><span class="pre">Bonds</span></code></a> object while using the <code class="xref py py-class docutils literal"><span class="pre">Enumerator</span></code>.
+Adding or deleting bonds would render the internal lookup table of the <code class="xref py py-class docutils literal"><span class="pre">Enumerator</span></code>
+invalid.</p>
+<dl class="method">
+<dt id="ovito.data.Bonds.Enumerator.bonds_of_particle">
+<code class="descname">bonds_of_particle</code><span class="sig-paren">(</span><em>particle_index</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.Bonds.Enumerator.bonds_of_particle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator that yields the indices of the half-bonds connected to the given particle.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.data.Bonds.add">
+<code class="descclassname">Bonds.</code><code class="descname">add</code><span class="sig-paren">(</span><em>p1</em>, <em>p2</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.Bonds.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a new half-bond from particle <em>p1</em> to particle <em>p2</em>.</p>
+<p>To also create a half-bond from <em>p2</em> to <em>p1</em>, use <a class="reference internal" href="#ovito.data.Bonds.add_full" title="ovito.data.Bonds.add_full"><code class="xref py py-meth docutils literal"><span class="pre">add_full()</span></code></a> instead.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>p1</strong> (<em>int</em>) &#8211; Zero-based index of the particle at which the bonds originates.</li>
+<li><strong>p2</strong> (<em>int</em>) &#8211; Zero-based index of the particle the bonds leads to.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.data.Bonds.add_full">
+<code class="descclassname">Bonds.</code><code class="descname">add_full</code><span class="sig-paren">(</span><em>p1</em>, <em>p2</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.Bonds.add_full" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates two half-bonds between the particles <em>p1</em> and <em>p2</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>p1</strong> (<em>int</em>) &#8211; Zero-based index of the first particle.</li>
+<li><strong>p2</strong> (<em>int</em>) &#8211; Zero-based index of the second particle.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.Bonds.array">
+<code class="descclassname">Bonds.</code><code class="descname">array</code><a class="headerlink" href="#ovito.data.Bonds.array" title="Permalink to this definition">¶</a></dt>
+<dd><p>This attribute returns a NumPy array providing direct access to the bond list.</p>
+<p>The returned array is two-dimensional and contains pairs of particle indices connected by a bond.
+The array&#8217;s shape is <em>N x 2</em>, where <em>N</em> is the number of half bonds. Each pair-wise bond occurs twice
+in the array, once for the connection A-&gt;B and second time for the connection B-&gt;A.
+Particle indices start at 0.</p>
+<p>Note that the returned NumPy array is read-only and provides a view of the internal data. 
+No copy of the data is made.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.data.Bonds.clear">
+<code class="descclassname">Bonds.</code><code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.Bonds.clear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all stored bonds.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.data.CutoffNeighborFinder">
+<em class="property">class </em><code class="descclassname">ovito.data.</code><code class="descname">CutoffNeighborFinder</code><span class="sig-paren">(</span><em>cutoff</em>, <em>data_collection</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.CutoffNeighborFinder" title="Permalink to this definition">¶</a></dt>
+<dd><p>A utility class that computes particle neighbor lists.</p>
+<p>This class allows to iterate over the neighbors of each particle within a given cutoff distance.
+You can use it to build neighbors lists or perform other kinds of analyses that require neighbor information.</p>
+<p>The constructor takes a positive cutoff radius and a <a class="reference internal" href="#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a> 
+containing the input particle positions and the cell geometry (including periodic boundary flags).</p>
+<p>Once the <code class="xref py py-class docutils literal"><span class="pre">CutoffNeighborFinder</span></code> has been constructed, you can call its <a class="reference internal" href="#ovito.data.CutoffNeighborFinder.find" title="ovito.data.CutoffNeighborFinder.find"><code class="xref py py-meth docutils literal"><span class="pre">find()</span></code></a> method to 
+iterate over the neighbors of a specific particle, for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="n">import_file</span>
+<span class="kn">from</span> <span class="nn">ovito.data</span> <span class="kn">import</span> <span class="n">CutoffNeighborFinder</span>
+
+<span class="c"># Load input simulation file.</span>
+<span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&quot;simulation.dump&quot;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">source</span>
+
+<span class="c"># Initialize neighbor finder object:</span>
+<span class="n">cutoff</span> <span class="o">=</span> <span class="mf">3.5</span>
+<span class="n">finder</span> <span class="o">=</span> <span class="n">CutoffNeighborFinder</span><span class="p">(</span><span class="n">cutoff</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="c"># Loop over all input particles:</span>
+<span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">number_of_particles</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Neighbors of particle </span><span class="si">%i</span><span class="s">:&quot;</span> <span class="o">%</span> <span class="n">index</span><span class="p">)</span>
+    <span class="c"># Iterate over the neighbors of the current particle:</span>
+    <span class="k">for</span> <span class="n">neigh</span> <span class="ow">in</span> <span class="n">finder</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">neigh</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">neigh</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">neigh</span><span class="o">.</span><span class="n">delta</span><span class="p">,</span> <span class="n">neigh</span><span class="o">.</span><span class="n">pbc_shift</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you want to determine the <em>N</em> nearest neighbors of a particle,
+use the <a class="reference internal" href="#ovito.data.NearestNeighborFinder" title="ovito.data.NearestNeighborFinder"><code class="xref py py-class docutils literal"><span class="pre">NearestNeighborFinder</span></code></a> class instead.</p>
+<dl class="method">
+<dt id="ovito.data.CutoffNeighborFinder.find">
+<code class="descname">find</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.CutoffNeighborFinder.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator over all neighbors of the given particle.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>int</em>) &#8211; The index of the central particle whose neighbors should be iterated. Particle indices start at 0.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A Python iterator that visits all neighbors of the central particle within the cutoff distance. 
+For each neighbor the iterator returns an object with the following attributes:<blockquote>
+<div><ul class="simple">
+<li><strong>index</strong>: The index of the current neighbor particle (starting at 0).</li>
+<li><strong>distance</strong>: The distance of the current neighbor from the central particle.</li>
+<li><strong>distance_squared</strong>: The squared neighbor distance.</li>
+<li><strong>delta</strong>: The three-dimensional vector connecting the central particle with the current neighbor (taking into account periodicity).</li>
+<li><strong>pbc_shift</strong>: The periodic shift vector, which specifies how often each periodic boundary of the simulation cell is crossed when going from the central particle to the current neighbor.</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Note that all periodic images of particles within the cutoff radius are visited. Thus, the same particle index may appear multiple times in the neighbor
+list of a central particle. In fact, the central particle may be among its own neighbors in a sufficiently small periodic simulation cell.
+However, the computed vector (<code class="docutils literal"><span class="pre">delta</span></code>) and PBC shift (<code class="docutils literal"><span class="pre">pbc_shift</span></code>) will be unique for each visited image of a neighboring particle.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.data.DataCollection">
+<em class="property">class </em><code class="descclassname">ovito.data.</code><code class="descname">DataCollection</code><a class="headerlink" href="#ovito.data.DataCollection" title="Permalink to this definition">¶</a></dt>
+<dd><p>A data collection is a dictionary-like container that can store an arbitrary number of data objects. OVITO knows various types of data objects, e.g.</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#ovito.data.ParticleProperty" title="ovito.data.ParticleProperty"><code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code></a> and <a class="reference internal" href="#ovito.data.ParticleTypeProperty" title="ovito.data.ParticleTypeProperty"><code class="xref py py-class docutils literal"><span class="pre">ParticleTypeProperty</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.SimulationCell" title="ovito.data.SimulationCell"><code class="xref py py-class docutils literal"><span class="pre">SimulationCell</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.Bonds" title="ovito.data.Bonds"><code class="xref py py-class docutils literal"><span class="pre">Bonds</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.BondProperty" title="ovito.data.BondProperty"><code class="xref py py-class docutils literal"><span class="pre">BondProperty</span></code></a> and <a class="reference internal" href="#ovito.data.BondTypeProperty" title="ovito.data.BondTypeProperty"><code class="xref py py-class docutils literal"><span class="pre">BondTypeProperty</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.SurfaceMesh" title="ovito.data.SurfaceMesh"><code class="xref py py-class docutils literal"><span class="pre">SurfaceMesh</span></code></a></li>
+<li><a class="reference internal" href="#ovito.data.DislocationNetwork" title="ovito.data.DislocationNetwork"><code class="xref py py-class docutils literal"><span class="pre">DislocationNetwork</span></code></a></li>
+</ul>
+</div></blockquote>
+<p>Data collections hold the data that enters or leaves an <a class="reference internal" href="ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a>&#8216;s modification pipeline. The <em>input</em> data collection of the pipeline can be accessed through the node&#8217;s <a class="reference internal" href="ovito.html#ovito.ObjectNode.source" title="ovito.ObjectNode.source"><code class="xref py py-attr docutils literal"><span class="pre">source</span></code></a> attribute:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>
+<span class="go">DataCollection([&#39;Simulation cell&#39;, &#39;Position&#39;])</span>
+</pre></div>
+</div>
+<p>In this example the input data collection contains the original data that was read from the external file, consisting of the particle position property and a simulation cell.</p>
+<p>The input data typically gets modified or extended by modifiers in the node&#8217;s modification pipeline. To access the results of the modification pipeline, we need to call <a class="reference internal" href="ovito.html#ovito.ObjectNode.compute" title="ovito.ObjectNode.compute"><code class="xref py py-meth docutils literal"><span class="pre">ObjectNode.compute()</span></code></a>, which returns the <em>output</em> data collection after evaluating the modifiers:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CommonNeighborAnalysisModifier</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">())</span>
+<span class="go">DataCollection([&#39;Simulation cell&#39;, &#39;Position&#39;, &#39;Color&#39;, &#39;Structure Type&#39;])</span>
+</pre></div>
+</div>
+<p>The output data collection is cached by the <a class="reference internal" href="ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a> and may subsequently be accessed through the <a class="reference internal" href="ovito.html#ovito.ObjectNode.output" title="ovito.ObjectNode.output"><code class="xref py py-attr docutils literal"><span class="pre">output</span></code></a> attribute:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+<span class="go">DataCollection([&#39;Simulation cell&#39;, &#39;Position&#39;, &#39;Color&#39;, &#39;Structure Type&#39;])</span>
+</pre></div>
+</div>
+<p>In our example, the <a class="reference internal" href="ovito_modifiers.html#ovito.modifiers.CommonNeighborAnalysisModifier" title="ovito.modifiers.CommonNeighborAnalysisModifier"><code class="xref py py-class docutils literal"><span class="pre">CommonNeighborAnalysisModifier</span></code></a> in the modification pipeline has added additional particle properties to the <code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code>. Particle properties, which are instances of the <a class="reference internal" href="#ovito.data.ParticleProperty" title="ovito.data.ParticleProperty"><code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code></a> class, are so-called <a class="reference internal" href="#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">data</span> <span class="pre">objects</span></code></a>. Likewise, the simulation cell (<a class="reference internal" href="#ovito.data.SimulationCell" title="ovito.data.SimulationCell"><code class="xref py py-class docutils literal"><span class="pre">SimulationCell</span></code></a>) and bonds (<a class="reference internal" href="#ovito.data.Bonds" title="ovito.data.Bonds"><code class="xref py py-class docutils literal"><span class="pre">Bonds</span></code></a>) are data objects, which can all be part of a data collection.</p>
+<p>The particle properties in a collection can be accessed through the <a class="reference internal" href="#ovito.data.DataCollection.particle_properties" title="ovito.data.DataCollection.particle_properties"><code class="xref py py-attr docutils literal"><span class="pre">particle_properties</span></code></a> dictionary view. Use its <code class="docutils literal"><span class="pre">keys()</span></code> method to find out which particle properties are contained in the collection:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">particle_properties</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;Particle Identifier&#39;, &#39;Position&#39;, </span>
+<span class="go"> &#39;Potential Energy&#39;, &#39;Color&#39;, &#39;Structure Type&#39;]</span>
+</pre></div>
+</div>
+<p>Specific particle properties in the collection can be accessed using the dictionary interface:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">particle_properties</span><span class="p">[</span><span class="s">&#39;Potential Energy&#39;</span><span class="p">]</span>
+<span class="go">&lt;ParticleProperty at 0x11d01d60&gt;</span>
+</pre></div>
+</div>
+<p>Standard particle properties, however, can be directly accessed more conveniently via corresponding Python attributes, e.g.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">particle_properties</span><span class="o">.</span><span class="n">potential_energy</span>
+<span class="go">&lt;ParticleProperty at 0x11d01d60&gt;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">particle_properties</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">array</span><span class="p">)</span>
+<span class="go">[[ 0.          0.          0.        ]</span>
+<span class="go"> [ 0.8397975   0.8397975   0.        ]</span>
+<span class="go"> ...</span>
+</pre></div>
+</div>
+<p>The <a class="reference internal" href="#ovito.data.SimulationCell" title="ovito.data.SimulationCell"><code class="xref py py-class docutils literal"><span class="pre">SimulationCell</span></code></a>, <a class="reference internal" href="#ovito.data.Bonds" title="ovito.data.Bonds"><code class="xref py py-class docutils literal"><span class="pre">Bonds</span></code></a>, and other data objects in the data collection can be accessed through its <a class="reference internal" href="#ovito.data.DataCollection.cell" title="ovito.data.DataCollection.cell"><code class="xref py py-attr docutils literal"><span class="pre">cell</span></code></a>, <a class="reference internal" href="#ovito.data.DataCollection.bonds" title="ovito.data.DataCollection.bonds"><code class="xref py py-attr docutils literal"><span class="pre">bonds</span></code></a>, <a class="reference internal" href="#ovito.data.DataCollection.surface" title="ovito.data.DataCollection.surface"><code class="xref py py-attr docutils literal"><span class="pre">surface</span></code></a>, and <a class="reference internal" href="#ovito.data.DataCollection.dislocations" title="ovito.data.DataCollection.dislocations"><code class="xref py py-attr docutils literal"><span class="pre">dislocations</span></code></a> property:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">cell</span>
+<span class="go">&lt;SimulationCellObject at 0x24338a0&gt;</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="o">.</span><span class="n">cell</span><span class="o">.</span><span class="n">matrix</span>
+<span class="go">[[ 3.35918999  0.          0.          0.        ]</span>
+<span class="go"> [ 0.          3.35918999  0.          0.        ]</span>
+<span class="go"> [ 0.          0.          3.35918999  0.        ]]</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="ovito.data.DataCollection.add">
+<code class="descname">add</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.DataCollection.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Inserts a <a class="reference internal" href="#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">DataObject</span></code></a> into the <code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code>.</p>
+<p>The method will do nothing if the data object is already part of the collection. A data object can be part of several data collections.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.DataCollection.attributes">
+<code class="descname">attributes</code><a class="headerlink" href="#ovito.data.DataCollection.attributes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary object containing additional metadata, which describes the contents of the <code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code>.</p>
+<p>If the particle dataset has been loaded from a LAMMPS dump file, for example, which contains the simulation timestep number, this timestep information can be retrieved from the attributes dictionary as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">data_collection</span> <span class="o">=</span> <span class="n">ovito</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">selected_node</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data_collection</span><span class="o">.</span><span class="n">attributes</span><span class="p">[</span><span class="s">&#39;Timestep&#39;</span><span class="p">]</span>
+<span class="go">140000</span>
+</pre></div>
+</div>
+<p>For <em>extended XYZ</em> files, the attributes dictionary contains all key/value pairs found in the comment line of the input file.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.DataCollection.bond_properties">
+<code class="descname">bond_properties</code><a class="headerlink" href="#ovito.data.DataCollection.bond_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary view that provides access to the <a class="reference internal" href="#ovito.data.BondProperty" title="ovito.data.BondProperty"><code class="xref py py-class docutils literal"><span class="pre">BondProperty</span></code></a> 
+instances stored in this <code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.DataCollection.bonds">
+<code class="descname">bonds</code><a class="headerlink" href="#ovito.data.DataCollection.bonds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference internal" href="#ovito.data.Bonds" title="ovito.data.Bonds"><code class="xref py py-class docutils literal"><span class="pre">Bonds</span></code></a> object stored in this <code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code>.</p>
+<p>Accessing this property raises an <code class="docutils literal"><span class="pre">AttributeError</span></code> if the data collection
+contains no bonds.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.DataCollection.cell">
+<code class="descname">cell</code><a class="headerlink" href="#ovito.data.DataCollection.cell" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference internal" href="#ovito.data.SimulationCell" title="ovito.data.SimulationCell"><code class="xref py py-class docutils literal"><span class="pre">SimulationCell</span></code></a> stored in this <code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code>.</p>
+<p>Accessing this property raises an <code class="docutils literal"><span class="pre">AttributeError</span></code> if the data collection
+contains no simulation cell information.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.data.DataCollection.copy_if_needed">
+<code class="descname">copy_if_needed</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.DataCollection.copy_if_needed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Makes a copy of a data object if it was created upstream in the data pipeline.</p>
+<p>Typically, this method is used in implementations of a modifier function that
+participates in OVITO&#8217;s data pipeline system. A modifier receives a collection with
+input data objects from the system. However, directly modifying these input
+objects is not allowed because they are owned by the upstream part of the data pipeline.
+This is where this method comes into play: It makes a copy of a data object and replaces
+it with its copy in the modifier&#8217;s output. The modifier can then go ahead and modify the copy as needed,
+because it is now exclusively owned by the modifier.</p>
+<p>The method first checks if <em>obj</em>, which must be a data object from this data collection, is
+owned by anybody else. If yes, it creates an exact copy of <em>obj</em> and replaces the original
+in this data collection with the copy. Now the copy is an independent object, which is referenced
+by nobody except this data collection. Thus, the modifier function is now free to modify the contents
+of the data object.</p>
+<p>Note that the <code class="xref py py-meth docutils literal"><span class="pre">copy_if_needed()</span></code> method should always be called on the <em>output</em> data collection
+of the modifier.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>obj</strong> (<a class="reference internal" href="#ovito.data.DataObject" title="ovito.data.DataObject"><em>DataObject</em></a>) &#8211; The object in the output data collection to be copied.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">An exact copy of <em>obj</em> if <em>obj</em> is owned by someone else. Otherwise the original instance is returned.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="ovito.data.DataCollection.create_from_ase_atoms">
+<em class="property">classmethod </em><code class="descname">create_from_ase_atoms</code><span class="sig-paren">(</span><em>atoms</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.DataCollection.create_from_ase_atoms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts an <a class="reference external" href="https://wiki.fysik.dtu.dk/ase/ase/atoms.html">ASE Atoms object</a> to a <code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The built-in Python interpreter shipping with OVITO does <em>not</em> contain the ASE module (<a class="reference external" href="https://wiki.fysik.dtu.dk/ase/">Atomistic Simulation Environment</a>).
+It is therefore recommended to build OVITO from source (as explained in the user manual),
+which will allow you to use all modules installed in the system&#8217;s Python interpreter.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>atoms</strong> &#8211; <p>The <a class="reference external" href="https://wiki.fysik.dtu.dk/ase/ase/atoms.html">ASE Atoms object</a> to be converted.</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A new <code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code> instance containing the converted data from the ASE object.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.data.DataCollection.create_particle_property">
+<code class="descname">create_particle_property</code><span class="sig-paren">(</span><em>property_type</em>, <em>data=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.DataCollection.create_particle_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a standard particle property to this data collection.</p>
+<p>If the specified particle property already exists in this data collection, the existing property instance is returned.
+Otherwise the method creates a new property instance using <a class="reference internal" href="#ovito.data.ParticleProperty.create" title="ovito.data.ParticleProperty.create"><code class="xref py py-meth docutils literal"><span class="pre">ParticleProperty.create()</span></code></a> and adds it to this data collection.</p>
+<p>The optional parameter <em>data</em> allows to directly set or initialize the values of the particle property.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>property_type</strong> (<em>ParticleProperty.Type</em>) &#8211; The standard particle property to create. See the <a class="reference internal" href="#ovito.data.ParticleProperty.type" title="ovito.data.ParticleProperty.type"><code class="xref py py-attr docutils literal"><span class="pre">ParticleProperty.type</span></code></a> attribute for a list of possible values.</li>
+<li><strong>data</strong> &#8211; An optional data array (e.g. NumPy array), which contains the per-particle values used to initialize the particle property.
+The size of the array must match the number of particles in this data collection (see <a class="reference internal" href="#ovito.data.DataCollection.number_of_particles" title="ovito.data.DataCollection.number_of_particles"><code class="xref py py-attr docutils literal"><span class="pre">number_of_particles</span></code></a> attribute).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A newly created instance of the <a class="reference internal" href="#ovito.data.ParticleProperty" title="ovito.data.ParticleProperty"><code class="xref py py-class docutils literal"><span class="pre">ovito.data.ParticleProperty</span></code></a> class or one of its sub-classes if the property did not exist yet in the data collection.
+Otherwise, the existing particle property object is returned.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.data.DataCollection.create_user_particle_property">
+<code class="descname">create_user_particle_property</code><span class="sig-paren">(</span><em>name</em>, <em>data_type</em>, <em>num_components=1</em>, <em>data=None</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.DataCollection.create_user_particle_property" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds a user-defined particle property to this data collection.</p>
+<p>If a particle property with the given name already exists in this data collection, the existing property instance is returned.
+Otherwise the method creates a new property instance using <a class="reference internal" href="#ovito.data.ParticleProperty.create_user" title="ovito.data.ParticleProperty.create_user"><code class="xref py py-meth docutils literal"><span class="pre">ParticleProperty.create_user()</span></code></a> and adds it to this data collection.</p>
+<p>The optional parameter <em>data</em> allows to directly set or initialize the values of the particle property.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>str</em>) &#8211; The name of the user-defined particle property to create.</li>
+<li><strong>data_type</strong> (<em>str</em>) &#8211; Must be either <code class="docutils literal"><span class="pre">&quot;int&quot;</span></code> or <code class="docutils literal"><span class="pre">&quot;float&quot;</span></code>.</li>
+<li><strong>num_components</strong> (<em>int</em>) &#8211; The number of components when creating a vector property.</li>
+<li><strong>data</strong> &#8211; An optional data array (e.g. NumPy array), which contains the per-particle values used to initialize the particle property.
+The size of the array must match the number of particles in this data collection (see <a class="reference internal" href="#ovito.data.DataCollection.number_of_particles" title="ovito.data.DataCollection.number_of_particles"><code class="xref py py-attr docutils literal"><span class="pre">number_of_particles</span></code></a> attribute).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A newly created instance of the <a class="reference internal" href="#ovito.data.ParticleProperty" title="ovito.data.ParticleProperty"><code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code></a> class or one of its sub-classes if the property did not exist yet in the data collection.
+Otherwise, the existing particle property object is returned.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.DataCollection.dislocations">
+<code class="descname">dislocations</code><a class="headerlink" href="#ovito.data.DataCollection.dislocations" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference internal" href="#ovito.data.DislocationNetwork" title="ovito.data.DislocationNetwork"><code class="xref py py-class docutils literal"><span class="pre">DislocationNetwork</span></code></a> object in this <code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code>.</p>
+<p>Accessing this property raises an <code class="docutils literal"><span class="pre">AttributeError</span></code> if the data collection
+contains no dislocations object.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.DataCollection.number_of_bonds">
+<code class="descname">number_of_bonds</code><a class="headerlink" href="#ovito.data.DataCollection.number_of_bonds" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of half-bonds stored in the data collection.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.DataCollection.number_of_particles">
+<code class="descname">number_of_particles</code><a class="headerlink" href="#ovito.data.DataCollection.number_of_particles" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of particles stored in the data collection.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.DataCollection.particle_properties">
+<code class="descname">particle_properties</code><a class="headerlink" href="#ovito.data.DataCollection.particle_properties" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary view that provides access to the <a class="reference internal" href="#ovito.data.ParticleProperty" title="ovito.data.ParticleProperty"><code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code></a> 
+instances stored in this <code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.data.DataCollection.remove">
+<code class="descname">remove</code><span class="sig-paren">(</span><em>obj</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.DataCollection.remove" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes a <a class="reference internal" href="#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">DataObject</span></code></a> from the <code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code>.</p>
+<p>The method will do nothing if the data object is not part of the collection.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.data.DataCollection.replace">
+<code class="descname">replace</code><span class="sig-paren">(</span><em>old_obj</em>, <em>new_obj</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.DataCollection.replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replaces a <a class="reference internal" href="#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">DataObject</span></code></a> in the <code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code> with a different one.</p>
+<p>The method will do nothing if the data object to be replaced is not part of the collection.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.DataCollection.surface">
+<code class="descname">surface</code><a class="headerlink" href="#ovito.data.DataCollection.surface" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the <a class="reference internal" href="#ovito.data.SurfaceMesh" title="ovito.data.SurfaceMesh"><code class="xref py py-class docutils literal"><span class="pre">SurfaceMesh</span></code></a> in this <code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code>.</p>
+<p>Accessing this property raises an <code class="docutils literal"><span class="pre">AttributeError</span></code> if the data collection
+contains no surface mesh instance.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.data.DataCollection.to_ase_atoms">
+<code class="descname">to_ase_atoms</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.DataCollection.to_ase_atoms" title="Permalink to this definition">¶</a></dt>
+<dd><p>Constructs and returns an <a class="reference external" href="https://wiki.fysik.dtu.dk/ase/ase/atoms.html">ASE Atoms object</a> from the particles
+stored in this <code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code>.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Calling this method raises an ImportError if ASE (<a class="reference external" href="https://wiki.fysik.dtu.dk/ase/">Atomistic Simulation Environment</a>) is not available. Note that the built-in
+Python interpreter shipping with OVITO does <em>not</em> contain the ASE module.
+It is therefore recommended to build OVITO from source (as explained in the user manual),
+which will allow you to use all modules installed in the system&#8217;s Python interpreter.</p>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A new <a class="reference external" href="https://wiki.fysik.dtu.dk/ase/ase/atoms.html">ASE Atoms object</a> that contains the
+contains the converted particle data from this <code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code>.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.data.DataObject">
+<em class="property">class </em><code class="descclassname">ovito.data.</code><code class="descname">DataObject</code><a class="headerlink" href="#ovito.data.DataObject" title="Permalink to this definition">¶</a></dt>
+<dd><p>Abstract base class for all data objects.</p>
+<p>Some data objects are associated with a <a class="reference internal" href="ovito_vis.html#ovito.vis.Display" title="ovito.vis.Display"><code class="xref py py-class docutils literal"><span class="pre">Display</span></code></a> object, which is responsible for displaying the data in the viewports and in rendered images. The <a class="reference internal" href="#ovito.data.DataObject.display" title="ovito.data.DataObject.display"><code class="xref py py-attr docutils literal"><span class="pre">display</span></code></a> attribute provides access to the attached display object and allows controlling the visual appearance of the data.</p>
+<dl class="attribute">
+<dt id="ovito.data.DataObject.display">
+<code class="descname">display</code><a class="headerlink" href="#ovito.data.DataObject.display" title="Permalink to this definition">¶</a></dt>
+<dd><p>The <a class="reference internal" href="ovito_vis.html#ovito.vis.Display" title="ovito.vis.Display"><code class="xref py py-class docutils literal"><span class="pre">Display</span></code></a> object associated with this data object, which is responsible for
+displaying the data. If this field is <code class="docutils literal"><span class="pre">None</span></code>, the data is non-visual.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.data.DislocationNetwork">
+<em class="property">class </em><code class="descclassname">ovito.data.</code><code class="descname">DislocationNetwork</code><a class="headerlink" href="#ovito.data.DislocationNetwork" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Base class:</th><td class="field-body"><a class="reference internal" href="#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">ovito.data.DataObject</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>This data object types stores the network of dislocation lines extracted by a <a class="reference internal" href="ovito_modifiers.html#ovito.modifiers.DislocationAnalysisModifier" title="ovito.modifiers.DislocationAnalysisModifier"><code class="xref py py-class docutils literal"><span class="pre">DislocationAnalysisModifier</span></code></a>.</p>
+<p>Instances of this class are associated with a <a class="reference internal" href="ovito_vis.html#ovito.vis.DislocationDisplay" title="ovito.vis.DislocationDisplay"><code class="xref py py-class docutils literal"><span class="pre">DislocationDisplay</span></code></a> that controls the visual appearance of the dislocation lines. It can be accessed through the <a class="reference internal" href="#ovito.data.DataObject.display" title="ovito.data.DataObject.display"><code class="xref py py-attr docutils literal"><span class="pre">display</span></code></a> attribute of the <a class="reference internal" href="#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">DataObject</span></code></a> base class.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="n">import_file</span>
+<span class="kn">from</span> <span class="nn">ovito.modifiers</span> <span class="kn">import</span> <span class="n">DislocationAnalysisModifier</span>
+
+<span class="c"># Extract dislocation lines from the crystal:</span>
+<span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&quot;simulation.dump&quot;</span><span class="p">)</span>
+<span class="n">modifier</span> <span class="o">=</span>  <span class="n">DislocationAnalysisModifier</span><span class="p">()</span>
+<span class="n">modifier</span><span class="o">.</span><span class="n">input_crystal_structure</span> <span class="o">=</span> <span class="n">DislocationAnalysisModifier</span><span class="o">.</span><span class="n">Lattice</span><span class="o">.</span><span class="n">CubicDiamond</span>
+<span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">modifier</span><span class="p">)</span>
+<span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="c"># Print list of dislocation lines:</span>
+<span class="n">network</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">dislocations</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Found </span><span class="si">%i</span><span class="s"> dislocation segments&quot;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">segments</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">segment</span> <span class="ow">in</span> <span class="n">network</span><span class="o">.</span><span class="n">segments</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Segment </span><span class="si">%i</span><span class="s">: length=</span><span class="si">%f</span><span class="s">, Burgers vector=</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">segment</span><span class="o">.</span><span class="n">length</span><span class="p">,</span> <span class="n">segment</span><span class="o">.</span><span class="n">true_burgers_vector</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">segment</span><span class="o">.</span><span class="n">points</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="ovito.data.DislocationNetwork.segments">
+<code class="descname">segments</code><a class="headerlink" href="#ovito.data.DislocationNetwork.segments" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list of dislocation segments in this dislocation network. This list-like object is read-only and contains <a class="reference internal" href="#ovito.data.DislocationSegment" title="ovito.data.DislocationSegment"><code class="xref py py-class docutils literal"><span class="pre">DislocationSegment</span></code></a> objects.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.data.DislocationSegment">
+<em class="property">class </em><code class="descclassname">ovito.data.</code><code class="descname">DislocationSegment</code><a class="headerlink" href="#ovito.data.DislocationSegment" title="Permalink to this definition">¶</a></dt>
+<dd><p>A single dislocation line from a <a class="reference internal" href="#ovito.data.DislocationNetwork" title="ovito.data.DislocationNetwork"><code class="xref py py-class docutils literal"><span class="pre">DislocationNetwork</span></code></a>.</p>
+<p>The list of dislocation segments is returned by the <a class="reference internal" href="#ovito.data.DislocationNetwork.segments" title="ovito.data.DislocationNetwork.segments"><code class="xref py py-attr docutils literal"><span class="pre">DislocationNetwork.segments</span></code></a> attribute.</p>
+<dl class="attribute">
+<dt id="ovito.data.DislocationSegment.cluster_id">
+<code class="descname">cluster_id</code><a class="headerlink" href="#ovito.data.DislocationSegment.cluster_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The unique identifier of the cluster of crystal atoms that contains this dislocation segment.</p>
+<p>The Burgers vector of the segment is expressed in the local coordinate system of this atomic cluster.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.DislocationSegment.id">
+<code class="descname">id</code><a class="headerlink" href="#ovito.data.DislocationSegment.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The unique identifier of this dislocation segment.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.DislocationSegment.is_infinite_line">
+<code class="descname">is_infinite_line</code><a class="headerlink" href="#ovito.data.DislocationSegment.is_infinite_line" title="Permalink to this definition">¶</a></dt>
+<dd><p>This property indicates whether this segment is an infinite line passing through a periodic simulation box boundary. A segment is considered infinite if it is a closed loop and its start and end points do not coincide.</p>
+<p>See also the <a class="reference internal" href="#ovito.data.DislocationSegment.is_loop" title="ovito.data.DislocationSegment.is_loop"><code class="xref py py-attr docutils literal"><span class="pre">is_loop</span></code></a> property.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.DislocationSegment.is_loop">
+<code class="descname">is_loop</code><a class="headerlink" href="#ovito.data.DislocationSegment.is_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>This property indicates whether this segment forms a closed dislocation loop. Note that an infinite dislocation line passing through a periodic boundary is also considered a loop.</p>
+<p>See also the <a class="reference internal" href="#ovito.data.DislocationSegment.is_infinite_line" title="ovito.data.DislocationSegment.is_infinite_line"><code class="xref py py-attr docutils literal"><span class="pre">is_infinite_line</span></code></a> property.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.DislocationSegment.length">
+<code class="descname">length</code><a class="headerlink" href="#ovito.data.DislocationSegment.length" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the length of this dislocation segment.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.DislocationSegment.points">
+<code class="descname">points</code><a class="headerlink" href="#ovito.data.DislocationSegment.points" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list of points in space that define the shape of this dislocation segment.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.DislocationSegment.true_burgers_vector">
+<code class="descname">true_burgers_vector</code><a class="headerlink" href="#ovito.data.DislocationSegment.true_burgers_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>The Burgers vector of the segment, expressed in the local coordinate system of the crystal. Also known as the True Burgers vector.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.data.NearestNeighborFinder">
+<em class="property">class </em><code class="descclassname">ovito.data.</code><code class="descname">NearestNeighborFinder</code><span class="sig-paren">(</span><em>N</em>, <em>data_collection</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.NearestNeighborFinder" title="Permalink to this definition">¶</a></dt>
+<dd><p>A utility class that finds the <em>N</em> nearest neighbors of a particle.</p>
+<p>The constructor takes the number of requested nearest neighbors, <em>N</em>, and a <a class="reference internal" href="#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a> 
+containing the input particle positions and the cell geometry (including periodic boundary flags).
+<em>N</em> must be a positive integer not greater than 30 (which is the built-in maximum supported by this class).</p>
+<p>Once the <code class="xref py py-class docutils literal"><span class="pre">NearestNeighborFinder</span></code> has been constructed, you can call its <a class="reference internal" href="#ovito.data.NearestNeighborFinder.find" title="ovito.data.NearestNeighborFinder.find"><code class="xref py py-meth docutils literal"><span class="pre">find()</span></code></a> method to 
+iterate over the sorted list of nearest neighbors of a specific particle, for example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="n">import_file</span>
+<span class="kn">from</span> <span class="nn">ovito.data</span> <span class="kn">import</span> <span class="n">NearestNeighborFinder</span>
+
+<span class="c"># Load input simulation file.</span>
+<span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&quot;simulation.dump&quot;</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">source</span>
+
+<span class="c"># Initialize neighbor finder object.</span>
+<span class="c"># Visit the 12 nearest neighbors of each particle.</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">12</span>
+<span class="n">finder</span> <span class="o">=</span> <span class="n">NearestNeighborFinder</span><span class="p">(</span><span class="n">N</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="c"># Loop over all input particles:</span>
+<span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">number_of_particles</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Nearest neighbors of particle </span><span class="si">%i</span><span class="s">:&quot;</span> <span class="o">%</span> <span class="n">index</span><span class="p">)</span>
+    <span class="c"># Iterate over the neighbors of the current particle, starting with the closest:</span>
+    <span class="k">for</span> <span class="n">neigh</span> <span class="ow">in</span> <span class="n">finder</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">index</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">neigh</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">neigh</span><span class="o">.</span><span class="n">distance</span><span class="p">,</span> <span class="n">neigh</span><span class="o">.</span><span class="n">delta</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If you want to iterate over all neighbors within a certain cutoff radius of a central particle,
+use the <a class="reference internal" href="#ovito.data.CutoffNeighborFinder" title="ovito.data.CutoffNeighborFinder"><code class="xref py py-class docutils literal"><span class="pre">CutoffNeighborFinder</span></code></a> class instead.</p>
+<dl class="method">
+<dt id="ovito.data.NearestNeighborFinder.find">
+<code class="descname">find</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.NearestNeighborFinder.find" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an iterator that visits the <em>N</em> nearest neighbors of the given particle in order of ascending distance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>int</em>) &#8211; The index of the central particle whose neighbors should be iterated. Particle indices start at 0.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A Python iterator that visits the <em>N</em> nearest neighbors of the central particle in order of ascending distance. 
+For each visited neighbor the iterator returns an object with the following attributes:<blockquote>
+<div><ul class="simple">
+<li><strong>index</strong>: The index of the current neighbor particle (starting at 0).</li>
+<li><strong>distance</strong>: The distance of the current neighbor from the central particle.</li>
+<li><strong>distance_squared</strong>: The squared neighbor distance.</li>
+<li><strong>delta</strong>: The three-dimensional vector connecting the central particle with the current neighbor (taking into account periodicity).</li>
+</ul>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Note that several periodic images of the same particle may be visited. Thus, the same particle index may appear multiple times in the neighbor
+list of a central particle. In fact, the central particle may be among its own neighbors in a sufficiently small periodic simulation cell.
+However, the computed neighbor vector (<code class="docutils literal"><span class="pre">delta</span></code>) will be unique for each visited image of a neighboring particle.</p>
+<p>The number of neighbors actually visited may be smaller than the requested number, <em>N</em>, if the
+system contains too few particles and no periodic boundary conditions are used.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.data.ParticleProperty">
+<em class="property">class </em><code class="descclassname">ovito.data.</code><code class="descname">ParticleProperty</code><a class="headerlink" href="#ovito.data.ParticleProperty" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Base class:</th><td class="field-body"><a class="reference internal" href="#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">ovito.data.DataObject</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>A data object that stores the per-particle values of a particle property.</p>
+<p>The list of properties associated with a particle dataset can be access via the <a class="reference internal" href="#ovito.data.DataCollection.particle_properties" title="ovito.data.DataCollection.particle_properties"><code class="xref py py-attr docutils literal"><span class="pre">DataCollection.particle_properties</span></code></a> dictionary. The <a class="reference internal" href="#ovito.data.ParticleProperty.size" title="ovito.data.ParticleProperty.size"><code class="xref py py-attr docutils literal"><span class="pre">size</span></code></a> of a particle property is always equal to the number of particles in the dataset. The per-particle data of a property can be accessed as a NumPy array through the <a class="reference internal" href="#ovito.data.ParticleProperty.array" title="ovito.data.ParticleProperty.array"><code class="xref py py-attr docutils literal"><span class="pre">array</span></code></a> attribute.</p>
+<p>If you want to modify the property values, you have to use the <a class="reference internal" href="#ovito.data.ParticleProperty.marray" title="ovito.data.ParticleProperty.marray"><code class="xref py py-attr docutils literal"><span class="pre">marray</span></code></a> (<em>modifiable array</em>) attribute instead, which provides read/write access to the underlying per-particle data. After you are done modifying the property values, you should call <a class="reference internal" href="#ovito.data.ParticleProperty.changed" title="ovito.data.ParticleProperty.changed"><code class="xref py py-meth docutils literal"><span class="pre">changed()</span></code></a> to inform the system that it needs to update any state that depends on the data.</p>
+<dl class="attribute">
+<dt id="ovito.data.ParticleProperty.array">
+<code class="descname">array</code><a class="headerlink" href="#ovito.data.ParticleProperty.array" title="Permalink to this definition">¶</a></dt>
+<dd><p>This attribute returns a NumPy array, which provides read access to the per-particle data stored in this particle property object.</p>
+<p>The returned array is one-dimensional for scalar particle properties (<a class="reference internal" href="#ovito.data.ParticleProperty.components" title="ovito.data.ParticleProperty.components"><code class="xref py py-attr docutils literal"><span class="pre">components</span></code></a> == 1),
+or two-dimensional for vector properties (<a class="reference internal" href="#ovito.data.ParticleProperty.components" title="ovito.data.ParticleProperty.components"><code class="xref py py-attr docutils literal"><span class="pre">components</span></code></a> &gt; 1). The outer length of the array is 
+equal to the number of particles in both cases.</p>
+<p>Note that the returned NumPy array is read-only and provides a view of the internal data. 
+No copy of the data, which may be shared by multiple objects, is made. If you want to modify the 
+data stored in this particle property, use <a class="reference internal" href="#ovito.data.ParticleProperty.marray" title="ovito.data.ParticleProperty.marray"><code class="xref py py-attr docutils literal"><span class="pre">marray</span></code></a> instead.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.data.ParticleProperty.changed">
+<code class="descname">changed</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.ParticleProperty.changed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Informs the particle property object that its internal data has changed. This function must be called after each direct modification of the per-particle data through the <a class="reference internal" href="#ovito.data.ParticleProperty.marray" title="ovito.data.ParticleProperty.marray"><code class="xref py py-attr docutils literal"><span class="pre">marray</span></code></a> attribute.</p>
+<p>Calling this method on an input particle property is necessary to invalidate data caches down the modification pipeline. Forgetting to call this method may result in an incomplete re-evaluation of the modification pipeline. See <a class="reference internal" href="#ovito.data.ParticleProperty.marray" title="ovito.data.ParticleProperty.marray"><code class="xref py py-attr docutils literal"><span class="pre">marray</span></code></a> for more information.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.ParticleProperty.components">
+<code class="descname">components</code><a class="headerlink" href="#ovito.data.ParticleProperty.components" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of vector components (if this is a vector particle property); otherwise 1 (= scalar property).</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="ovito.data.ParticleProperty.create">
+<em class="property">static </em><code class="descname">create</code><span class="sig-paren">(</span><em>prop_type</em>, <em>num_particles</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.ParticleProperty.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static factory function that creates a new <code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code> instance for a standard particle property.
+To create a new user-defined property, use <a class="reference internal" href="#ovito.data.ParticleProperty.create_user" title="ovito.data.ParticleProperty.create_user"><code class="xref py py-meth docutils literal"><span class="pre">create_user()</span></code></a> instead.</p>
+<p>Note that this factory function is a low-level method. If you want to add a new 
+particle property to an existing <a class="reference internal" href="#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a>, you can do so using the high-level method  
+<a class="reference internal" href="#ovito.data.DataCollection.create_particle_property" title="ovito.data.DataCollection.create_particle_property"><code class="xref py py-meth docutils literal"><span class="pre">create_particle_property()</span></code></a> instead.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>prop_type</strong> (<em>ParticleProperty.Type</em>) &#8211; The standard particle property to create. See the <a class="reference internal" href="#ovito.data.ParticleProperty.type" title="ovito.data.ParticleProperty.type"><code class="xref py py-attr docutils literal"><span class="pre">type</span></code></a> attribute for a list of possible values.</li>
+<li><strong>num_particles</strong> (<em>int</em>) &#8211; The number of particles. This determines the size of the allocated data array.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A newly created instance of the <code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code> class or one of its sub-classes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="ovito.data.ParticleProperty.create_user">
+<em class="property">static </em><code class="descname">create_user</code><span class="sig-paren">(</span><em>name</em>, <em>data_type</em>, <em>num_particles</em>, <em>num_components=1</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.ParticleProperty.create_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Static factory function that creates a new <code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code> instance for a user-defined particle property.
+To create one of the standard properties, use <a class="reference internal" href="#ovito.data.ParticleProperty.create" title="ovito.data.ParticleProperty.create"><code class="xref py py-meth docutils literal"><span class="pre">create()</span></code></a> instead.</p>
+<p>Note that this factory function is a low-level method. If you want to add a new user-defined 
+particle property to an existing <a class="reference internal" href="#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a>, you can do so using the high-level method 
+<a class="reference internal" href="#ovito.data.DataCollection.create_user_particle_property" title="ovito.data.DataCollection.create_user_particle_property"><code class="xref py py-meth docutils literal"><span class="pre">create_user_particle_property()</span></code></a> instead.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>str</em>) &#8211; The name of the user-defined particle property to create.</li>
+<li><strong>data_type</strong> (<em>str</em>) &#8211; Must be either <code class="docutils literal"><span class="pre">&quot;int&quot;</span></code> or <code class="docutils literal"><span class="pre">&quot;float&quot;</span></code>.</li>
+<li><strong>num_particles</strong> (<em>int</em>) &#8211; The number of particles. This determines the size of the allocated data array.</li>
+<li><strong>num_components</strong> (<em>int</em>) &#8211; The number of components when creating a vector property.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A newly created instance of the <code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code> class.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.ParticleProperty.marray">
+<code class="descname">marray</code><a class="headerlink" href="#ovito.data.ParticleProperty.marray" title="Permalink to this definition">¶</a></dt>
+<dd><p>This attribute returns a <em>mutable</em> NumPy array providing read/write access to the internal per-particle data.</p>
+<p>The returned array is one-dimensional for scalar particle properties (<a class="reference internal" href="#ovito.data.ParticleProperty.components" title="ovito.data.ParticleProperty.components"><code class="xref py py-attr docutils literal"><span class="pre">components</span></code></a> == 1),
+or two-dimensional for vector properties (<a class="reference internal" href="#ovito.data.ParticleProperty.components" title="ovito.data.ParticleProperty.components"><code class="xref py py-attr docutils literal"><span class="pre">components</span></code></a> &gt; 1). The outer length of the array is 
+equal to the number of particles in both cases.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">After you are done modifying the data in the returned NumPy array, you must call
+<a class="reference internal" href="#ovito.data.ParticleProperty.changed" title="ovito.data.ParticleProperty.changed"><code class="xref py py-meth docutils literal"><span class="pre">changed()</span></code></a>! Calling this method is necessary to inform the data pipeline system
+that the input particle data has changed and the modification pipeline needs to be re-evaluated.
+The reason is that OVITO cannot automatically detect modifications made by the script to 
+the returned NumPy array. Therefore, an explicit call to <a class="reference internal" href="#ovito.data.ParticleProperty.changed" title="ovito.data.ParticleProperty.changed"><code class="xref py py-meth docutils literal"><span class="pre">changed()</span></code></a> is necessary.</p>
+</div>
+<p><strong>Example</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="n">import_file</span>
+<span class="kn">from</span> <span class="nn">ovito.modifiers</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Load a simulation file.</span>
+<span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&#39;simulation.dump&#39;</span><span class="p">)</span>
+<span class="c"># Set up modification pipeline, which selects and deletes all particle of type 2.</span>
+<span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">SelectParticleTypeModifier</span><span class="p">(</span><span class="nb">property</span><span class="o">=</span><span class="s">&#39;Particle Type&#39;</span><span class="p">,</span> <span class="n">types</span><span class="o">=</span><span class="p">{</span><span class="mi">2</span><span class="p">}))</span>
+<span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">DeleteSelectedParticlesModifier</span><span class="p">())</span>
+
+<span class="c"># Evaluate modification pipeline the first time.</span>
+<span class="n">output1</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&#39;Number of remaining particles: &#39;</span><span class="p">,</span> <span class="n">output1</span><span class="o">.</span><span class="n">number_of_particles</span><span class="p">)</span>
+
+<span class="c"># Modify pipeline input by changing the type of the first particle to 2.</span>
+<span class="n">node</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">particle_properties</span><span class="o">.</span><span class="n">particle_type</span><span class="o">.</span><span class="n">marray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+
+<span class="c"># Inform pipeline that input has changed.</span>
+<span class="c"># Failing to do so would lead to incorrect results below. OVITO would assume the </span>
+<span class="c"># cached pipeline output is  still valid and wouldn&#39;t re-evaluate the modifiers.</span>
+<span class="n">node</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">particle_properties</span><span class="o">.</span><span class="n">particle_type</span><span class="o">.</span><span class="n">changed</span><span class="p">()</span>
+
+<span class="c"># Evaluate modification pipeline a second time.</span>
+<span class="c"># Note that compute() may return cached results if it thinks the </span>
+<span class="c"># pipeline&#39;s input hasn&#39;t changed since the last call.</span>
+<span class="n">output2</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&#39;Number of remaining particles: &#39;</span><span class="p">,</span> <span class="n">output2</span><span class="o">.</span><span class="n">number_of_particles</span><span class="p">)</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">output2</span><span class="o">.</span><span class="n">number_of_particles</span> <span class="o">==</span> <span class="n">output1</span><span class="o">.</span><span class="n">number_of_particles</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.ParticleProperty.name">
+<code class="descname">name</code><a class="headerlink" href="#ovito.data.ParticleProperty.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The human-readable name of this particle property.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.ParticleProperty.size">
+<code class="descname">size</code><a class="headerlink" href="#ovito.data.ParticleProperty.size" title="Permalink to this definition">¶</a></dt>
+<dd><p>The number of particles.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.ParticleProperty.type">
+<code class="descname">type</code><a class="headerlink" href="#ovito.data.ParticleProperty.type" title="Permalink to this definition">¶</a></dt>
+<dd><p id="particle-types-list">The type of the particle property (user-defined or one of the standard types).
+One of the following constants:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="47%" />
+<col width="44%" />
+<col width="9%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Type constant</th>
+<th class="head">Property name</th>
+<th class="head">Data type</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.User</span></code></td>
+<td>(a user-defined property with a non-standard name)</td>
+<td>int/float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.ParticleType</span></code></td>
+<td><em class="guilabel">Particle Type</em></td>
+<td>int</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Position</span></code></td>
+<td><em class="guilabel">Position</em></td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Selection</span></code></td>
+<td><em class="guilabel">Selection</em></td>
+<td>int</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Color</span></code></td>
+<td><em class="guilabel">Color</em></td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Displacement</span></code></td>
+<td><em class="guilabel">Displacement</em></td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.DisplacementMagnitude</span></code></td>
+<td><em class="guilabel">Displacement Magnitude</em></td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.PotentialEnergy</span></code></td>
+<td><em class="guilabel">Potential Energy</em></td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.KineticEnergy</span></code></td>
+<td><em class="guilabel">Kinetic Energy</em></td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.TotalEnergy</span></code></td>
+<td><em class="guilabel">Total Energy</em></td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Velocity</span></code></td>
+<td><em class="guilabel">Velocity</em></td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Radius</span></code></td>
+<td><em class="guilabel">Radius</em></td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Cluster</span></code></td>
+<td><em class="guilabel">Cluster</em></td>
+<td>int</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Coordination</span></code></td>
+<td><em class="guilabel">Coordination</em></td>
+<td>int</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.StructureType</span></code></td>
+<td><em class="guilabel">Structure Type</em></td>
+<td>int</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Identifier</span></code></td>
+<td><em class="guilabel">Particle Identifier</em></td>
+<td>int</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.StressTensor</span></code></td>
+<td><em class="guilabel">Stress Tensor</em></td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.StrainTensor</span></code></td>
+<td><em class="guilabel">Strain Tensor</em></td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.DeformationGradient</span></code></td>
+<td><em class="guilabel">Deformation Gradient</em></td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Orientation</span></code></td>
+<td><em class="guilabel">Orientation</em></td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Force</span></code></td>
+<td><em class="guilabel">Force</em></td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Mass</span></code></td>
+<td><em class="guilabel">Mass</em></td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Charge</span></code></td>
+<td><em class="guilabel">Charge</em></td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.PeriodicImage</span></code></td>
+<td><em class="guilabel">Periodic Image</em></td>
+<td>int</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Transparency</span></code></td>
+<td><em class="guilabel">Transparency</em></td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.DipoleOrientation</span></code></td>
+<td><em class="guilabel">Dipole Orientation</em></td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.DipoleMagnitude</span></code></td>
+<td><em class="guilabel">Dipole Magnitude</em></td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.AngularVelocity</span></code></td>
+<td><em class="guilabel">Angular Velocity</em></td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.AngularMomentum</span></code></td>
+<td><em class="guilabel">Angular Momentum</em></td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Torque</span></code></td>
+<td><em class="guilabel">Torque</em></td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Spin</span></code></td>
+<td><em class="guilabel">Spin</em></td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.CentroSymmetry</span></code></td>
+<td><em class="guilabel">Centrosymmetry</em></td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.VelocityMagnitude</span></code></td>
+<td><em class="guilabel">Velocity Magnitude</em></td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.Molecule</span></code></td>
+<td><em class="guilabel">Molecule Identifier</em></td>
+<td>int</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.AsphericalShape</span></code></td>
+<td><em class="guilabel">Aspherical Shape</em></td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">ParticleProperty.Type.VectorColor</span></code></td>
+<td><em class="guilabel">Vector Color</em></td>
+<td>float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.data.ParticleType">
+<em class="property">class </em><code class="descclassname">ovito.data.</code><code class="descname">ParticleType</code><a class="headerlink" href="#ovito.data.ParticleType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stores the properties of a particle type or atom type.</p>
+<p>The list of particle types is stored in the <a class="reference internal" href="#ovito.data.ParticleTypeProperty" title="ovito.data.ParticleTypeProperty"><code class="xref py py-class docutils literal"><span class="pre">ParticleTypeProperty</span></code></a> class.</p>
+<dl class="attribute">
+<dt id="ovito.data.ParticleType.color">
+<code class="descname">color</code><a class="headerlink" href="#ovito.data.ParticleType.color" title="Permalink to this definition">¶</a></dt>
+<dd><p>The display color to use for particles of this type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.ParticleType.id">
+<code class="descname">id</code><a class="headerlink" href="#ovito.data.ParticleType.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>The identifier of the particle type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.ParticleType.name">
+<code class="descname">name</code><a class="headerlink" href="#ovito.data.ParticleType.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The display name of this particle type.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.ParticleType.radius">
+<code class="descname">radius</code><a class="headerlink" href="#ovito.data.ParticleType.radius" title="Permalink to this definition">¶</a></dt>
+<dd><p>The display radius to use for particles of this type.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.data.ParticleTypeProperty">
+<em class="property">class </em><code class="descclassname">ovito.data.</code><code class="descname">ParticleTypeProperty</code><a class="headerlink" href="#ovito.data.ParticleTypeProperty" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Base class:</th><td class="field-body"><a class="reference internal" href="#ovito.data.ParticleProperty" title="ovito.data.ParticleProperty"><code class="xref py py-class docutils literal"><span class="pre">ovito.data.ParticleProperty</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>A special <a class="reference internal" href="#ovito.data.ParticleProperty" title="ovito.data.ParticleProperty"><code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code></a> that stores a list of <a class="reference internal" href="#ovito.data.ParticleType" title="ovito.data.ParticleType"><code class="xref py py-class docutils literal"><span class="pre">ParticleType</span></code></a> instances in addition to the per-particle values.</p>
+<p>The particle properties <code class="docutils literal"><span class="pre">Particle</span> <span class="pre">Type</span></code> and <code class="docutils literal"><span class="pre">Structure</span> <span class="pre">Type</span></code> are represented by instances of this class. In addition to the regular per-particle data (consisting of an integer per particle, indicating its type ID), this class holds the list of defined particle types. These are <a class="reference internal" href="#ovito.data.ParticleType" title="ovito.data.ParticleType"><code class="xref py py-class docutils literal"><span class="pre">ParticleType</span></code></a> instances, which store the ID, name, color, and radius of each particle type.</p>
+<dl class="attribute">
+<dt id="ovito.data.ParticleTypeProperty.type_list">
+<code class="descname">type_list</code><a class="headerlink" href="#ovito.data.ParticleTypeProperty.type_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>A mutable list of <a class="reference internal" href="#ovito.data.ParticleType" title="ovito.data.ParticleType"><code class="xref py py-class docutils literal"><span class="pre">ParticleType</span></code></a> instances.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.data.SimulationCell">
+<em class="property">class </em><code class="descclassname">ovito.data.</code><code class="descname">SimulationCell</code><a class="headerlink" href="#ovito.data.SimulationCell" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Base class:</th><td class="field-body"><a class="reference internal" href="#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">ovito.data.DataObject</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>Stores the geometry and the boundary conditions of the simulation cell.</p>
+<p>Each instance of this class is associated with a corresponding <a class="reference internal" href="ovito_vis.html#ovito.vis.SimulationCellDisplay" title="ovito.vis.SimulationCellDisplay"><code class="xref py py-class docutils literal"><span class="pre">SimulationCellDisplay</span></code></a> that controls the visual appearance of the simulation cell. It can be accessed through the <a class="reference internal" href="#ovito.data.DataObject.display" title="ovito.data.DataObject.display"><code class="xref py py-attr docutils literal"><span class="pre">display</span></code></a> attribute of the <code class="xref py py-class docutils literal"><span class="pre">SimulationCell</span></code> object, which is defined by the <a class="reference internal" href="#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">DataObject</span></code></a> base class.</p>
+<p>The simulation cell of a particle dataset can be accessed via the <a class="reference internal" href="#ovito.data.DataCollection.cell" title="ovito.data.DataCollection.cell"><code class="xref py py-attr docutils literal"><span class="pre">DataCollection.cell</span></code></a> property.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="n">import_file</span>
+<span class="kn">import</span> <span class="nn">numpy.linalg</span>
+
+<span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&quot;simulation.dump&quot;</span><span class="p">)</span>
+<span class="n">cell</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">cell</span>
+
+<span class="c"># Compute simulation cell volume by taking the determinant of the</span>
+<span class="c"># left 3x3 submatrix:</span>
+<span class="n">volume</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">cell</span><span class="o">.</span><span class="n">matrix</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]))</span>
+
+<span class="c"># Make cell twice as large along the Y direction by scaling the</span>
+<span class="c"># second cell vector.</span>
+<span class="n">mat</span> <span class="o">=</span> <span class="n">cell</span><span class="o">.</span><span class="n">matrix</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">mat</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">mat</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="mf">2.0</span>
+<span class="n">cell</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">mat</span>
+
+<span class="c"># Change color of simulation cell to red:</span>
+<span class="n">cell</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">rendering_color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="attribute">
+<dt id="ovito.data.SimulationCell.is2D">
+<code class="descname">is2D</code><a class="headerlink" href="#ovito.data.SimulationCell.is2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specifies whether the system is two-dimensional (true) or three-dimensional (false). For two-dimensional systems the PBC flag in the third direction (z) is ignored.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Default:</th><td class="field-body"><code class="docutils literal"><span class="pre">false</span></code></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.SimulationCell.matrix">
+<code class="descname">matrix</code><a class="headerlink" href="#ovito.data.SimulationCell.matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>A 3x4 matrix containing the three edge vectors of the cell (matrix columns 0 to 2)
+and the cell origin (matrix column 3).</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="ovito.data.SimulationCell.pbc">
+<code class="descname">pbc</code><a class="headerlink" href="#ovito.data.SimulationCell.pbc" title="Permalink to this definition">¶</a></dt>
+<dd><p>A tuple with three boolean values, which specify periodic boundary flags of the simulation cell along each cell vector.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="ovito.data.SurfaceMesh">
+<em class="property">class </em><code class="descclassname">ovito.data.</code><code class="descname">SurfaceMesh</code><a class="headerlink" href="#ovito.data.SurfaceMesh" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Base class:</th><td class="field-body"><a class="reference internal" href="#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">ovito.data.DataObject</span></code></a></td>
+</tr>
+</tbody>
+</table>
+<p>This data object stores the surface mesh computed by a <a class="reference internal" href="ovito_modifiers.html#ovito.modifiers.ConstructSurfaceModifier" title="ovito.modifiers.ConstructSurfaceModifier"><code class="xref py py-class docutils literal"><span class="pre">ConstructSurfaceModifier</span></code></a>.</p>
+<p>Currently, no direct script access to the vertices and faces of the mesh is possible. But you can export the mesh to a VTK text file, which can be further processed by external tools such as ParaView.</p>
+<p>The visual appearance of the surface mesh within Ovito is controlled by its attached <a class="reference internal" href="ovito_vis.html#ovito.vis.SurfaceMeshDisplay" title="ovito.vis.SurfaceMeshDisplay"><code class="xref py py-class docutils literal"><span class="pre">SurfaceMeshDisplay</span></code></a> instance, which is accessible through the <a class="reference internal" href="#ovito.data.DataObject.display" title="ovito.data.DataObject.display"><code class="xref py py-attr docutils literal"><span class="pre">display</span></code></a> attribute of the <a class="reference internal" href="#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">DataObject</span></code></a> base class or through the <a class="reference internal" href="ovito_modifiers.html#ovito.modifiers.ConstructSurfaceModifier.mesh_display" title="ovito.modifiers.ConstructSurfaceModifier.mesh_display"><code class="xref py py-attr docutils literal"><span class="pre">mesh_display</span></code></a> attribute of the <a class="reference internal" href="ovito_modifiers.html#ovito.modifiers.ConstructSurfaceModifier" title="ovito.modifiers.ConstructSurfaceModifier"><code class="xref py py-class docutils literal"><span class="pre">ConstructSurfaceModifier</span></code></a> that created the surface mesh.</p>
+<p>Example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="n">import_file</span>
+<span class="kn">from</span> <span class="nn">ovito.modifiers</span> <span class="kn">import</span> <span class="n">ConstructSurfaceModifier</span>
+
+<span class="c"># Load a particle structure and construct its surface mesh:</span>
+<span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&quot;simulation.dump&quot;</span><span class="p">)</span>
+<span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ConstructSurfaceModifier</span><span class="p">(</span><span class="n">radius</span> <span class="o">=</span> <span class="mf">2.8</span><span class="p">))</span>
+<span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="c"># Access the computed surface mesh and export it to VTK files for </span>
+<span class="c"># visualization with ParaView.</span>
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">surface</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">export_vtk</span><span class="p">(</span><span class="s">&#39;surface.vtk&#39;</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span>
+<span class="n">mesh</span><span class="o">.</span><span class="n">export_cap_vtk</span><span class="p">(</span><span class="s">&#39;surface_cap.vtk&#39;</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="method">
+<dt id="ovito.data.SurfaceMesh.export_cap_vtk">
+<code class="descname">export_cap_vtk</code><span class="sig-paren">(</span><em>filename</em>, <em>cell</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.SurfaceMesh.export_cap_vtk" title="Permalink to this definition">¶</a></dt>
+<dd><p>If the surface mesh has been generated from a <a class="reference internal" href="#ovito.data.SimulationCell" title="ovito.data.SimulationCell"><code class="xref py py-class docutils literal"><span class="pre">SimulationCell</span></code></a> with periodic boundary conditions, then this method computes the cap polygons from the intersection of the surface mesh with the periodic cell boundaries. The cap polygons are written to a VTK file, which is a simple text-based format and which can be opened with the software ParaView.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ovito.data.SurfaceMesh.export_vtk">
+<code class="descname">export_vtk</code><span class="sig-paren">(</span><em>filename</em>, <em>cell</em><span class="sig-paren">)</span><a class="headerlink" href="#ovito.data.SurfaceMesh.export_vtk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Writes the surface mesh to a VTK file, which is a simple text-based format and which can be opened with the software ParaView. The method takes the output filename and a <a class="reference internal" href="#ovito.data.SimulationCell" title="ovito.data.SimulationCell"><code class="xref py py-class docutils literal"><span class="pre">SimulationCell</span></code></a> object as input. The simulation cell information is needed by the method to generate a non-periodic version of the mesh, which is truncated at the periodic boundaries of the simulation cell (if it has any).</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/running.html">Running scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/file_io.html">File I/O</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/modifiers.html">Modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/particle_properties.html">Particle properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/rendering.html">Rendering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/custom_modifiers.html">Writing new modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduction/examples.html">Examples</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ovito.html"><code class="docutils literal"><span class="pre">ovito</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_anim.html"><code class="docutils literal"><span class="pre">ovito.anim</span></code></a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href=""><code class="docutils literal"><span class="pre">ovito.data</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_io.html"><code class="docutils literal"><span class="pre">ovito.io</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_modifiers.html"><code class="docutils literal"><span class="pre">ovito.modifiers</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="ovito_vis.html"><code class="docutils literal"><span class="pre">ovito.vis</span></code></a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ovito_io.html" title="ovito.io"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ovito_anim.html" title="ovito.anim"
+             >previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Alexander Stukowski.
+    </div>
+  </body>
+</html>

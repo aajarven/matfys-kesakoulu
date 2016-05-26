@@ -1,0 +1,70 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Color coding</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="particles.modifiers.html" title="Modifiers"><link rel="prev" href="particles.modifiers.cluster_analysis.html" title="Cluster analysis"><link rel="next" href="particles.modifiers.common_neighbor_analysis.html" title="Common neighbor analysis"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Color coding</th><td width="20%" align="right"><a accesskey="u" href="particles.modifiers.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="particles.modifiers.cluster_analysis.html">Prev</a> </td><th width="60%" align="center">Modifiers</th><td width="20%" align="right"> <a accesskey="n" href="particles.modifiers.common_neighbor_analysis.html">Next</a></td></tr></table></div><div class="section" id="particles.modifiers.color_coding"><div class="titlepage"><div><div><h3 class="title">Color coding</h3></div></div></div>
+  
+
+  <p>
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/modifiers/color_coding_panel.png"></div></div></div><p>
+  
+    This modifier colors particles based on one of their properties. It can be used to visualize
+    per-particle quantities.
+  </p>
+  
+  <p>
+    The per-particle values of the selected property are first mapped and clamped to the unit interval [0,1] according to the
+    <span class="emphasis"><em>Start value</em></span> and <span class="emphasis"><em>End value</em></span>
+    parameters of the modifier. The normalized values are then mapped to a corresponding particle color using the selected 
+    color gradient map.
+  </p>
+
+  <p>
+    The <span class="guibutton">Adjust range</span> button resets the <span class="emphasis"><em>Start value</em></span> and
+    <span class="emphasis"><em>End value</em></span> parameters to the minimum and maximum values
+    of the selected particle property. This ensures that no clamping occurs
+    when values are mapped to a color. The <span class="guibutton">Reverse range</span> button
+    swaps the <span class="emphasis"><em>Start value</em></span> and <span class="emphasis"><em>End
+    value</em></span> parameters to effectively reverse the color scale.
+  </p>
+
+  <div class="simplesect" id="idp735872"><div class="titlepage"><div><div><h4 class="title">Custom color maps</h4></div></div></div>
+    
+    <p>
+      The modifier provides a set of predefined color maps that you can choose from. If you want to define your
+      own color scale, select <span class="guilabel">Load custom color map...</span> from the gradient list box. 
+      The program will then ask you to pick an image file which contains the colors of you custom color map. 
+      With this feature you can import arbitrary color maps into OVITO by preparing a
+      corresponding image with an external image editor. OVITO uses the colors along one row of 
+      pixels of the image to generate a user-defined color map. Here are two example color map images:
+        </p><div class="screenshot"><div class="mediaobject"><img src="images/modifiers/color_coding_custom_map.png"></div></div><p>
+        </p><div class="screenshot"><div class="mediaobject"><img src="images/modifiers/color_coding_custom_map2.png"></div></div><p>
+    </p>
+  </div>
+
+  <div class="simplesect" id="idp741424"><div class="titlepage"><div><div><h4 class="title">Color legend</h4></div></div></div>
+    
+    <p>
+       You can insert a color legend into rendered images and videos by adding a 
+       <a class="link" href="viewport_overlays.html" title="Viewport overlays"><span class="guilabel">Color legend</span></a> overlay to the active viewport.
+    </p>
+  </div>
+
+
+  <div class="simplesect" id="idp743664"><div class="titlepage"><div><div><h4 class="title">Parameters</h4></div></div></div>
+    
+
+    <div class="variablelist"><dl class="variablelist"><dt><span class="term">Property</span></dt><dd>
+          <p>The input particle property to be used for color mapping.</p>
+        </dd><dt><span class="term">Color gradient</span></dt><dd>
+          <p>The type of color map to use.</p>
+        </dd><dt><span class="term">Start &amp; end value</span></dt><dd>
+          <p>Controls the source range for the linear mapping of particle values to the [0,1] unit interval.</p>
+        </dd><dt><span class="term">Color only selected particles</span></dt><dd>
+          <p>This option restricts the assignment of colors to selected particles. 
+          The existing colors of unselected particles will be preserved.</p>
+        </dd><dt><span class="term">Keep particles selected</span></dt><dd>
+          <p>OVITO uses a red color by default to highlight selected particles.
+  Since this highlighting would mask the actual color assigned by this
+  modifier, the modifier clears the current selection by default. 
+  If you need to preserve the selection for further use down the pipeline, you can suppress this behavior
+  by checking this option.</p>
+        </dd></dl></div>
+  </div>
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="particles.modifiers.cluster_analysis.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="particles.modifiers.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="particles.modifiers.common_neighbor_analysis.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Cluster analysis </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Common neighbor analysis</td></tr></table></div></body></html>

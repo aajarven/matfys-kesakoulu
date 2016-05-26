@@ -1,0 +1,376 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Examples &mdash; OVITO 2.6.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/rtd.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.6.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/ovito.ico"/>
+    <link rel="top" title="OVITO 2.6.2 documentation" href="../index.html" />
+    <link rel="next" title="ovito" href="../modules/ovito.html" />
+    <link rel="prev" title="Writing new modifiers" href="custom_modifiers.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../modules/ovito.html" title="ovito"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="custom_modifiers.html" title="Writing new modifiers"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<p>This page provides a collection of example scripts:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference internal" href="#example-compute-voronoi-indices"><em>Computing Voronoi indices</em></a></li>
+<li><a class="reference internal" href="#example-compute-cna-bond-indices"><em>Computing CNA bond indices</em></a></li>
+<li><a class="reference internal" href="#example-creating-particles-programmatically"><em>Creating particles programmatically</em></a></li>
+</ul>
+</div></blockquote>
+<div class="section" id="computing-voronoi-indices">
+<span id="example-compute-voronoi-indices"></span><h2>Computing Voronoi indices<a class="headerlink" href="#computing-voronoi-indices" title="Permalink to this headline">¶</a></h2>
+<p>This script demonstrates the use of the Voronoi analysis modifier.
+The script calculates the distribution of Voronoi coordination polyhedra in an amorphous structure.</p>
+<p>A Voronoi polyhedron is expressed in terms of the Schlaefli notation,
+which is a vector of indices (n<sub>1</sub>, n<sub>2</sub>, n<sub>3</sub>, n<sub>4</sub>, n<sub>5</sub>, n<sub>6</sub>, ...),
+where n<sub>i</sub> is the number of polyhedron faces with <em>i</em> edges/vertices.</p>
+<p>The script computes the distribution of these Voronoi index vectors
+and lists the 10 most frequent polyhedron types in the dataset. In the case
+of a Cu<sub>64%</sub>-Zr<sub>36%</sub> bulk metallic glass, the most frequent polyhedron type is the icosahedron.
+It has 12 faces with five edges each. Thus, the corresponding Voronoi index
+vector is:</p>
+<blockquote>
+<div>(0, 0, 0, 0, 12, 0, ...)</div></blockquote>
+<p>Python script:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Import OVITO modules.</span>
+<span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">ovito.modifiers</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Import NumPy module.</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="c"># Load a simulation snapshot of a Cu-Zr metallic glass.</span>
+<span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&quot;../data/CuZr_metallic_glass.dump.gz&quot;</span><span class="p">)</span>
+
+<span class="c"># Set atomic radii (required for polydisperse Voronoi tessellation).</span>
+<span class="n">atypes</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">particle_properties</span><span class="o">.</span><span class="n">particle_type</span><span class="o">.</span><span class="n">type_list</span>
+<span class="n">atypes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="mf">1.35</span>        <span class="c"># Cu atomic radius (atom type 1 in input file)</span>
+<span class="n">atypes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">radius</span> <span class="o">=</span> <span class="mf">1.55</span>        <span class="c"># Zr atomic radius (atom type 2 in input file)</span>
+
+<span class="c"># Set up the Voronoi analysis modifier.</span>
+<span class="n">voro</span> <span class="o">=</span> <span class="n">VoronoiAnalysisModifier</span><span class="p">(</span>
+    <span class="n">compute_indices</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="n">use_radii</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
+    <span class="n">edge_count</span> <span class="o">=</span> <span class="mi">6</span><span class="p">,</span> <span class="c"># Length after which Voronoi index vectors are truncated</span>
+    <span class="n">edge_threshold</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="p">)</span>
+<span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">voro</span><span class="p">)</span>
+                      
+<span class="c"># Let OVITO compute the results.</span>
+<span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="c"># Make sure we did not lose information due to truncated Voronoi index vectors.</span>
+<span class="k">if</span> <span class="n">voro</span><span class="o">.</span><span class="n">max_face_order</span> <span class="o">&gt;</span> <span class="n">voro</span><span class="o">.</span><span class="n">edge_count</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;Warning: Maximum face order in Voronoi tessellation is {0}, &quot;</span>
+          <span class="s">&quot;but computed Voronoi indices are truncated after {1} entries. &quot;</span>
+          <span class="s">&quot;You should consider increasing the &#39;edge_count&#39; parameter to {0}.&quot;</span>
+          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">voro</span><span class="o">.</span><span class="n">max_face_order</span><span class="p">,</span> <span class="n">voro</span><span class="o">.</span><span class="n">edge_count</span><span class="p">))</span>
+    <span class="c"># Note that it would be possible to automatically increase the &#39;edge_count&#39;</span>
+    <span class="c"># parameter to &#39;max_face_order&#39; here and recompute the Voronoi tessellation:</span>
+    <span class="c">#   voro.edge_count = voro.max_face_order</span>
+    <span class="c">#   node.compute()</span>
+
+<span class="c"># Access computed Voronoi indices as NumPy array.</span>
+<span class="c"># This is an (N)x(edge_count) array.</span>
+<span class="n">voro_indices</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">particle_properties</span><span class="p">[</span><span class="s">&#39;Voronoi Index&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">array</span>
+
+<span class="c"># This helper function takes a two-dimensional array and computes a frequency </span>
+<span class="c"># histogram of the data rows using some NumPy magic. </span>
+<span class="c"># It returns two arrays (of equal length): </span>
+<span class="c">#    1. The list of unique data rows from the input array</span>
+<span class="c">#    2. The number of occurences of each unique row</span>
+<span class="c"># Both arrays are sorted in descending order such that the most frequent rows </span>
+<span class="c"># are listed first.</span>
+<span class="k">def</span> <span class="nf">row_histogram</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="n">ca</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">([(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)]</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">unique</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">inverse</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">ca</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">inverse</span><span class="p">)</span>
+    <span class="n">sort_indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">counts</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">indices</span><span class="p">[</span><span class="n">sort_indices</span><span class="p">]],</span> <span class="n">counts</span><span class="p">[</span><span class="n">sort_indices</span><span class="p">])</span>
+
+<span class="c"># Compute frequency histogram.</span>
+<span class="n">unique_indices</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">row_histogram</span><span class="p">(</span><span class="n">voro_indices</span><span class="p">)</span>
+
+<span class="c"># Print the ten most frequent histogram entries.</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="se">\t</span><span class="si">%i</span><span class="se">\t</span><span class="s">(</span><span class="si">%.1f</span><span class="s"> </span><span class="si">%%</span><span class="s">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">unique_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> 
+                                 <span class="n">counts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> 
+                                 <span class="mf">100.0</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">voro_indices</span><span class="p">)))</span>
+</pre></div>
+</div>
+<p>Program output:</p>
+<div class="highlight-none"><div class="highlight"><pre>(0, 0, 0, 0, 12, 0)     12274   (11.4 %)
+(0, 0, 0, 2, 8, 2)      7485    (6.9 %)
+(0, 0, 0, 3, 6, 4)      5637    (5.2 %)
+(0, 0, 0, 1, 10, 2)     4857    (4.5 %)
+(0, 0, 0, 3, 6, 3)      3415    (3.2 %)
+(0, 0, 0, 2, 8, 1)      2927    (2.7 %)
+(0, 0, 0, 1, 10, 5)     2900    (2.7 %)
+(0, 0, 0, 1, 10, 4)     2068    (1.9 %)
+(0, 0, 0, 2, 8, 6)      2063    (1.9 %)
+(0, 0, 0, 2, 8, 5)      1662    (1.5 %)
+</pre></div>
+</div>
+</div>
+<div class="section" id="computing-cna-bond-indices">
+<span id="example-compute-cna-bond-indices"></span><h2>Computing CNA bond indices<a class="headerlink" href="#computing-cna-bond-indices" title="Permalink to this headline">¶</a></h2>
+<p>The following script demonstrates how to use the <a class="reference internal" href="../modules/ovito_modifiers.html#ovito.modifiers.CreateBondsModifier" title="ovito.modifiers.CreateBondsModifier"><code class="xref py py-class docutils literal"><span class="pre">CreateBondsModifier</span></code></a>
+to create bonds between particles. The structural environment of each created bond
+is then characterized with the help of the <a class="reference internal" href="../modules/ovito_modifiers.html#ovito.modifiers.CommonNeighborAnalysisModifier" title="ovito.modifiers.CommonNeighborAnalysisModifier"><code class="xref py py-class docutils literal"><span class="pre">CommonNeighborAnalysisModifier</span></code></a>,
+which computes a triplet of indices for each bond from the topology of the surrounding bond network.
+The script accesses the computed CNA bond indices in the output <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a> of the
+modification pipeline and exports them to a text file. The script enumerates the bonds of each particle
+using the <a class="reference internal" href="../modules/ovito_data.html#ovito.data.Bonds.Enumerator" title="ovito.data.Bonds.Enumerator"><code class="xref py py-class docutils literal"><span class="pre">Bonds.Enumerator</span></code></a> helper class.</p>
+<p>The generated text file has the following format:</p>
+<div class="highlight-python"><div class="highlight"><pre>Atom    CNA_pair_type:Number_of_such_pairs ...
+
+1       [4 2 1]:2  [4 2 2]:1 [5 4 3]:1
+2       ...
+...
+</pre></div>
+</div>
+<p>Python script:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Import OVITO modules.</span>
+<span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">ovito.modifiers</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">ovito.data</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># Import standard Python and NumPy modules.</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="c"># Load the simulation dataset to be analyzed.</span>
+<span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&quot;../data/NanocrystallinePd.dump.gz&quot;</span><span class="p">)</span>
+
+<span class="c"># Create bonds.</span>
+<span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CreateBondsModifier</span><span class="p">(</span><span class="n">cutoff</span> <span class="o">=</span> <span class="mf">3.5</span><span class="p">))</span>
+
+<span class="c"># Compute CNA indices on the basis of the created bonds.</span>
+<span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+        <span class="n">CommonNeighborAnalysisModifier</span><span class="p">(</span><span class="n">mode</span> <span class="o">=</span> <span class="n">CommonNeighborAnalysisModifier</span><span class="o">.</span><span class="n">Mode</span><span class="o">.</span><span class="n">BondBased</span><span class="p">))</span>
+                      
+<span class="c"># Let OVITO&#39;s data pipeline do the heavy work.</span>
+<span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+
+<span class="c"># A two-dimensional array containing the three CNA indices </span>
+<span class="c"># computed for each bond in the system.</span>
+<span class="n">cna_indices</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">bond_properties</span><span class="p">[</span><span class="s">&#39;CNA Indices&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">array</span>
+
+<span class="c"># This helper function takes a two-dimensional array and computes the frequency </span>
+<span class="c"># histogram of the data rows using some NumPy magic. </span>
+<span class="c"># It returns two arrays (of same length): </span>
+<span class="c">#    1. The list of unique data rows from the input array</span>
+<span class="c">#    2. The number of occurences of each unique row</span>
+<span class="k">def</span> <span class="nf">row_histogram</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+    <span class="n">ca</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ascontiguousarray</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">([(</span><span class="s">&#39;&#39;</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">)]</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">unique</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">inverse</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">ca</span><span class="p">,</span> <span class="n">return_index</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">return_inverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">inverse</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">indices</span><span class="p">],</span> <span class="n">counts</span><span class="p">)</span>
+
+<span class="c"># Used below for enumerating the bonds of each particle:</span>
+<span class="n">bond_enumerator</span> <span class="o">=</span> <span class="n">Bonds</span><span class="o">.</span><span class="n">Enumerator</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">bonds</span><span class="p">)</span>
+
+<span class="c"># Loop over particles and print their CNA indices.</span>
+<span class="k">for</span> <span class="n">particle_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">number_of_particles</span><span class="p">):</span>
+    
+    <span class="c"># Print particle index (1-based).</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%i</span><span class="s"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">particle_index</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span>
+    
+    <span class="c"># Create local list with CNA indices of the bonds of the current particle.</span>
+    <span class="n">bond_index_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">bond_enumerator</span><span class="o">.</span><span class="n">bonds_of_particle</span><span class="p">(</span><span class="n">particle_index</span><span class="p">))</span>
+    <span class="n">local_cna_indices</span> <span class="o">=</span> <span class="n">cna_indices</span><span class="p">[</span><span class="n">bond_index_list</span><span class="p">]</span>
+
+    <span class="c"># Count how often each type of CNA triplet occurred.</span>
+    <span class="n">unique_triplets</span><span class="p">,</span> <span class="n">triplet_counts</span> <span class="o">=</span> <span class="n">row_histogram</span><span class="p">(</span><span class="n">local_cna_indices</span><span class="p">)</span>
+    
+    <span class="c"># Print list of triplets with their respective counts.</span>
+    <span class="k">for</span> <span class="n">triplet</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">unique_triplets</span><span class="p">,</span> <span class="n">triplet_counts</span><span class="p">):</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s">:</span><span class="si">%i</span><span class="s"> &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">triplet</span><span class="p">,</span> <span class="n">count</span><span class="p">))</span>
+    
+    <span class="c"># End of particle line</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="creating-particles-programmatically">
+<span id="example-creating-particles-programmatically"></span><h2>Creating particles programmatically<a class="headerlink" href="#creating-particles-programmatically" title="Permalink to this headline">¶</a></h2>
+<p>The following script demonstrates how to create particles, a simulation cell, and bonds on the fly
+without loading an external simulation file. This approach can be used to implement custom data importers
+or dynamically generate atomic structures, which can then be further processed with OVITO or exported to a file.</p>
+<p>The script creates different data objects and adds them to a new <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a> instance.
+Finally, an <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a> is created and the <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a> is set as
+its data source.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ovito</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">ovito.data</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c"># The number of particles we are going to create.</span>
+<span class="n">num_particles</span> <span class="o">=</span> <span class="mi">3</span>
+
+<span class="c"># Create the particle position property.</span>
+<span class="n">pos_prop</span> <span class="o">=</span> <span class="n">ParticleProperty</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">ParticleProperty</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">Position</span><span class="p">,</span> <span class="n">num_particles</span><span class="p">)</span>
+<span class="n">pos_prop</span><span class="o">.</span><span class="n">marray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
+<span class="n">pos_prop</span><span class="o">.</span><span class="n">marray</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">7.0</span><span class="p">,</span> <span class="mf">4.2</span><span class="p">,</span> <span class="mf">6.0</span><span class="p">)</span>
+<span class="n">pos_prop</span><span class="o">.</span><span class="n">marray</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">9.2</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">)</span>
+
+<span class="c"># Create the particle type property and insert two atom types.</span>
+<span class="n">type_prop</span> <span class="o">=</span> <span class="n">ParticleProperty</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">ParticleProperty</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">ParticleType</span><span class="p">,</span> <span class="n">num_particles</span><span class="p">)</span>
+<span class="n">type_prop</span><span class="o">.</span><span class="n">type_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ParticleType</span><span class="p">(</span><span class="nb">id</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Cu&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">)))</span>
+<span class="n">type_prop</span><span class="o">.</span><span class="n">type_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ParticleType</span><span class="p">(</span><span class="nb">id</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;Ni&#39;</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)))</span>
+<span class="n">type_prop</span><span class="o">.</span><span class="n">marray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c"># First atom is Cu</span>
+<span class="n">type_prop</span><span class="o">.</span><span class="n">marray</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c"># Second atom is Ni</span>
+<span class="n">type_prop</span><span class="o">.</span><span class="n">marray</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c"># Third atom is Ni</span>
+
+<span class="c"># Create a user-defined particle property.</span>
+<span class="n">my_prop</span> <span class="o">=</span> <span class="n">ParticleProperty</span><span class="o">.</span><span class="n">create_user</span><span class="p">(</span><span class="s">&#39;My property&#39;</span><span class="p">,</span> <span class="s">&#39;float&#39;</span><span class="p">,</span> <span class="n">num_particles</span><span class="p">)</span>
+<span class="n">my_prop</span><span class="o">.</span><span class="n">marray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">3.141</span>
+<span class="n">my_prop</span><span class="o">.</span><span class="n">marray</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+<span class="n">my_prop</span><span class="o">.</span><span class="n">marray</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="c"># Create the simulation box.</span>
+<span class="n">cell</span> <span class="o">=</span> <span class="n">SimulationCell</span><span class="p">()</span>
+<span class="n">cell</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">0</span><span class="p">]]</span>
+<span class="n">cell</span><span class="o">.</span><span class="n">pbc</span> <span class="o">=</span> <span class="p">(</span><span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+<span class="n">cell</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">line_width</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+<span class="c"># Create bonds between particles.</span>
+<span class="n">bonds</span> <span class="o">=</span> <span class="n">Bonds</span><span class="p">()</span>
+<span class="n">bonds</span><span class="o">.</span><span class="n">add_full</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>    <span class="c"># Creates two half bonds 0-&gt;1 and 1-&gt;0. </span>
+<span class="n">bonds</span><span class="o">.</span><span class="n">add_full</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>    <span class="c"># Creates two half bonds 1-&gt;2 and 2-&gt;1.</span>
+<span class="n">bonds</span><span class="o">.</span><span class="n">add_full</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>    <span class="c"># Creates two half bonds 2-&gt;0 and 0-&gt;2.</span>
+
+<span class="c"># Create a data collection to hold the particle properties, bonds, and simulation cell.</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">DataCollection</span><span class="p">()</span>
+<span class="n">data</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pos_prop</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">type_prop</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">my_prop</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">bonds</span><span class="p">)</span>
+
+<span class="c"># Create a node and insert it into the scene.</span>
+<span class="n">node</span> <span class="o">=</span> <span class="n">ObjectNode</span><span class="p">()</span>
+<span class="n">node</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">data</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">scene_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+<span class="c"># Select the new node and adjust cameras of all viewports to show everything.</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">selected_node</span> <span class="o">=</span> <span class="n">node</span>
+<span class="k">for</span> <span class="n">vp</span> <span class="ow">in</span> <span class="n">dataset</span><span class="o">.</span><span class="n">viewports</span><span class="p">:</span>
+    <span class="n">vp</span><span class="o">.</span><span class="n">zoom_all</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="running.html">Running scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_io.html">File I/O</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifiers.html">Modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particle_properties.html">Particle properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rendering.html">Rendering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_modifiers.html">Writing new modifiers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito.html"><code class="docutils literal"><span class="pre">ovito</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_anim.html"><code class="docutils literal"><span class="pre">ovito.anim</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_data.html"><code class="docutils literal"><span class="pre">ovito.data</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_io.html"><code class="docutils literal"><span class="pre">ovito.io</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_modifiers.html"><code class="docutils literal"><span class="pre">ovito.modifiers</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_vis.html"><code class="docutils literal"><span class="pre">ovito.vis</span></code></a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../modules/ovito.html" title="ovito"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="custom_modifiers.html" title="Writing new modifiers"
+             >previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Alexander Stukowski.
+    </div>
+  </body>
+</html>

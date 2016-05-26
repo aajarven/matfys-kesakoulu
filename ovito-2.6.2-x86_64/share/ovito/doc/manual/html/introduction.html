@@ -1,0 +1,97 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Introduction</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="index.html" title="OVITO User Manual"><link rel="prev" href="index.html" title="OVITO User Manual"><link rel="next" href="installation.html" title="Installation"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Introduction</th><td width="20%" align="right"> </td></tr><tr><td width="20%" align="left"><a accesskey="p" href="index.html">Prev</a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="installation.html">Next</a></td></tr></table></div><div class="chapter" id="introduction"><div class="titlepage"><div><div><h1 class="title">Introduction</h1></div></div></div>
+  
+
+  <p>
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/ovito_screenshot.png"></div></div></div><p>
+  
+  OVITO is a scientific data visualization and analysis software for
+  atomistic simulation models in materials science and related disciplines.
+  OVITO is freely available for
+  Windows, Linux, and Mac OS X under an open-source license. It is being developed by <a class="ulink" href="http://scholar.google.com/citations?user=f8Tw3eEAAAAJ" target="_top">Dr. Alexander
+  Stukowski</a> at the <a class="ulink" href="http://www.mawi.tu-darmstadt.de/mm/mm_mm_sw/index.en.jsp" target="_top">
+  Materials Science Department</a> of Darmstadt University of Technology, Germany.
+  </p>
+  
+  <p>
+  The first version of OVITO was released in December 2009 and its initial feature set was described in 
+  a <a class="ulink" href="http://stacks.iop.org/0965-0393/18/015012" target="_top">journal article about OVITO</a> in 2010.
+  Today OVITO has more than active 50,000 users from the computational physics, materials science, and chemistry fields.
+  </p>
+  
+  <div class="simplesect" id="idp9280"><div class="titlepage"><div><div><h2 class="title">Program features</h2></div></div></div>
+  
+
+  <p>OVITO is a software for visualizing and analyzing output data from particle-based simulation models, notably molecular dynamics (MD) simulations of 
+  solid-state materials. Its main focus is on large simulation models based on classical potentials 
+  (10<sup>3</sup> - 10<sup>8</sup> atoms).
+  Some noteworthy program features are: </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+        <p><a class="link" href="usage.import.html" title="Importing data">Input</a> and <a class="link" href="usage.export.html" title="Exporting data">output</a> of various file formats used by 
+        MD simulation codes, including LAMMPS, XYZ, CFG, IMD, POSCAR, NetCDF, PDB, and FHI-aims.</p>
+      </li><li class="listitem">
+        <p>Interactive display of large numbers of particles and bonds using hardware-accelerated OpenGL rendering.</p>
+      </li><li class="listitem">
+        <p>Support for <a class="link" href="howto.aspherical_particles.html" title="Non-spherical particles">various particle shapes</a>: spheres, cubes, ellipsoids, cylinders, and more.</p>
+      </li><li class="listitem">
+        <p>An easy-to-use interface, a flexible software design, and a <a class="link" href="usage.particle_properties.html" title="Particle properties">data model</a> that supports an arbitrary number of particle properties.</p>
+      </li><li class="listitem">
+        <p>High-quality <a class="link" href="usage.rendering.html" title="Rendering images and movies">image and movie rendering</a> for publication and a <a class="link" href="usage.animation.html" title="Animation system">keyframe-based animation system</a>.</p>
+      </li><li class="listitem">
+        <p><a class="link" href="usage.scripting.html" title="Python scripting">A powerful Python-based scripting interface</a> 
+        that allows one to automate analysis and visualization tasks 
+        and <a class="link" href="particles.modifiers.python_script.html" title="Python script modifier">extend OVITO</a> with new functions.</p>
+      </li><li class="listitem">
+        <p><a class="link" href="usage.modification_pipeline.html" title="Modification pipeline">Nondestructive data manipulation and analysis functions</a> 
+        are arranged in a data flow pipeline by the user. Parameters can be changed at 
+        any time and results will be immediately recalculated. Available <a class="link" href="particles.modifiers.html" title="Modifiers">modification functions</a> include:</p><div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+              <p><a class="link" href="particles.modifiers.expression_select.html" title="Expression select">Dynamic particle selections based on Boolean expressions</a></p>
+            </li><li class="listitem">
+              <p><a class="link" href="particles.modifiers.color_coding.html" title="Color coding">Color coding</a></p>
+            </li><li class="listitem">
+              <p><a class="link" href="particles.modifiers.slice.html" title="Slice">Slicing and cutting</a></p>
+            </li><li class="listitem">
+              <p><a class="link" href="particles.modifiers.affine_transformation.html" title="Affine transformation">Transformation of particle coordinates</a></p>
+            </li><li class="listitem">
+              <p><a class="link" href="particles.modifiers.compute_property.html" title="Compute property">Computing new particle properties</a></p>
+            </li><li class="listitem">
+              <p><a class="link" href="particles.modifiers.show_periodic_images.html" title="Show periodic images">Display of periodic images</a> &amp; <a class="link" href="particles.modifiers.wrap_at_periodic_boundaries.html" title="Wrap at periodic boundaries">wrapping of particles at periodic boundaries</a></p>
+            </li><li class="listitem">
+              <p><a class="link" href="particles.modifiers.create_bonds.html" title="Create bonds">Creation of atomic bonds</a></p>
+            </li><li class="listitem">
+              <p><a class="link" href="particles.modifiers.manual_selection.html" title="Manual selection">Manual selection of particles</a> and inspection of particle properties</p>
+            </li></ul></div><p> 
+        </p>
+      </li><li class="listitem">
+        <p>Useful analysis functions:</p>
+
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+            <p><a class="link" href="particles.modifiers.common_neighbor_analysis.html" title="Common neighbor analysis">Common neighbor analysis (CNA)</a></p>
+          </li><li class="listitem">
+            <p><a class="link" href="particles.modifiers.bond_angle_analysis.html" title="Bond-angle analysis">Bond-angle analysis</a></p>
+          </li><li class="listitem">
+            <p><a class="link" href="particles.modifiers.centrosymmetry.html" title="Centrosymmetry parameter">Centro-symmetry parameter</a></p>
+          </li><li class="listitem">
+            <p><a class="link" href="particles.modifiers.coordination_analysis.html" title="Coordination analysis">Coordination number analysis and radial distribution function</a></p>
+          </li><li class="listitem">
+            <p><a class="link" href="particles.modifiers.dislocation_analysis.html" title="Dislocation analysis (DXA)">Automated dislocation line identification (DXA)</a></p>
+          </li><li class="listitem">
+            <p><a class="link" href="particles.modifiers.displacement_vectors.html" title="Displacement vectors">Displacement vector calculation</a></p>
+          </li><li class="listitem">
+            <p><a class="link" href="particles.modifiers.atomic_strain.html" title="Atomic strain">Atomic strain tensor calculation</a></p>
+          </li><li class="listitem">
+            <p><a class="link" href="particles.modifiers.histogram.html" title="Histogram">Histogram</a> and <a class="link" href="particles.modifiers.scatter_plot.html" title="Scatter plot">scatter plot</a> functions</p>
+          </li><li class="listitem">
+            <p><a class="link" href="particles.modifiers.construct_surface_mesh.html" title="Construct surface mesh">Reconstruction of geometric surfaces from atomistic models</a></p>
+          </li><li class="listitem">
+            <p><a class="link" href="particles.modifiers.voronoi_analysis.html" title="Voronoi analysis">Voronoi cell analysis</a></p>
+          </li><li class="listitem">
+            <p><a class="link" href="particles.modifiers.wigner_seitz_analysis.html" title="Wigner-Seitz defect analysis">Identification of point defects using Wigner-Seitz cell method</a></p>
+          </li></ul></div>
+         
+      </li><li class="listitem">
+        <p>A modular software design, which allows to extend OVITO via C++ plugins</p>
+      </li></ul></div><p>
+    </p>
+    
+  </div>
+    
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="index.html">Prev</a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="installation.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">OVITO User Manual </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Installation</td></tr></table></div></body></html>

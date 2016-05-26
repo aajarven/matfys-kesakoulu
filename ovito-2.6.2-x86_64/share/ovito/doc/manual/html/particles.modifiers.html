@@ -1,0 +1,82 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Modifiers</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="ch05.html" title="Reference"><link rel="prev" href="ch05.html" title="Reference"><link rel="next" href="particles.modifiers.affine_transformation.html" title="Affine transformation"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Modifiers</th><td width="20%" align="right"><a accesskey="u" href="ch05.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05.html">Prev</a> </td><th width="60%" align="center">Reference</th><td width="20%" align="right"> <a accesskey="n" href="particles.modifiers.affine_transformation.html">Next</a></td></tr></table></div><div class="section" id="particles.modifiers"><div class="titlepage"><div><div><h2 class="title">Modifiers</h2></div></div></div>
+  
+
+  <p>
+  
+  Modifiers are the basic building blocks that can be used in OVITO's <a class="link" href="usage.modification_pipeline.html" title="Modification pipeline">modification pipeline</a>. The following table
+  lists the available modifier types. 
+  
+  </p><div class="informaltable">
+        <table class="informaltable" border="1"><colgroup><col class="name"><col class="descr"></colgroup><thead><tr><th>Modifier name</th><th>Description</th></tr></thead><tbody><tr><td class="subth" colspan="2" align="center">Analysis</td></tr><tr><td><a class="link" href="particles.modifiers.atomic_strain.html" title="Atomic strain">Atomic strain</a></td><td>Calculates the atomic-level strain tensors based on an initial reference and a deformed configuration. </td></tr><tr><td><a class="link" href="particles.modifiers.bin_and_reduce.html" title="Bin and reduce">Bin and reduce</a></td><td>Agregates a particle property over a one- or two-dimensional bin grid.</td></tr><tr><td><a class="link" href="particles.modifiers.bond_angle_analysis.html" title="Bond-angle analysis">Bond-angle analysis</a></td><td>Performs the bond-angle analysis of Ackland and Jones to determine the local crystal structure.</td></tr><tr><td><a class="link" href="particles.modifiers.construct_surface_mesh.html" title="Construct surface mesh">Construct surface mesh</a></td><td>Constructs a polyhedral mesh representing the surface of an atomistic solid.</td></tr><tr><td><a class="link" href="particles.modifiers.dislocation_analysis.html" title="Dislocation analysis (DXA)">Dislocation analysis (DXA)</a></td><td>Detects dislocation lines in a crystal.</td></tr><tr><td><a class="link" href="particles.modifiers.displacement_vectors.html" title="Displacement vectors">Displacement vectors</a></td><td>Calculates the displacements of particles based on an initial and a deformed configuration.</td></tr><tr><td><a class="link" href="particles.modifiers.centrosymmetry.html" title="Centrosymmetry parameter">Centrosymmetry parameter</a></td><td>Calculates the centrosymmetry parameter for every particle.</td></tr><tr><td><a class="link" href="particles.modifiers.cluster_analysis.html" title="Cluster analysis">Cluster analysis</a></td><td>Decomposes a particle system into clusters of particles.</td></tr><tr><td><a class="link" href="particles.modifiers.common_neighbor_analysis.html" title="Common neighbor analysis">Common neighbor analysis</a></td><td>Performs the common neighbor analysis (CNA) to determine the local crystal structure.</td></tr><tr><td><a class="link" href="particles.modifiers.coordination_analysis.html" title="Coordination analysis">Coordination analysis</a></td><td>Determines the number of near neighbors of each particle and computes the radial distribution function.</td></tr><tr><td><a class="link" href="particles.modifiers.elastic_strain.html" title="Elastic strain calculation">Elastic strain calculation</a></td><td>Calculates the atomic-level elastic strain tensors in crystalline systems.</td></tr><tr><td><a class="link" href="particles.modifiers.histogram.html" title="Histogram">Histogram</a></td><td>Computes the histogram of a particle property.</td></tr><tr><td><a class="link" href="particles.modifiers.identify_diamond_structure.html" title="Identify diamond structure">Identify diamond structure</a></td><td>Finds atoms that are arranged in a cubic or hexagonal diamond lattice.</td></tr><tr><td><a class="link" href="particles.modifiers.scatter_plot.html" title="Scatter plot">Scatter plot</a></td><td>Generates a scatter plot of two particle properties.</td></tr><tr><td><a class="link" href="particles.modifiers.voronoi_analysis.html" title="Voronoi analysis">Voronoi analysis</a></td><td>Computes the coordination number, atomic volume, and Voronoi index of particles from their Voronoi polyhedra.</td></tr><tr><td><a class="link" href="particles.modifiers.wigner_seitz_analysis.html" title="Wigner-Seitz defect analysis">Wigner-Seitz defect analysis</a></td><td>Identifies point defects (vacancies and interstitials) in a crystal lattice.</td></tr><tr><td class="subth" colspan="2" align="center">Coloring</td></tr><tr><td><a class="link" href="particles.modifiers.ambient_occlusion.html" title="Ambient occlusion">Ambient occlusion</a></td><td>Performs an ambient occlusion calculation to shade particles.</td></tr><tr><td><a class="link" href="particles.modifiers.assign_color.html" title="Assign color">Assign color</a></td><td>Assigns a color to all selected particles.</td></tr><tr><td><a class="link" href="particles.modifiers.color_coding.html" title="Color coding">Color coding</a></td><td>Colors particles based on a certain particle property.</td></tr><tr><td class="subth" colspan="2" align="center">Modification</td></tr><tr><td><a class="link" href="particles.modifiers.affine_transformation.html" title="Affine transformation">Affine transformation</a></td><td>Applies an affine transformation to particle coordinates.</td></tr><tr><td><a class="link" href="particles.modifiers.create_bonds.html" title="Create bonds">Create bonds</a></td><td>Creates bonds between particles.</td></tr><tr><td><a class="link" href="particles.modifiers.compute_property.html" title="Compute property">Compute property</a></td><td>Computes a new property for each particle based a user-defined formula.</td></tr><tr><td><a class="link" href="particles.modifiers.delete_selected_particles.html" title="Delete selected particles">Delete selected particles</a></td><td>Deletes all selected particles.</td></tr><tr><td><a class="link" href="particles.modifiers.freeze_property.html" title="Freeze property">Freeze property</a></td><td>Takes a snapshot of the current state of a particle property and preserves it over time.</td></tr><tr><td><a class="link" href="particles.modifiers.python_script.html" title="Python script modifier">Python script</a></td><td>Allows you to write your own modifier type in Python..</td></tr><tr><td><a class="link" href="particles.modifiers.show_periodic_images.html" title="Show periodic images">Show periodic images</a></td><td>Duplicates particles to display the periodic images of particles.</td></tr><tr><td><a class="link" href="particles.modifiers.slice.html" title="Slice">Slice</a></td><td>Cuts out a slice or a cross-section from the structure.</td></tr><tr><td><a class="link" href="particles.modifiers.wrap_at_periodic_boundaries.html" title="Wrap at periodic boundaries">Wrap at periodic boundaries</a></td><td>Maps particles outside of the simulation box back into the box.</td></tr><tr><td class="subth" colspan="2" align="center">Selection</td></tr><tr><td><a class="link" href="particles.modifiers.clear_selection.html" title="Clear selection">Clear selection</a></td><td>Resets the selection state of all particles.</td></tr><tr><td><a class="link" href="particles.modifiers.expand_selection.html" title="Expand selection">Expand selection</a></td><td>Selects particles that are neighbors of already selected particles.</td></tr><tr><td><a class="link" href="particles.modifiers.manual_selection.html" title="Manual selection">Manual selection</a></td><td>Allows to select particles with the mouse.</td></tr><tr><td><a class="link" href="particles.modifiers.invert_selection.html" title="Invert selection">Invert selection</a></td><td>Inverts the selection state of each particle.</td></tr><tr><td><a class="link" href="particles.modifiers.expression_select.html" title="Expression select">Expression select</a></td><td>Selects particles based on a user-defined criterion.</td></tr><tr><td><a class="link" href="particles.modifiers.select_particle_type.html" title="Select particle type">Select particle type</a></td><td>Selects particles of one or more types.</td></tr></tbody></table>
+      </div><p>
+   </p>
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="particles.modifiers.affine_transformation.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Reference </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Affine transformation</td></tr></table></div></body></html>

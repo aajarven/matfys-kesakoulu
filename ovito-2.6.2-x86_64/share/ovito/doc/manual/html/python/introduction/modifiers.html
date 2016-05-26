@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Modifiers &mdash; OVITO 2.6.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/rtd.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.6.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/ovito.ico"/>
+    <link rel="top" title="OVITO 2.6.2 documentation" href="../index.html" />
+    <link rel="next" title="Particle properties" href="particle_properties.html" />
+    <link rel="prev" title="File I/O" href="file_io.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="particle_properties.html" title="Particle properties"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="file_io.html" title="File I/O"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="modifiers">
+<h1>Modifiers<a class="headerlink" href="#modifiers" title="Permalink to this headline">¶</a></h1>
+<p>Modifiers are objects that can be inserted into a node&#8217;s modification pipeline.
+They modify, filter, or extend the data that flows down the pipeline from the
+<a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a> to the node&#8217;s output cache, which is an instance of the
+<a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a> class.</p>
+<p>You insert a new modifier by creating a new instance of the corresponding modifier class
+(See <a class="reference internal" href="../modules/ovito_modifiers.html#module-ovito.modifiers" title="ovito.modifiers"><code class="xref py py-mod docutils literal"><span class="pre">ovito.modifiers</span></code></a> module for the list of available modifier classes) and
+adding it to the node&#8217;s <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode.modifiers" title="ovito.ObjectNode.modifiers"><code class="xref py py-attr docutils literal"><span class="pre">modifiers</span></code></a>
+list property:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ovito.modifiers</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mod</span> <span class="o">=</span> <span class="n">AssignColorModifier</span><span class="p">(</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mod</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Entries in the <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode.modifiers" title="ovito.ObjectNode.modifiers"><code class="xref py py-attr docutils literal"><span class="pre">ObjectNode.modifiers</span></code></a> list are processed front to back, i.e.,
+appending a modifier to the end of the list will position it at the end of the modification pipeline.
+This corresponds to the bottom-up execution order known from OVITO&#8217;s graphical user interface.</p>
+<p>Note that inserting a new modifier into the modification pipeline does not directly trigger a
+computation. The modifier will only be evaluated when the results of the pipeline need to be recomputed.
+Evaluation of the modification pipeline can either happen implicitly, e.g.</p>
+<blockquote>
+<div><ul class="simple">
+<li>when the interactive viewports in OVITO&#8217;s main window are updated,</li>
+<li>when rendering an image,</li>
+<li>when exporting data using <a class="reference internal" href="../modules/ovito_io.html#ovito.io.export_file" title="ovito.io.export_file"><code class="xref py py-func docutils literal"><span class="pre">ovito.io.export_file()</span></code></a>,</li>
+</ul>
+</div></blockquote>
+<p>or explicitly, when calling the <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode.compute" title="ovito.ObjectNode.compute"><code class="xref py py-meth docutils literal"><span class="pre">ObjectNode.compute()</span></code></a> method.
+This method explicitly updates the output cache holding the results of the node&#8217;s modification pipeline.
+The output of the modification pipeline is stored in a <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a>
+that can be accessed through the <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode.output" title="ovito.ObjectNode.output"><code class="xref py py-attr docutils literal"><span class="pre">output</span></code></a>
+attribute of the object node. The data collection holds all data objects that
+have left modification pipeline the last time it was evaluated:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">output</span>
+<span class="go">DataCollection([&#39;Simulation cell&#39;, &#39;Position&#39;, &#39;Color&#39;])</span>
+
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">:</span>
+<span class="gp">... </span>    <span class="k">print</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+<span class="go">&lt;SimulationCell at 0x7fb6238f1b30&gt;</span>
+<span class="go">&lt;ParticleProperty at 0x7fb623d0c760&gt;</span>
+<span class="go">&lt;ParticleProperty at 0x7fb623d0c060&gt;</span>
+</pre></div>
+</div>
+<p>In this example, the output data collection consists of a <a class="reference internal" href="../modules/ovito_data.html#ovito.data.SimulationCell" title="ovito.data.SimulationCell"><code class="xref py py-class docutils literal"><span class="pre">SimulationCell</span></code></a>
+object and two <a class="reference internal" href="../modules/ovito_data.html#ovito.data.ParticleProperty" title="ovito.data.ParticleProperty"><code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code></a> objects, which store the particle positions and
+particle colors. We will learn more about the <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a> class and
+particle properties later.</p>
+<div class="section" id="analysis-modifiers">
+<h2>Analysis modifiers<a class="headerlink" href="#analysis-modifiers" title="Permalink to this headline">¶</a></h2>
+<p>Analysis modifiers perform some computation based on the data they receive from the upstream part of the
+modification pipeline (or the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a>). Typically they produce additional
+output data (for example a new particle property), which is inserted back into the pipeline
+where it is accessible to the following modifiers (e.g. a <a class="reference internal" href="../modules/ovito_modifiers.html#ovito.modifiers.ColorCodingModifier" title="ovito.modifiers.ColorCodingModifier"><code class="xref py py-class docutils literal"><span class="pre">ColorCodingModifier</span></code></a>).</p>
+<p>Let us take the <a class="reference internal" href="../modules/ovito_modifiers.html#ovito.modifiers.CommonNeighborAnalysisModifier" title="ovito.modifiers.CommonNeighborAnalysisModifier"><code class="xref py py-class docutils literal"><span class="pre">CommonNeighborAnalysisModifier</span></code></a> as an example for an analysis modifier.
+It takes the particle positions as input and classifies each particle as either FCC, HCP, BCC, or some other
+structural type. This per-particle information computed by the modifier is inserted into the pipeline as a new
+<a class="reference internal" href="../modules/ovito_data.html#ovito.data.ParticleProperty" title="ovito.data.ParticleProperty"><code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code></a> data object. Since it flows down the pipeline, this particle property
+is accessible by subsequent modifiers and will eventually arrive in the node&#8217;s output data collection
+where we can access it from the Python script:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">cna</span> <span class="o">=</span> <span class="n">CommonNeighborAnalysis</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cna</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">particle_properties</span><span class="o">.</span><span class="n">structure_type</span><span class="o">.</span><span class="n">array</span><span class="p">)</span>
+<span class="go">[1 0 0 ..., 1 2 0]</span>
+</pre></div>
+</div>
+<p>Note that the <a class="reference internal" href="../modules/ovito_modifiers.html#ovito.modifiers.CommonNeighborAnalysisModifier" title="ovito.modifiers.CommonNeighborAnalysisModifier"><code class="xref py py-class docutils literal"><span class="pre">CommonNeighborAnalysisModifier</span></code></a> encodes the computed
+structural type of each particle as an integer number (0=OTHER, 1=FCC, ...).</p>
+<p>In addition to this per-particle data, some analysis modifiers generate global status information
+as part of the computation. This information is not inserted into the data pipeline; instead it is
+cached by the modifier itself and can be directly accessed as an attribute of the modifier class. For instance,
+the <a class="reference internal" href="../modules/ovito_modifiers.html#ovito.modifiers.CommonNeighborAnalysisModifier.counts" title="ovito.modifiers.CommonNeighborAnalysisModifier.counts"><code class="xref py py-attr docutils literal"><span class="pre">counts</span></code></a> attribute of the <a class="reference internal" href="../modules/ovito_modifiers.html#ovito.modifiers.CommonNeighborAnalysisModifier" title="ovito.modifiers.CommonNeighborAnalysisModifier"><code class="xref py py-class docutils literal"><span class="pre">CommonNeighborAnalysisModifier</span></code></a> lists
+the number of particles found by the modifier for each structural type:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cna</span><span class="o">.</span><span class="n">counts</span><span class="p">):</span>
+<span class="go">    ...     print(&quot;Structure type %i: %i particles&quot; % c)</span>
+<span class="go">Structure type 0: 117317 particles</span>
+<span class="go">Structure type 1: 1262 particles</span>
+<span class="go">Structure type 2: 339 particles</span>
+<span class="go">Structure type 3: 306 particles</span>
+<span class="go">Structure type 4: 0 particles</span>
+<span class="go">Structure type 5: 0 particles</span>
+</pre></div>
+</div>
+<p>Note that the <a class="reference internal" href="../modules/ovito_modifiers.html#ovito.modifiers.CommonNeighborAnalysisModifier" title="ovito.modifiers.CommonNeighborAnalysisModifier"><code class="xref py py-class docutils literal"><span class="pre">CommonNeighborAnalysisModifier</span></code></a> class defines a set of integer constants
+that make it easier to refer to individual structure types, e.g.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="s">&quot;Number of FCC atoms:&quot;</span><span class="p">,</span> <span class="n">cna</span><span class="o">.</span><span class="n">counts</span><span class="p">[</span><span class="n">CommonNeighborAnalysisModifier</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">FCC</span><span class="p">])</span>
+<span class="go">Number of FCC atoms: 1262</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">The most important thing to remember here is that the modifier caches information from the
+last pipeline evaluation. That means you have to call <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode.compute" title="ovito.ObjectNode.compute"><code class="xref py py-meth docutils literal"><span class="pre">ObjectNode.compute()</span></code></a> first
+before you access these output attributes of a modifier to make ensure that the values are up to date!</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="running.html">Running scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_io.html">File I/O</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particle_properties.html">Particle properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rendering.html">Rendering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_modifiers.html">Writing new modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito.html"><code class="docutils literal"><span class="pre">ovito</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_anim.html"><code class="docutils literal"><span class="pre">ovito.anim</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_data.html"><code class="docutils literal"><span class="pre">ovito.data</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_io.html"><code class="docutils literal"><span class="pre">ovito.io</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_modifiers.html"><code class="docutils literal"><span class="pre">ovito.modifiers</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_vis.html"><code class="docutils literal"><span class="pre">ovito.vis</span></code></a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="particle_properties.html" title="Particle properties"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="file_io.html" title="File I/O"
+             >previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Alexander Stukowski.
+    </div>
+  </body>
+</html>

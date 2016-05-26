@@ -1,0 +1,6 @@
+{
+  "plugin-id" : "Particles",
+  "plugin-version" : "2.6.2",
+  "dependencies" : [ "PyScript" ],
+  "native-library" : "Particles"
+}

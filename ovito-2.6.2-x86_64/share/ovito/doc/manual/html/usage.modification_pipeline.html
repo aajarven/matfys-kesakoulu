@@ -1,0 +1,119 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Modification pipeline</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="usage.html" title="Usage"><link rel="prev" href="usage.particle_properties.html" title="Particle properties"><link rel="next" href="usage.rendering.html" title="Rendering images and movies"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Modification pipeline</th><td width="20%" align="right"><a accesskey="u" href="usage.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="usage.particle_properties.html">Prev</a> </td><th width="60%" align="center">Usage</th><td width="20%" align="right"> <a accesskey="n" href="usage.rendering.html">Next</a></td></tr></table></div><div class="section" id="usage.modification_pipeline"><div class="titlepage"><div><div><h2 class="title">Modification pipeline</h2></div></div></div>
+  
+
+  <p>
+    The central workflow concept of OVITO is the so-called <span class="emphasis"><em>modification pipeline</em></span>. 
+    It is a user-defined sequence of data manipulation operations (<span class="emphasis"><em>modifiers</em></span>)
+    which have been applied to the simulation data. The results of that processing pipeline are displayed on screen. 
+    OVITO provides <a class="link" href="particles.modifiers.html" title="Modifiers">various modifier types</a>, each performing a specific 
+    basic task such as selecting, coloring, analyzing, or deleting particles.
+    By combining these simple building blocks in a modification pipeline,
+    the user can visualize and analyze the simulation data in a very flexible way.
+     </p><div class="screenshot"><div class="mediaobject"><img src="images/modifiers/pipeline_example.png"></div></div><p>
+  </p> 
+  <p>
+    This data pipeline architecture make it possible for you to retroactively change, delete, or amend applied 
+    editing actions. The program keeps a copy of the original simulation data in memory and, in addition, the complete list 
+    of modifiers applied during the program session. OVITO lets you 
+    change parameters of existing data operations, remove operations, or inserting new operations at 
+    arbitrary positions in the modification sequence. Upon any such change, the program immediately recalculates the 
+    effect and updates the realtime viewports to display the results. This type of non-destructive workflow can also 
+    be found in modern photo editing, 3D computer graphics, or scientific data analysis programs from other fields. 
+    In OVITO this approach allows you to combine various basic data operations (e.g. for selecting, filtering, transforming, 
+    or analyzing particles) to accomplish very complex analysis and visualization tasks.
+  </p>
+
+  <div class="simplesect" id="usage.modification_pipeline.pipeline_listbox"><div class="titlepage"><div><div><h3 class="title">The pipeline editor</h3></div></div></div>
+    
+    <p>
+	    </p><div class="figure" id="idp223120"><p class="title"><b>Figure 5. The modification pipeline editor</b></p><div class="figure-contents"><div class="screenshot"><div class="mediaobject"><img src="images/command_panel/pipeline_editor.png" alt="The modification pipeline editor"></div></div></div></div><p><br class="figure-break">
+       The pipeline editor, shown in the screenshot on the right, is the central place where you apply modifiers
+       to the simulation data. It displays the current modification pipeline and lets you insert new modifiers, 
+       reorder them, or edit their parameters.
+    </p>
+    <p>   
+       After importing a new simulation file in OVITO, the modification pipeline is initially empty, i.e, 
+       the imported data is displayed as is. The pipeline editor already contains two sections labeled <span class="guilabel">Display</span> and <span class="guilabel">Input</span>, 
+       which are always present. The <span class="guilabel">Display</span> section lists the visualization elements that are currently displayed
+       in the viewports, e.g. the simulation box and the particles. If you select an element in the pipeline editor, 
+       a corresponding parameter panel is opened below the editor, which allows you to change the settings for the selected element.
+    </p>
+    <p>
+       Elements under the <span class="guilabel">Input</span> section represent the data imported from an external file, which enter the modification
+       pipeline. More information will be given below.
+    </p>
+    <p>
+       Above the pipeline editor you find a drop-down box labeled <span class="guilabel">"Add modification..."</span>, which lists the 
+       <a class="link" href="particles.modifiers.html" title="Modifiers">available modifiers</a> that can be applied to the data. 
+       Picking an entry from that box inserts a new modifier into the modification pipeline. The new modifier 
+       will be inserted right above the currently selected pipeline item. Note that the modification pipeline is 
+       displayed in bottom-up order as indicated in the screenshot. That means the data source is located at the bottom, 
+       and the modifier at the top of the list is always executed last.
+    </p>
+    <p>
+       You can temporarily disable individual modifiers in the modification pipeline by unchecking the box next to them. 
+       To permanently remove a modifier from the pipeline, use the <span class="emphasis"><em>Delete Modifier</em></span> button in the toolbar on the right. 
+       The up and down arrow buttons can be used to change the order of modifiers in the pipeline, or you can 
+       drag and drop modifiers directly within the list to rearrange them.
+    </p>
+  </div>
+
+  <div class="simplesect" id="usage.modification_pipeline.input"><div class="titlepage"><div><div><h3 class="title">The input section</h3></div></div></div>
+    
+    <p>
+      The last section in the pipeline editor, which is labeled <span class="guilabel">Input</span>, represents the data source of the modification pipeline, i.e. the external simulation file.
+      Selecting the filename entry opens a <a class="link" href="scene_objects.file_source.html" title="External file source">panel</a> in the area below the pipeline editor that 
+      shows information regarding the loaded file and allows you to replace the input of the modification pipeline with data from a different file. 
+    </p>
+    <p>
+      Depending on the contents of the loaded input file, the <span class="guilabel">Input</span> section lists additional 
+      sub-entries for various parts of the input dataset such as the simulation cell and the list of 
+      particle types.
+    </p>
+  </div>
+
+  <div class="simplesect" id="usage.modification_pipeline.display"><div class="titlepage"><div><div><h3 class="title">Display objects</h3></div></div></div>
+    
+    <p>
+      So-called <a class="link" href="display_objects.html" title="Display objects">display objects</a> are responsible for rendering the processed data that
+      leaves the modification pipeline. The <span class="guilabel">Display</span> section of the pipeline editor lists these display 
+      objects. Particles, for example, are rendered by the <a class="link" href="display_objects.particles.html" title="Particle display">Particles display object</a>, 
+      which provides additional settings that allow you to control the appearance of particles. There's also a display object 
+      for the simulation cell, which allows you to change settings like the cell border color. If you add certain modifiers to 
+      the pipeline, for example the <a class="link" href="particles.modifiers.create_bonds.html" title="Create bonds">Create Bonds</a> modifier, you may 
+      notice that additional entries appear under the <span class="guilabel">Display</span> section of the pipeline editor. 
+      That is because these modifiers produce new data elements and inject them into the modification pipeline.
+      You can find the list of supported display objects <a class="link" href="display_objects.html" title="Display objects">here</a>. 
+    </p>
+    <p>
+      You can hide individual elements by unchecking the corresponding box in the pipeline editor. Then they will
+      no longer be rendered in the viewports.
+    </p>
+  </div>
+
+  <div class="simplesect" id="usage.modification_particle_selection"><div class="titlepage"><div><div><h3 class="title">Particle selection</h3></div></div></div>
+    
+    <p>
+      OVITO provides several modifiers that allow to select a subset of particles (e.g. the <a class="link" href="particles.modifiers.select_particle_type.html" title="Select particle type">Select particle types</a> modifier). 
+      Other modifiers, when placed further down the modification pipeline, act only on the selected particles 
+      (e.g. the <a class="link" href="particles.modifiers.delete_selected_particles.html" title="Delete selected particles">Delete selected particles</a> modifier).
+      OVITO stores the current selection state in a standard particle property called <code class="literal">Selection</code>.
+      Its value is 1 for particle that are selected, and 0 otherwise. Particle whose <code class="literal">Selection</code> property
+      is nonzero are rendered with a red color in OVITO's interactive viewports to indicate that they are currently selected.
+      However, their normal display color is always used when rendering an output image.
+    </p>
+    <p>
+      Like any other particle property, the <code class="literal">Selection</code> property
+      can be changed multiple times within a modification pipeline, for example to select a first group of particles, change their color using
+      the <a class="link" href="particles.modifiers.assign_color.html" title="Assign color">Assign color</a> modifier, then
+      select another group of particles,
+      and assign a different color to them using a second <a class="link" href="particles.modifiers.assign_color.html" title="Assign color">Assign color</a> modifier.
+      In other words, the selection property of a particle can have different values at different points along the
+      modification pipeline. Which selection a modifiers sees depends on where it is placed in the modification pipeline.
+      Note that some modifiers like the <a class="link" href="particles.modifiers.assign_color.html" title="Assign color">Assign color</a> modifier 
+      clear the current selection by default to prevent the particles from being rendered in the red selection marker color
+      (which would mask the particles' real color assigned by the modifier).
+    </p>
+  </div>
+
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="usage.particle_properties.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="usage.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="usage.rendering.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Particle properties </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Rendering images and movies</td></tr></table></div></body></html>

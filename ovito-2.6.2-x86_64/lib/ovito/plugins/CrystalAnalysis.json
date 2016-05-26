@@ -1,0 +1,6 @@
+{
+  "plugin-id" : "CrystalAnalysis",
+  "plugin-version" : "2.6.2",
+  "dependencies" : [ "Particles", "PyScript" ],
+  "native-library" : "CrystalAnalysis"
+}

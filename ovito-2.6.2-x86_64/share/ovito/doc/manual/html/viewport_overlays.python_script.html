@@ -1,0 +1,76 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Python script overlay</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="viewport_overlays.html" title="Viewport overlays"><link rel="prev" href="viewport_overlays.html" title="Viewport overlays"><link rel="next" href="animation.animation_settings_dialog.html" title="Animation settings dialog"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Python script overlay</th><td width="20%" align="right"><a accesskey="u" href="viewport_overlays.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="viewport_overlays.html">Prev</a> </td><th width="60%" align="center">Viewport overlays</th><td width="20%" align="right"> <a accesskey="n" href="animation.animation_settings_dialog.html">Next</a></td></tr></table></div><div class="section" id="viewport_overlays.python_script"><div class="titlepage"><div><div><h4 class="title">Python script overlay</h4></div></div></div>
+  
+
+  <p>
+      
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/viewport_overlays/python_script_overlay_panel.png"></div></div></div><p>
+    This <a class="link" href="viewport_overlays.html" title="Viewport overlays">viewport overlay</a> type allows you to write a custom Python script that can paint arbitrary
+    text and graphics on top of images rendered by OVITO. This makes it possible to enrich a figure or a movie with
+    additional information (e.g. a scale bar, see example below).
+  </p>
+  <p>  
+    The <span class="guibutton">Apply changes</span> button saves the entered Python script and runs it once.
+    Any errors that occur during the script execution are displayed in the output area below. 
+    Any text output resulting from script calls to the built-in <code class="literal">print()</code> function also appears here. 
+    This can be useful for debugging purposes during the development of a script.
+    Note that during the first initialization run, the <code class="literal">render()</code> function defined by the script is not executed yet. 
+    However, if needed, variables and helper functions can be defined at this stage in the global scope 
+    and accessed from the <code class="literal">render()</code> function.
+  </p>
+  <p>
+    The <code class="literal">render()</code> script function is called by OVITO each time the viewport is repainted or
+    when an image or movie frame is rendered. The function's first parameter is a 
+    <a class="ulink" href="http://pyqt.sourceforge.net/Docs/PyQt5/api/qpainter.html" target="_top"><code class="literal">QPainter</code></a> object,
+    which allows the <code class="literal">render()</code> function to paint over the three-dimensional picture rendered by OVITO 
+    by issuing arbitrary drawing commands.
+    The second parameter, <code class="literal">args</code>, is a dictionary object that contains additional arguments
+    such as the viewport being rendered, the general render settings, and the viewport's projection parameters.
+  </p>
+  <p>
+    The user-defined script has full access to OVITO's data model and can access viewport properties,
+    camera and animation settings, modifiers, and data pipeline results. 
+    For more information on OVITO's Python interface and the object model, see the <a class="ulink" href="python/index.html" target="_top">Scripting Reference</a>.
+  </p>
+    
+  <div class="simplesect" id="idp1707136"><div class="titlepage"><div><div><h5 class="title">Example</h5></div></div></div>
+    
+
+    <p>
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/viewport_overlays/python_script_scale_bar_example.png"></div></div></div><p>
+    The following script renders a scale bar into the viewport (with a fixed length of 4 nm, as shown in the example picture). You can copy/paste the source code into the
+    script input field and adjust the parameters in the code as needed.</p>
+    <pre class="programlisting">from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+
+# Parameters:
+bar_length = 40   # Simulation units (e.g. Angstroms)
+bar_color = QColor(0,0,0)
+label_text = "{} nm".format(bar_length/10)
+label_color = QColor(255,255,255)
+
+# This function is called by OVITO on every viewport update.
+def render(painter, **args):
+	if args['is_perspective']: 
+		raise Exception("This only works with non-perspective viewports.")
+		
+	# Compute length of bar in screen space
+	screen_length = 0.5 * bar_length * painter.window().height() / args['fov']
+
+	# Define geometry of bar in screen space
+	height = 0.07 * painter.window().height()
+	margin = 0.02 * painter.window().height()
+	rect = QRectF(margin, margin, screen_length, height)
+
+	# Render bar
+	painter.fillRect(rect, bar_color)
+
+	# Render text label
+	font = painter.font()
+	font.setPixelSize(height)
+	painter.setFont(font)
+	painter.setPen(QPen(label_color))
+	painter.drawText(rect, Qt.AlignCenter, label_text)
+    </pre>
+  </div>
+    
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="viewport_overlays.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="viewport_overlays.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="animation.animation_settings_dialog.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Viewport overlays </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Animation settings dialog</td></tr></table></div></body></html>

@@ -1,0 +1,31 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Tachyon renderer</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="rendering.html" title="Renderering"><link rel="prev" href="rendering.opengl_renderer.html" title="OpenGL renderer"><link rel="next" href="development.html" title="Developer information"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Tachyon renderer</th><td width="20%" align="right"><a accesskey="u" href="rendering.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="rendering.opengl_renderer.html">Prev</a> </td><th width="60%" align="center">Renderering</th><td width="20%" align="right"> <a accesskey="n" href="development.html">Next</a></td></tr></table></div><div class="section" id="rendering.tachyon_renderer"><div class="titlepage"><div><div><h3 class="title">Tachyon renderer</h3></div></div></div>
+  
+
+  <p>
+     </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/rendering/tachyon_renderer_panel.png"></div></div></div><p>  
+     
+    This is a software-based raytracing renderer. One special feature is its ability to render scenes with 
+    ambient occlusion lighting.
+    </p>
+    
+  <div class="simplesect" id="idp1767584"><div class="titlepage"><div><div><h4 class="title">Parameters</h4></div></div></div>
+    
+
+    <div class="variablelist"><dl class="variablelist"><dt><span class="term">Anti-aliasing samples</span></dt><dd>
+          <p>To reduce <a class="ulink" href="http://en.wikipedia.org/wiki/Aliasing" target="_top">aliasing
+          effects</a>, the Tachyon raytracer can perform <span class="emphasis"><em>supersampling</em></span> by 
+          computing multiple rays per output pixel. This parameter controls the number of rays.</p>
+        </dd><dt><span class="term">Direct light</span></dt><dd>
+          <p>Enables the parallel light source, which is directed from an angle behind the camera.</p>
+        </dd><dt><span class="term">Shadows</span></dt><dd>
+          <p>Enables cast shadows for the directional light. Not that, with the current Tachyon version, you cannot turn off
+          shadows when ambient occlusion shading is enabled. In this case, you can only turn off the directional light source completely.</p>
+        </dd><dt><span class="term">Ambient occlusion</span></dt><dd>
+          <p>Enabling this lighting technique mimics some of the effects that occur under conditions of omnidirectional diffuse illumination, 
+          e.g. outdoors on an overcast day.</p>
+        </dd><dt><span class="term">Sample count</span></dt><dd>
+          <p>Ambient occlusion is implemented using a Monte Carlo technique. This parameters controls the number of samples to compute. 
+          A higher sample number leads to a more even shading, but requires more computation time.</p>
+        </dd></dl></div>
+  </div>
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="rendering.opengl_renderer.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="rendering.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="development.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">OpenGL renderer </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Developer information</td></tr></table></div></body></html>

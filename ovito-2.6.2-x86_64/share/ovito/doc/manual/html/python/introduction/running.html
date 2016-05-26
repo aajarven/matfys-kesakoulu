@@ -1,0 +1,176 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Running scripts &mdash; OVITO 2.6.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/rtd.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.6.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/ovito.ico"/>
+    <link rel="top" title="OVITO 2.6.2 documentation" href="../index.html" />
+    <link rel="next" title="Overview" href="overview.html" />
+    <link rel="prev" title="OVITO Scripting Reference" href="../index.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="OVITO Scripting Reference"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="running-scripts">
+<h1>Running scripts<a class="headerlink" href="#running-scripts" title="Permalink to this headline">¶</a></h1>
+<p>This section explains how to use OVITO&#8217;s built-in script interpreter.</p>
+<div class="section" id="ovito-s-python-interpreter">
+<h2>OVITO&#8217;s Python interpreter<a class="headerlink" href="#ovito-s-python-interpreter" title="Permalink to this headline">¶</a></h2>
+<p>OVITO includes a built-in script interpreter, which can execute programs written in the Python language.
+The current version of OVITO is compatible with the <a class="reference external" href="https://docs.python.org/3.4/">Python 3.4</a> language standard.
+You typically execute a Python script from the terminal using the <strong class="program">ovitos</strong> script launcher that comes with OVITO:</p>
+<div class="highlight-shell-session"><div class="highlight"><pre><span class="go">ovitos [-o file] [-g] [script.py] [args...]</span>
+</pre></div>
+</div>
+<p>The <strong class="program">ovitos</strong> program is located in the <code class="file docutils literal"><span class="pre">bin/</span></code> subdirectory of OVITO for Linux, in the
+<code class="file docutils literal"><span class="pre">Ovito.app/Contents/MacOS/</span></code> directory of OVITO for MacOS, and in the main program directory
+on Windows systems. It should not be confused with <strong class="program">ovito</strong>, the main program, which
+provides a graphical user interface.</p>
+<p>Let&#8217;s assume we used a text editor to write a simple Python script file named <code class="file docutils literal"><span class="pre">hello.py</span></code>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">ovito</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;Hello, this is OVITO </span><span class="si">%i</span><span class="s">.</span><span class="si">%i</span><span class="s">.</span><span class="si">%i</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">ovito</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We can execute the script from a Linux terminal as follows:</p>
+<div class="highlight-shell-session"><div class="highlight"><pre><span class="gp">me@linux:~/ovito-2.5.0-x86_64/bin$</span> ./ovitos hello.py
+<span class="go">Hello, this is OVITO 2.5.0</span>
+</pre></div>
+</div>
+<p>By default, the <strong class="program">ovitos</strong> script launcher invokes OVITO in console mode, which is a non-graphical mode
+where the main window isn&#8217;t shown. This allows running OVITO scripts on remote machines or
+computing clusters that don&#8217;t possess a graphics terminal. In OVITO&#8217;s console mode, scripts can read from and write
+to the terminal as if they were executed by a standard Python interpreter. Any command line arguments following the
+script&#8217;s name are passed to the script via the <code class="docutils literal"><span class="pre">sys.argv</span></code> variable. Furthermore, it is possible to start OVITO&#8217;s
+interpreter in interactive scripting mode by running <strong class="program">ovitos</strong> without any arguments.</p>
+<p>The <strong class="command">-o</strong> command line option loads an OVITO state file before executing the
+script. This allows you to preload and use an existing visualization setup that has
+been manually prepared using the graphical version of OVITO and saved to a <code class="file docutils literal"><span class="pre">.ovito</span></code> file. This can save you programming
+work, because modifiers, parameters, and the camera setup get loaded from the OVITO file and
+don&#8217;t have to be set up programatically in the script anymore.</p>
+<p>The <strong class="command">-g</strong> command line option switches from console mode to graphical mode. This displays OVITO&#8217;s main window
+and you can follow your script&#8217;s actions as they are being executed. This is useful, for instance, if you want to visually
+inspect the results of your script and check if everything is correctly set up during the development of a script.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>It is not possible to run scripts written for OVITO with a standard Python interpreter (usually named <strong class="program">python</strong>).
+They must always be executed with the launcher <strong class="program">ovitos</strong>. The Python interpreter shipping with OVITO
+includes only the standard Python modules and <a class="reference external" href="http://www.numpy.org/">NumPy</a>, a popular package for working with numeric data.</p>
+<p>If you want to use other third-party Python packages in your OVITO scripts, it might be possible to install them in the
+built-in interpreter using the normal <em>setuptools</em> mechanism.
+(Use <strong class="program">ovitos</strong> instead of <strong class="program">python</strong> to run the <em>setup.py</em> installation script).</p>
+<p class="last">Installing Python extension that include native code (e.g. <a class="reference external" href="http:://www.scipy.org">Scipy</a>) in the interpreter that ships with OVITO is currently not possible.
+In this case it is recommended to build OVITO from source. OVITO will then make use of the system&#8217;s standard Python interpreter.
+All modules that are available in the standard Python interpreter will also be accessible within OVITO. (Note that you still need
+to execute OVITO scripts with the <strong class="program">ovitos</strong> launcher.) How to build OVITO from source is described <a class="reference external" href="http://www.ovito.org/manual/development.html">on this page</a>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="">Running scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_io.html">File I/O</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifiers.html">Modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particle_properties.html">Particle properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rendering.html">Rendering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_modifiers.html">Writing new modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito.html"><code class="docutils literal"><span class="pre">ovito</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_anim.html"><code class="docutils literal"><span class="pre">ovito.anim</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_data.html"><code class="docutils literal"><span class="pre">ovito.data</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_io.html"><code class="docutils literal"><span class="pre">ovito.io</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_modifiers.html"><code class="docutils literal"><span class="pre">ovito.modifiers</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_vis.html"><code class="docutils literal"><span class="pre">ovito.vis</span></code></a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../index.html" title="OVITO Scripting Reference"
+             >previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Alexander Stukowski.
+    </div>
+  </body>
+</html>

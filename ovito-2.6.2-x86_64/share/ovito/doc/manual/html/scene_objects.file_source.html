@@ -1,0 +1,90 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>External file source</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="ch05.html" title="Reference"><link rel="prev" href="modifier_presets.html" title="Modifier presets"><link rel="next" href="display_objects.html" title="Display objects"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">External file source</th><td width="20%" align="right"><a accesskey="u" href="ch05.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="modifier_presets.html">Prev</a> </td><th width="60%" align="center">Reference</th><td width="20%" align="right"> <a accesskey="n" href="display_objects.html">Next</a></td></tr></table></div><div class="section" id="scene_objects.file_source"><div class="titlepage"><div><div><h2 class="title">External file source</h2></div></div></div>
+  
+
+  <p>
+      
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/scene_objects/file_source_panel.png"></div></div></div><p>
+    
+    This panel shows information regarding the data that was loaded by OVITO from an external file and allows
+    you to change the data source by picking a different input file.  
+                
+	The file source panel is automatically displayed after you <a class="link" href="usage.import.html" title="Importing data">import a data file</a>.
+	You can access it again later by selecting the <a class="link" href="usage.modification_pipeline.html#usage.modification_pipeline.input" title="The input section">corresponding entry</a> in the modification pipeline editor.
+  </p>
+
+   <div class="simplesect" id="idp1532896"><div class="titlepage"><div><div><h3 class="title">Toolbar</h3></div></div></div>
+     
+    
+     <p>
+      </p><div class="inlinefigure"><div class="screenshot"><div class="mediaobject"><img src="images/scene_objects/file_source_toolbar.png"></div></div></div><p>
+     
+     </p><div class="variablelist"><dl class="variablelist"><dt><span class="term">Pick new file</span></dt><dd>
+          <p>Allows you to select a different data file to replace the input data of the current
+          modification pipeline. All modifiers are retained, but the data they act on changes.
+          </p>
+          <p>Note that when you load a new simulation file using this function, OVITO does <span class="emphasis"><em>not</em></span>
+          automatically recognize any consecutive file series it belongs to (unlike when you use the 
+          <a class="link" href="usage.import.html" title="Importing data"><span class="guimenuitem">Load File</span></a> from the file menu).
+          Thus, to load a new time series, you will have to specify the file pattern for the time series explicitly 
+          after loading the first file from the series.        
+          </p>
+		  <p>
+		    By default, after loading the new file, OVITO automatically adjusts the visible region in the viewports
+		    to show the new simulation box. If you want to suppress the automatic zoom and keep the current view, 
+		    create a fixed viewport camera using the 
+		    <span class="guimenuitem">Create Camera</span> function from the <a class="link" href="usage.viewports.html#usage.viewports.menu" title="Viewport menu">viewport menu</a> first.
+		  </p>
+          </dd><dt><span class="term">Pick new remote file</span></dt><dd>
+          <p>
+            Same as above, but allows you to enter a new remote URL instead of picking a local file.
+          </p>
+        </dd><dt><span class="term">Reload data</span></dt><dd>
+          <p>
+          Reloads the data of the current animation frame from the external file. This is useful
+          if the external data file has changed, for example after re-running a simulation with different parameters.
+          </p>
+        </dd><dt><span class="term">Update time series</span></dt><dd>
+          <p>
+             Searches the directory for new files that match the current file pattern. When working
+             with a file that contains multiple simulation frames, the file is re-scanned to rebuild the list of
+             frames.
+             This function is useful when a simulation is still running and produces additional output files.
+          </p>
+        </dd><dt><span class="term">Store data in state file</span></dt><dd>
+          <p>
+            OVITO allows you to save the current program state in a <span class="emphasis"><em>state file</em></span> (<code class="filename">.ovito</code>). By default,
+            the input simulation data is <span class="emphasis"><em>not</em></span> stored in that state file to save disk space.
+            Instead it is read again from the original simulation file when you load the state file.
+            Activating this function will embed a copy of the external simulation data in the state file, making
+            it easier to transfer the state file to a different computer. However, this currently works only
+            for the current animation frame. OVITO never embeds an entire time series in the state file.
+          </p>
+        </dd></dl></div><p>
+         
+     </p>    
+
+   </div>
+   
+   <div class="simplesect" id="idp1552704"><div class="titlepage"><div><div><h3 class="title">Animation</h3></div></div></div>
+     
+     <p>
+        This sub-panel contains controls that determine how the simulation frames loaded from the input file(s) are
+        mapped to OVITO's internal animation timeline. Please see the documentation of the <a class="link" href="usage.animation.html" title="Animation system">animation system</a> for further information.
+     </p>
+   </div>
+
+   <div class="simplesect" id="idp1554960"><div class="titlepage"><div><div><h3 class="title">Specific format settings</h3></div></div></div>
+     
+     <p>
+        Depending on the loaded file type, an additional panel is displayed that allows you to specify further settings.
+        In the screenshot above, for example, the <span class="emphasis"><em>LAMMPS dump</em></span> panel provides additional settings
+        that controls the import of data from a LAMMPS dump file.        
+     </p>
+     <p>
+        The option <span class="guibutton">File contains time series</span> tells OVITO that the input file contains more than
+        one simulation frames. After activating this check box, OVITO scans the entire file to discover all frames
+        and displays them in the animation timeline.
+     </p>
+   </div>
+    
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="modifier_presets.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="display_objects.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Modifier presets </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Display objects</td></tr></table></div></body></html>

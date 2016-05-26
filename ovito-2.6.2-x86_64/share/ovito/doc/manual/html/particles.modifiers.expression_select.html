@@ -1,0 +1,72 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Expression select</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="particles.modifiers.html" title="Modifiers"><link rel="prev" href="particles.modifiers.expand_selection.html" title="Expand selection"><link rel="next" href="particles.modifiers.freeze_property.html" title="Freeze property"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Expression select</th><td width="20%" align="right"><a accesskey="u" href="particles.modifiers.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="particles.modifiers.expand_selection.html">Prev</a> </td><th width="60%" align="center">Modifiers</th><td width="20%" align="right"> <a accesskey="n" href="particles.modifiers.freeze_property.html">Next</a></td></tr></table></div><div class="section" id="particles.modifiers.expression_select"><div class="titlepage"><div><div><h3 class="title">Expression select</h3></div></div></div>
+  
+
+  <p>
+
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/modifiers/expression_select_panel.png"></div></div></div><p>
+
+  This modifier allows you to select particles based on a user-defined criterion.
+  You enter an arbitrary complex Boolean expression, which is evaluated by the modifier for every particle
+  in the system. Those particles for which the expression yields a non-zero value ("<span class="emphasis"><em>true</em></span>")
+  will be selected; all other particles, for which the expression evaluates to zero ("<span class="emphasis"><em>false</em></span>"), are deselected. 
+  </p>
+
+  <p>The Boolean expression can contain references to particle properties and global quantities like the simulation cell size or animation timestep. 
+    Hence, the modifier can be used to select particles based on properties such as position,
+    type, energy etc., and any combination thereof. The list of available
+    input variables is displayed in the lower panel as shown in the screenshot.
+  </p>
+  <p>
+    Boolean expressions can contain comparison operators like <code class="literal">==</code>, <code class="literal">!=</code>, <code class="literal">&gt;=</code>, etc.,
+    and several conditions can be combined using logical AND and OR operators (<code class="literal">&amp;&amp;</code> and <code class="literal">||</code>).
+  </p>
+  <p> 
+  Note that variable names and function names are case-sensitive.
+  </p>
+
+  <div class="simplesect" id="idp1193728"><div class="titlepage"><div><div><h4 class="title">Expression syntax</h4></div></div></div>
+    
+
+    <p>The expression syntax supported by the modifier is very
+    similar to the one used by the C programming language. Arithmetic expressions can be created from
+    float literals, variables or functions using the following operators
+    in this order of precedence:
+    </p><div class="informaltable">
+    <table class="informaltable" border="1"><colgroup><col><col></colgroup><thead><tr><th>Operator</th><th>Description</th></tr></thead><tbody><tr><td>(...)</td><td>expressions in parentheses are evaluated first</td></tr><tr><td>A^B</td><td>exponentiation (A raised to the power B)</td></tr><tr><td>A*B, A/B</td><td>multiplication and division</td></tr><tr><td>A+B, A-B</td><td>addition and subtraction</td></tr><tr><td>A==B, A!=B, A&lt;B, A&lt;=B, A&gt;B, A&gt;=B</td><td>comparison between A and B (result is either 0 or
+            1)</td></tr><tr><td>A &amp;&amp; B</td><td>logical AND operator: result is 1 if A and B differ from
+            0, else 0</td></tr><tr><td>A || B</td><td>logical OR operator: result is 1 if A or B differ from
+            0, else 0</td></tr><tr><td>A ? B : C</td><td>If A differs from 0 (i.e. is true), the resulting value of this expression
+            is B, else C.</td></tr></tbody></table>
+      </div>
+
+    <p>The expression parser supports the following functions:
+    </p><div class="informaltable">
+    <table class="informaltable" border="1"><colgroup><col><col></colgroup><thead><tr><th>Function name</th><th>Description</th></tr></thead><tbody><tr><td>abs(A)</td><td>Absolute value of A. If A is negative, returns -A
+            otherwise returns A.</td></tr><tr><td>acos(A)</td><td>Arc-cosine of A. Returns the angle, measured in radians,
+            whose cosine is A.</td></tr><tr><td>acosh(A)</td><td>Same as acos() but for hyperbolic cosine.</td></tr><tr><td>asin(A)</td><td>Arc-sine of A. Returns the angle, measured in radians,
+            whose sine is A.</td></tr><tr><td>asinh(A)</td><td>Same as asin() but for hyperbolic sine.</td></tr><tr><td>atan(A)</td><td>Arc-tangent of A. Returns the angle, measured in
+            radians, whose tangent is A.</td></tr><tr><td>atan2(Y,X)</td><td>Two argument variant of the arctangent function. Returns
+            the angle, measured in radians. This function is documented
+            <a class="ulink" href="http://en.wikipedia.org/wiki/Atan2" target="_top">here</a>.</td></tr><tr><td>atanh(A)</td><td>Same as atan() but for hyperbolic tangent.</td></tr><tr><td>avg(A,B,...)</td><td>Returns the average of all arguments.</td></tr><tr><td>cos(A)</td><td>Cosine of A. Returns the cosine of the angle A, where A
+            is measured in radians.</td></tr><tr><td>cosh(A)</td><td>Same as cos() but for hyperbolic cosine.</td></tr><tr><td>exp(A)</td><td>Exponential of A. Returns the value of e raised to the
+            power A where e is the base of the natural logarithm, i.e.
+            the non-repeating value approximately equal to
+            2.71828182846.</td></tr><tr><td>fmod(A,B)</td><td>Returns the floating-point remainder of A/B (rounded towards zero).</td></tr><tr><td>rint(A)</td><td>Rounds A to the closest integer. 0.5 is rounded to
+            1.</td></tr><tr><td>ln(A)</td><td>Natural (base e) logarithm of A.</td></tr><tr><td>log10(A)</td><td>Base 10 logarithm of A.</td></tr><tr><td>log2(A)</td><td>Base 2 logarithm of A.</td></tr><tr><td>max(A,B,...)</td><td>Returns the maximum of all values.</td></tr><tr><td>min(A,B,...)</td><td>Returns the minimum of all values.</td></tr><tr><td>sign(A)</td><td>Returns: 1 if A is positive; -1 if A is negative; 0 if A is zero.</td></tr><tr><td>sin(A)</td><td>Sine of A. Returns the sine of the angle A, where A is
+            measured in radians.</td></tr><tr><td>sinh(A)</td><td>Same as sin() but for hyperbolic sine.</td></tr><tr><td>sqrt(A)</td><td>Square root of a value.</td></tr><tr><td>sum(A,B,...)</td><td>Returns the sum of all parameter values.</td></tr><tr><td>tan(A)</td><td>Tangent of A. Returns the tangent of the angle A, where
+            A is measured in radians.</td></tr></tbody></table>
+      </div><p>
+      </p>
+      <p> </p>
+  </div>
+
+  <div class="simplesect" id="idp1250400"><div class="titlepage"><div><div><h4 class="title">Examples</h4></div></div></div>
+    
+
+    <p>Here are two examples for Boolean expressions:</p>
+
+    <pre class="programlisting">ParticleType==1 || ParticleType==2
+    
+sqrt(Position.X*Position.X + Position.Y*Position.Y) &lt; 10</pre>
+  </div>
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="particles.modifiers.expand_selection.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="particles.modifiers.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="particles.modifiers.freeze_property.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Expand selection </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Freeze property</td></tr></table></div></body></html>

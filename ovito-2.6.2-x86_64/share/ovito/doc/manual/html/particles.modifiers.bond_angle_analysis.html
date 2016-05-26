@@ -1,0 +1,50 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Bond-angle analysis</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="particles.modifiers.html" title="Modifiers"><link rel="prev" href="particles.modifiers.bin_and_reduce.html" title="Bin and reduce"><link rel="next" href="particles.modifiers.centrosymmetry.html" title="Centrosymmetry parameter"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Bond-angle analysis</th><td width="20%" align="right"><a accesskey="u" href="particles.modifiers.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="particles.modifiers.bin_and_reduce.html">Prev</a> </td><th width="60%" align="center">Modifiers</th><td width="20%" align="right"> <a accesskey="n" href="particles.modifiers.centrosymmetry.html">Next</a></td></tr></table></div><div class="section" id="particles.modifiers.bond_angle_analysis"><div class="titlepage"><div><div><h3 class="title">Bond-angle analysis</h3></div></div></div>
+  
+
+  <p>
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/modifiers/bond_angle_analysis_panel.png"></div></div></div><p>
+  This modifier identifies the local environment of particles
+  using the Ackland-Jones bond-angle method [<a class="ulink" href="http://link.aps.org/doi/10.1103/PhysRevB.73.054104" target="_top">Ackland and
+  Jones, Phys. Rev. B 73, 054104</a>] and assigns a structure type
+  (FCC, BCC, HCP etc.) to each particle.</p> 
+  
+  <p>
+  The modifier stores the results in the <code class="literal">Structure Type</code> particle property.
+  This allows you to subsequently select particles of a certain structural type, e.g. by using the 
+  <a class="link" href="particles.modifiers.select_particle_type.html" title="Select particle type">Select Particle Type</a> modifier.
+  The structural type of each particle is encoded as an integer value:
+  </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p>0 = Other, unknown coordination structure</p>
+    </li><li class="listitem">
+      <p>1 = FCC, face-centered cubic</p>
+    </li><li class="listitem">
+      <p>2 = HCP, hexagonal close-packed</p>
+    </li><li class="listitem">
+      <p>3 = BCC, body-centered cubic</p>
+    </li><li class="listitem">
+      <p>4 = ICO, icosahedral coordination</p>
+    </li></ul></div><p>
+  </p>
+  
+  <p>
+    An alternative structure identification method is provided by the
+    <a class="link" href="particles.modifiers.common_neighbor_analysis.html" title="Common neighbor analysis">Common Neighbor Analysis</a> modifier. 
+    To identify diamond lattice structures, the <a class="link" href="particles.modifiers.identify_diamond_structure.html" title="Identify diamond structure">
+    Identify Diamond Structure</a> analysis modifier can be used.
+  </p>
+
+  <p>
+    Note that this modifier requires access to the complete set of input particles to perform the analysis. It should therefore be placed at the 
+    beginning of the processing pipeline, preceding any modifiers that delete particles.
+  </p>
+  
+  <p>
+    The <span class="emphasis"><em>Use only selected particles</em></span> option restricts the analysis to the
+    currently selected particles. If this option is checked, unselected particles will be ignored 
+    (as if they did not exist) and will be assigned the structure type "Other".
+    This option can be useful if you want to identify defects in a crystal with a structure
+    not supported by this analysis algorithm, but which has a sublattice that can be identified by the bond-angle method
+    (and you do not want to delete particles belonging to the other sublattice(s) for some reason).
+  </p>  
+  
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="particles.modifiers.bin_and_reduce.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="particles.modifiers.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="particles.modifiers.centrosymmetry.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Bin and reduce </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Centrosymmetry parameter</td></tr></table></div></body></html>

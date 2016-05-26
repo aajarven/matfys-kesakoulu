@@ -1,0 +1,411 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>File I/O &mdash; OVITO 2.6.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/rtd.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.6.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/ovito.ico"/>
+    <link rel="top" title="OVITO 2.6.2 documentation" href="../index.html" />
+    <link rel="next" title="Modifiers" href="modifiers.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modifiers.html" title="Modifiers"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="file-i-o">
+<h1>File I/O<a class="headerlink" href="#file-i-o" title="Permalink to this headline">¶</a></h1>
+<p>This section describes how to load simulation data from external files and how to export modified
+particle data again using a script.</p>
+<div class="section" id="file-input">
+<h2>File input<a class="headerlink" href="#file-input" title="Permalink to this headline">¶</a></h2>
+<p>The primary way of loading an external data file is the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.import_file" title="ovito.io.import_file"><code class="xref py py-func docutils literal"><span class="pre">import_file()</span></code></a> function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="n">import_file</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&quot;simulation.dump&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This high-level function works like the <cite>Load File</cite> menu function in OVITO&#8217;s graphical user interface.
+It creates and returns an <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a>, whose <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a> is set up to point
+to the specified file, and which is reponsible for loading the actual data from the file.
+Furthermore, the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.import_file" title="ovito.io.import_file"><code class="xref py py-func docutils literal"><span class="pre">import_file()</span></code></a> function inserts the returned object node
+into the three-dimensional scene by adding it to the <a class="reference internal" href="../modules/ovito.html#ovito.DataSet.scene_nodes" title="ovito.DataSet.scene_nodes"><code class="xref py py-attr docutils literal"><span class="pre">scene_nodes</span></code></a> list of the current
+dataset. This will let the imported data appear in OVITO&#8217;s viewports.
+You may remove it from scene again by calling</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">remove_from_scene</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Then the imported data will no longer be visible in OVITO&#8217;s interactive viewports or in rendered images.
+However, you can still continue to use the <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a> for computations in the Python script.</p>
+<p>In case you already have an existing object node, for example after being done with the first simulation
+file imported above using <a class="reference internal" href="../modules/ovito_io.html#ovito.io.import_file" title="ovito.io.import_file"><code class="xref py py-func docutils literal"><span class="pre">import_file()</span></code></a>, you can load a new simulation file and replace the old
+input data. This is done using the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource.load" title="ovito.io.FileSource.load"><code class="xref py py-meth docutils literal"><span class="pre">load()</span></code></a> method
+of the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a> attached to the node:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;other_simulation.dump&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It takes the same parameters as the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.import_file" title="ovito.io.import_file"><code class="xref py py-func docutils literal"><span class="pre">import_file()</span></code></a> function, but it doesn&#8217;t create a new
+object node. The existing object node and its modification pipeline are preserved; only its input data is
+replaced with a different input file. Calling <a class="reference internal" href="../modules/ovito_io.html#ovito.io.import_file" title="ovito.io.import_file"><code class="xref py py-func docutils literal"><span class="pre">import_file()</span></code></a> multiple times, in contrast, would
+add additional object nodes to the scene, and you might quickly run out of memory. Thus, if you want to process
+a set of simulation files in a directory, for example, you should use the following kind of loop:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">node</span> <span class="o">=</span> <span class="bp">None</span>
+<span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">node</span><span class="p">:</span>
+        <span class="n">node</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="c"># ... set up computation, add modifiers, etc.</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+    <span class="c"># ... access computation results</span>
+</pre></div>
+</div>
+<p>Note that the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource.load" title="ovito.io.FileSource.load"><code class="xref py py-meth docutils literal"><span class="pre">load()</span></code></a> method is also used to
+load reference configurations for modifiers that require reference particle coordinates, e.g.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">modifier</span> <span class="o">=</span> <span class="n">CalculateDisplacementsModifier</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">modifier</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;reference.dump&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Here the <a class="reference internal" href="../modules/ovito_modifiers.html#ovito.modifiers.CalculateDisplacementsModifier.reference" title="ovito.modifiers.CalculateDisplacementsModifier.reference"><code class="xref py py-attr docutils literal"><span class="pre">reference</span></code></a> attribute refers
+to a second <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a>, which is owned by the <a class="reference internal" href="../modules/ovito_modifiers.html#ovito.modifiers.CalculateDisplacementsModifier" title="ovito.modifiers.CalculateDisplacementsModifier"><code class="xref py py-class docutils literal"><span class="pre">CalculateDisplacementsModifier</span></code></a> and which is responsible
+for loading the reference particle positions needed by the modifier.</p>
+<p><strong>Column mapping</strong></p>
+<p>Both the global <a class="reference internal" href="../modules/ovito_io.html#ovito.io.import_file" title="ovito.io.import_file"><code class="xref py py-func docutils literal"><span class="pre">import_file()</span></code></a> function and the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource.load" title="ovito.io.FileSource.load"><code class="xref py py-meth docutils literal"><span class="pre">FileSource.load()</span></code></a> method
+accept format-specific keyword arguments in addition to the filename. For instance, when loading XYZ
+files, the mapping of input file columns to OVITO&#8217;s particle properties needs to be specified using the <code class="docutils literal"><span class="pre">columns</span></code> keyword:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&quot;simulation.xyz&quot;</span><span class="p">,</span> <span class="n">columns</span> <span class="o">=</span>
+<span class="gp">... </span>          <span class="p">[</span><span class="s">&quot;Particle Type&quot;</span><span class="p">,</span> <span class="s">&quot;Position.X&quot;</span><span class="p">,</span> <span class="s">&quot;Position.Y&quot;</span><span class="p">,</span> <span class="s">&quot;Position.Z&quot;</span><span class="p">,</span> <span class="s">&quot;My Property&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>The number of entries in the <code class="docutils literal"><span class="pre">columns</span></code> list must match the number of data columns in the input file.
+Each entry specifies the destination property and includes, for vector properties, the component.
+File columns can be skipped during parsing by specifying <code class="docutils literal"><span class="pre">None</span></code> instead of a property name.
+OVITO defines a set of standard property names, which are listed in the <a class="reference internal" href="#standard-property-list"><em>Standard particle properties</em></a> section.
+Specifying a non-standard name is also possible, which creates a user-defined particle property
+filled with the data from the corresponding file column.</p>
+<p><strong>Simulation sequences</strong></p>
+<p>So far we have only considered loading one simulation snapshot at a time by explicit calls to <a class="reference internal" href="../modules/ovito_io.html#ovito.io.import_file" title="ovito.io.import_file"><code class="xref py py-func docutils literal"><span class="pre">import_file()</span></code></a>
+or <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource.load" title="ovito.io.FileSource.load"><code class="xref py py-meth docutils literal"><span class="pre">load()</span></code></a>. As you know from the graphical program version, OVITO is also able to
+load a sequence of simulation snapshots (a trajectory), which can be played back as an animation.
+There are two possible cases:</p>
+<ol class="arabic">
+<li><p class="first">To load a file that stores multiple simulation frames, use the <code class="docutils literal"><span class="pre">multiple_frames</span></code> keyword:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&quot;sequence.dump&quot;</span><span class="p">,</span> <span class="n">multiple_frames</span> <span class="o">=</span> <span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>OVITO will scan the entire file and discover all contained simulation frames.</p>
+</li>
+<li><p class="first">To load a series of simulation files from a directory, following a naming pattern like <code class="file docutils literal"><span class="pre">frame.0.dump</span></code>, <code class="file docutils literal"><span class="pre">frame.1000.dump</span></code>,
+<code class="file docutils literal"><span class="pre">frame.2000.dump</span></code>, etc., pass only the first filename from the sequence to the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.import_file" title="ovito.io.import_file"><code class="xref py py-func docutils literal"><span class="pre">import_file()</span></code></a> function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&quot;frame.0.dump&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>OVITO will automatically detect the other files in the directory belonging to the same simulation trajectory.</p>
+</li>
+</ol>
+<p>In both cases you can check how many animation frames were found by querying the <a class="reference internal" href="../modules/ovito_anim.html#ovito.anim.AnimationSettings" title="ovito.anim.AnimationSettings"><code class="xref py py-class docutils literal"><span class="pre">AnimationSettings</span></code></a>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">ovito</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">anim</span><span class="o">.</span><span class="n">last_frame</span>
+<span class="go">100</span>
+</pre></div>
+</div>
+<p>In this example, 101 simulation frames were found by OVITO (frame counting starts at 0).</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">To save memory and time, OVITO never loads all frames from a trjectory at once. It only scans the directory (or the multiframe file)
+to discover all frames belonging to the sequence and adjusts the internal animation length to match the number of input frames found.
+The actual simulation data will only be loaded by the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a> on demand, e.g., when
+jumping to a specific frame in the animation or when rendering a movie.</p>
+</div>
+<p>You can iterate over the frames of a loaded animation sequence in a script loop:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Load a sequence of simulation files &#39;frame.0.dump&#39;, &#39;frame.1000.dump&#39;, etc.</span>
+<span class="n">node</span> <span class="o">=</span> <span class="n">import_file</span><span class="p">(</span><span class="s">&quot;frame.0.dump&quot;</span><span class="p">)</span>
+<span class="c"># ... Apply modifiers to the node here.</span>
+
+<span class="c"># Now iterate over the frames:</span>
+<span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ovito</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">anim</span><span class="o">.</span><span class="n">last_frame</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="c"># Set the time slider position:</span>
+    <span class="n">ovito</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">anim</span><span class="o">.</span><span class="n">current_frame</span> <span class="o">=</span> <span class="n">f</span>
+    <span class="c"># This will load the input data for the current frame and evaluate the modifiers:</span>
+    <span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">()</span>
+    <span class="c"># ... access computation results for current animation frame.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="file-output">
+<h2>File output<a class="headerlink" href="#file-output" title="Permalink to this headline">¶</a></h2>
+<p>You can write particles to a file using the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.export_file" title="ovito.io.export_file"><code class="xref py py-func docutils literal"><span class="pre">ovito.io.export_file()</span></code></a> function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="gp">&gt;&gt;&gt; </span><span class="n">export_file</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s">&quot;outputfile.dump&quot;</span><span class="p">,</span> <span class="s">&quot;lammps_dump&quot;</span><span class="p">,</span>
+<span class="gp">... </span>   <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;Position.X&quot;</span><span class="p">,</span> <span class="s">&quot;Position.Y&quot;</span><span class="p">,</span> <span class="s">&quot;Position.Z&quot;</span><span class="p">,</span> <span class="s">&quot;My Property&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>OVITO will automatically evaluate the node&#8217;s modification pipeline and export the computed results to the file.
+If the node&#8217;s modification pipeline contains no modifiers, then the original, unmodified data
+will be exported.</p>
+<p>The second function parameter specifies the output filename, and the third parameter selects the
+output format. For a list of supported file formats, see <a class="reference internal" href="../modules/ovito_io.html#ovito.io.export_file" title="ovito.io.export_file"><code class="xref py py-func docutils literal"><span class="pre">export_file()</span></code></a> documentation.
+Depending on the selected output format, additional keyword arguments must be specified. For instance,
+in the example above the <code class="docutils literal"><span class="pre">columns</span></code> parameter lists the particle properties to be exported.</p>
+</div>
+<div class="section" id="standard-particle-properties">
+<span id="standard-property-list"></span><h2>Standard particle properties<a class="headerlink" href="#standard-particle-properties" title="Permalink to this headline">¶</a></h2>
+<p>OVITO defines the following standard particle properties. Any name not included in this list will
+be treated as a user-defined particle property (of data type float).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="42%" />
+<col width="43%" />
+<col width="16%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Property name</th>
+<th class="head">Components</th>
+<th class="head">Datatype</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Angular</span> <span class="pre">Momentum&quot;</span></code></td>
+<td>X, Y, Z</td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Angular</span> <span class="pre">Velocity&quot;</span></code></td>
+<td>X, Y, Z</td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Aspherical</span> <span class="pre">Shape&quot;</span></code></td>
+<td>X, Y, Z</td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Centrosymmetry&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Charge&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Cluster&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Color&quot;</span></code></td>
+<td>R, G, B</td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Coordination&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Deformation</span> <span class="pre">Gradient&quot;</span></code></td>
+<td>11, 12, 13, 21, 22, 23, 32, 32, 33</td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Dipole</span> <span class="pre">Magnitude&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Dipole</span> <span class="pre">Orientation&quot;</span></code></td>
+<td>X, Y, Z</td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Displacement&quot;</span></code></td>
+<td>X, Y, Z</td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Displacement</span> <span class="pre">Magnitude&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Force&quot;</span></code></td>
+<td>X, Y, Z</td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Kinetic</span> <span class="pre">Energy&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Mass&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Molecule</span> <span class="pre">Identifier&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Particle</span> <span class="pre">Type&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>integer (str)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Position&quot;</span></code></td>
+<td>X, Y, Z</td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Orientation&quot;</span></code></td>
+<td>X, Y, Z, W</td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Particle</span> <span class="pre">Identifier&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Periodic</span> <span class="pre">Image&quot;</span></code></td>
+<td>X, Y, Z</td>
+<td>integer</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Potential</span> <span class="pre">Energy&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Radius&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Selection&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Spin&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Structure</span> <span class="pre">Type&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>integer</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Strain</span> <span class="pre">Tensor&quot;</span></code></td>
+<td>XX, YY, ZZ, XY, XZ, YZ</td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Stress</span> <span class="pre">Tensor&quot;</span></code></td>
+<td>XX, YY, ZZ, XY, XZ, YZ</td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Torque&quot;</span></code></td>
+<td>X, Y, Z</td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Total</span> <span class="pre">Energy&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Transparency&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>float</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal"><span class="pre">&quot;Velocity&quot;</span></code></td>
+<td>X, Y, Z</td>
+<td>float</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal"><span class="pre">&quot;Velocity</span> <span class="pre">Magnitude&quot;</span></code></td>
+<td>&nbsp;</td>
+<td>float</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="running.html">Running scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">File I/O</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifiers.html">Modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particle_properties.html">Particle properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rendering.html">Rendering</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_modifiers.html">Writing new modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito.html"><code class="docutils literal"><span class="pre">ovito</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_anim.html"><code class="docutils literal"><span class="pre">ovito.anim</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_data.html"><code class="docutils literal"><span class="pre">ovito.data</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_io.html"><code class="docutils literal"><span class="pre">ovito.io</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_modifiers.html"><code class="docutils literal"><span class="pre">ovito.modifiers</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_vis.html"><code class="docutils literal"><span class="pre">ovito.vis</span></code></a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="modifiers.html" title="Modifiers"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="overview.html" title="Overview"
+             >previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Alexander Stukowski.
+    </div>
+  </body>
+</html>

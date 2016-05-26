@@ -1,0 +1,64 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Rendering images and movies</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="usage.html" title="Usage"><link rel="prev" href="usage.modification_pipeline.html" title="Modification pipeline"><link rel="next" href="usage.miscellaneous.html" title="Miscellaneous"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Rendering images and movies</th><td width="20%" align="right"><a accesskey="u" href="usage.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="usage.modification_pipeline.html">Prev</a> </td><th width="60%" align="center">Usage</th><td width="20%" align="right"> <a accesskey="n" href="usage.miscellaneous.html">Next</a></td></tr></table></div><div class="section" id="usage.rendering"><div class="titlepage"><div><div><h2 class="title">Rendering images and movies</h2></div></div></div>
+  
+
+  <p>
+    </p><div class="informalfigure">
+      <div class="screenshot"><div class="mediaobject"><img src="images/rendering/render_tab.png"></div></div>
+    </div><p>
+	OVITO lets you work with and analyze simulation data interactively. However, to share your work with others,
+    you likely want to produce static images or videos to be included in publications or presentations. 
+    Rendering and saving images or movies is done from the 
+    <span class="emphasis"><em>Render</em></span> tab of the command panel, which is shown on the right.
+  </p>
+  
+  <div class="simplesect" id="usage.rendering.render_settings"><div class="titlepage"><div><div><h3 class="title">Render settings</h3></div></div></div>
+         
+      <p>
+      In the <a class="link" href="core.render_settings.html" title="Render settings">Render settings</a> panel you control the generation 
+      of output images and movies, for example by setting the desired image resolution and background color.
+      Click the <span class="guibutton">Render Active Viewport</span> <span class="inlinemediaobject"><img src="images/rendering/render_active_viewport.png"></span> button to start the rendering process. OVITO will open a new window to display the generated image, which can be saved to disk or copied to the 
+      clipboard.
+    </p>
+    <p>
+      OVITO provides two different rendering engines. The first one is the hardware-accelerated <a class="link" href="rendering.opengl_renderer.html" title="OpenGL renderer">OpenGL renderer</a>, which is also used in the 
+      interactive viewports for real-time display. Accordingly, this renderer is very fast and produces pictures that are more or less identical to
+      what you see in the interactive viewports. The second option is the <a class="link" href="rendering.tachyon_renderer.html" title="Tachyon renderer">Tachyon renderer</a>, a software-based
+      raytracing engine. It supports real shadows and ambient occlusion shading, but it usually takes longer to compute an image with this renderer.
+      </p><div class="inlinefigure">
+      <div class="informaltable">
+        <table class="informaltable" border="0"><colgroup><col><col></colgroup><tbody><tr valign="bottom"><td valign="bottom">OpenGL renderer:</td><td valign="bottom">Tachyon renderer:</td></tr><tr valign="top"><td valign="top"><div class="mediaobject"><img src="images/rendering/renderer_example_opengl.png"></div></td><td valign="top"><div class="mediaobject"><img src="images/rendering/renderer_example_tachyon.png"></div></td></tr></tbody></table>
+      </div>
+      </div><p>
+    </p>
+  </div>
+
+  <div class="simplesect" id="usage.rendering.animation"><div class="titlepage"><div><div><h3 class="title">Creating movies</h3></div></div></div>
+         
+    <p>
+      If you have loaded a simulation sequence, you can let OVITO render an animated movie of it and save it as a video file. 
+      Select <span class="guilabel">Complete animation</span> in the <a class="link" href="core.render_settings.html" title="Render settings">Render settings</a> panel and set a name and encoding format for the 
+      output video file. OVITO's built-in video encoder supports common video formats such as AVI and MPEG. 
+    </p>
+    <p>
+      The playback speed (frames per second) of the video to be generated can be changed in the <a class="link" href="animation.animation_settings_dialog.html" title="Animation settings dialog">Animation settings</a> dialog, which can be opened 
+      from the animation toolbar.
+      Alternatively, you can produce a series of separate image files and combine them to a video later using an external video encoding tool.
+      More details on OVITO's animation capabilities can be found <a class="link" href="usage.animation.html" title="Animation system">here</a>.
+    </p>
+  </div>
+
+  <div class="simplesect" id="usage.rendering.show_render_frame"><div class="titlepage"><div><div><h3 class="title">Adjusting the visible viewport region</h3></div></div></div>
+    
+    <p>
+      </p><div class="informalfigure"><div class="informaltable">
+        <table class="informaltable" border="0"><colgroup><col><col></colgroup><tbody><tr valign="bottom"><td valign="bottom">Interactive viewport:</td><td valign="bottom">Rendered image:</td></tr><tr valign="top"><td valign="top"><div class="mediaobject"><img src="images/rendering/show_render_frame_example.png" width="216"></div></td><td valign="top"><div class="mediaobject"><img src="images/rendering/show_render_frame_output.png" width="216"></div></td></tr></tbody></table>
+      </div></div><p>
+      The interative viewport in OVITO and the static output image being rendered may have different aspect ratios, depending on the rendering resolution you specified.
+      Thus, the visible region in the output image might slightly differ from what you see in the interactive viewport. 
+      To help you positioning the virtual camera and adjust the visible portion of the viewport, 
+      it is possible to activate the <span class="guimenuitem">Preview Mode</span> for a viewport in the <a class="link" href="usage.viewports.html#usage.viewports.menu" title="Viewport menu">viewport menu</a>.
+      As shown in the screenshot on the right, now a semi-transparent frame in the interactive viewport indicates the region that will be visible in the final output image.
+     </p>
+   </div>
+  
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="usage.modification_pipeline.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="usage.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="usage.miscellaneous.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Modification pipeline </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Miscellaneous</td></tr></table></div></body></html>

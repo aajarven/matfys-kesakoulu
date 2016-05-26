@@ -1,0 +1,63 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Building OVITO on Linux</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="development.html" title="Developer information"><link rel="prev" href="development.html" title="Developer information"><link rel="next" href="development.build_windows.html" title="Building OVITO on Windows"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Building OVITO on Linux</th><td width="20%" align="right"><a accesskey="u" href="development.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="development.html">Prev</a> </td><th width="60%" align="center">Developer information</th><td width="20%" align="right"> <a accesskey="n" href="development.build_windows.html">Next</a></td></tr></table></div><div class="section" id="development.build_linux"><div class="titlepage"><div><div><h2 class="title">Building OVITO on Linux</h2></div></div></div>
+  
+
+  <p>
+  Note that the following instructions have been written for Ubuntu Linux 14.04 or later, or any compatible Debian-based distribution.
+  Other Linux distributions may require slightly modified steps. 
+  </p>
+  
+ <div class="simplesect" id="idp1842112"><div class="titlepage"><div><div><h3 class="title">Installing dependencies</h3></div></div></div>
+    
+    <p>
+    First install the required <a class="link" href="development.html#development.requirements" title="Build requirements">build tools and third-party libraries</a>
+    by running
+</p><pre class="screen"><span class="command"><strong>sudo apt-get install build-essential git cmake-curses-gui qt5-default libcgal-dev libboost-dev libqt5scintilla2-dev \
+                     libavcodec-dev libavdevice-dev libavfilter-dev libavformat-dev libavresample-dev \
+                     libavutil-dev libswscale-dev libnetcdf-dev libhdf5-dev libhdf5-serial-dev \
+                     libbotan1.10-dev libmuparser-dev python3-dev libboost-python-dev \
+                     python3-sphinx python3-numpy python3-sip python3-pyqt5 \
+                     xsltproc docbook-xml docbook-xsl docbook-xsl-doc-html doxygen
+</strong></span></pre><p>
+  </p>
+  </div>
+
+ <div class="simplesect" id="idp1845168"><div class="titlepage"><div><div><h3 class="title">Downloading the source code</h3></div></div></div>
+    
+    <p>
+    Then download OVITO's source code into a new subdirectory named <code class="filename">ovito/</code>: 
+</p><pre class="screen"><span class="command"><strong>git clone git://git.code.sf.net/p/ovito/git ovito</strong></span></pre><p>
+  </p>
+  </div>
+
+  <div class="simplesect" id="idp1847216"><div class="titlepage"><div><div><h3 class="title">Compiling OVITO</h3></div></div></div>
+    
+    <p>
+    Within that directory, create a build directory and let <a class="ulink" href="hhtp://www.cmake.org/" target="_top">CMake</a> generate the Makefile: 
+</p><pre class="screen">
+<span class="command"><strong>cd ovito
+mkdir build
+cd build
+cmake -DOVITO_BUILD_DOCUMENTATION=ON \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DPYTHON_INCLUDE_DIR=/usr/include/python3.4m \
+      -DPYTHON_LIBRARY=/usr/lib/x86_64-linux-gnu/libpython3.4m.so \
+      -DBoost_PYTHON_LIBRARY_RELEASE=/usr/lib/x86_64-linux-gnu/libboost_python-py34.so \
+      -DBoost_PYTHON_LIBRARY_DEBUG=/usr/lib/x86_64-linux-gnu/libboost_python-py34.so \
+      ..
+</strong></span></pre><p>
+  </p>
+  <p>
+    If this step fails, or if you want to disable certain components of OVITO, you can now run "<span class="command"><strong>ccmake .</strong></span>" to open the 
+    <a class="ulink" href="hhtp://www.cmake.org/" target="_top">CMake</a> configuration program.
+    The <code class="literal">PYTHON_INCLUDE_DIR</code>, <code class="literal">PYTHON_LIBRARY</code>, and <code class="literal">Boost_PYTHON_LIBRARY_RELEASE</code> settings are needed to 
+    build OVITO against Python 3 instead of version 2.
+  </p>
+  <p>
+    Finally, compile OVITO: 
+</p><pre class="screen">
+<span class="command"><strong>make -j4</strong></span></pre><p>
+After a successful build, the executable can be found in the <code class="filename">ovito/build/bin</code> directory.
+  </p>
+  </div>
+  
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="development.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="development.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="development.build_windows.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Developer information </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Building OVITO on Windows</td></tr></table></div></body></html>

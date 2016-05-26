@@ -1,0 +1,111 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Atomic strain</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="particles.modifiers.html" title="Modifiers"><link rel="prev" href="particles.modifiers.assign_color.html" title="Assign color"><link rel="next" href="particles.modifiers.bin_and_reduce.html" title="Bin and reduce"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Atomic strain</th><td width="20%" align="right"><a accesskey="u" href="particles.modifiers.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="particles.modifiers.assign_color.html">Prev</a> </td><th width="60%" align="center">Modifiers</th><td width="20%" align="right"> <a accesskey="n" href="particles.modifiers.bin_and_reduce.html">Next</a></td></tr></table></div><div class="section" id="particles.modifiers.atomic_strain"><div class="titlepage"><div><div><h3 class="title">Atomic strain</h3></div></div></div>
+  
+
+  <p>
+  
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/modifiers/atomic_strain_panel.png"></div></div></div><p>
+  
+  This modifier calculates the atomic-level strain tensors based on two
+  configurations of the system. See
+  <a class="ulink" href="http://dx.doi.org/10.1103/PhysRevE.57.7192" target="_top">[Falk, Langer, Phys. Rev. E 57 (1998), 7192]</a>
+  and <a class="ulink" href="http://li.mit.edu/Archive/Activities/Archive/Papers/07/Shimizu07a.pdf" target="_top">[Shimizu, Ogata, Li, Mater.
+  Trans. 48 (2007), 2923]</a> for a description of how the per-particle deformation
+  tensors are calculated by OVITO.</p>
+
+  <p>The data set to which the modifier is applied is considered the
+  <span class="emphasis"><em>current</em></span> (=deformed) configuration of the system. The
+  <span class="emphasis"><em>reference</em></span> (=initial) configuration of the system is
+  loaded from a separate input file by the modifier.</p>
+
+  <p>OVITO calculates the local deformation gradient tensor <span class="emphasis"><em>F</em></span> for each particle
+  from the relative displacements of the particle's neighbors within the given
+  cutoff radius. Note that this set of neighbors is determined in
+  the <span class="emphasis"><em>initial</em></span> configuration for each particle. At least three
+  non-coplanar neighbors are required to calculate <span class="emphasis"><em>F</em></span> for a central particle.
+  Thus, the calculation will fail for isolated or undercoordinated particles. The
+  modifier can select those invalid particles in the output for diagnostic purposes.</p>
+
+  <p>After calculating the atomic deformation gradient tensor <span class="emphasis"><em>F</em></span>, the
+  Green-Langrangian strain tensor <span class="mathphrase">E=1/2(F<sup>T</sup>F-I)</span> 
+  is derived from it. The modifier also calculates the <span class="emphasis"><em>von Mises</em></span> local shear invariant and the
+  volumetric (hydrostatic) part of the strain tensor and outputs these scalar quantities as new particle properties.</p>
+
+  <p>Finally, the modifier calculates the residual of the deformation gradient calculation.
+  This is a measure for the non-affine part of the local deformation and was termed
+  <span class="mathphrase">D<sup>2</sup><sub>min</sub></span>
+  by Falk &amp; Langer.</p>
+
+  <p>Use the <span class="emphasis"><em>"Reference: External file"</em></span> panel to pick the
+  file containing the initial particle positions. Note
+  that this reference file must contain the same set of particles as the
+  current configuration received by the modifier from the upstream part of the modification pipeline. 
+  That means you should not delete particles before applying the <span class="emphasis"><em>Atomic
+  strain</em></span> modifier and the analysis modifier should be usually placed at the
+  beginning of the processing pipeline.</p>
+
+  <p>
+  To calculate the displacement of a given particle in the current configuration, the modifier needs to
+  find the corresponding particle in the reference configuration of the system.
+  If particles possess unique IDs (i.e. the <code class="literal">Particle Identifier</code> property is present), the modifier will
+  use this information to map particles from the reference configuration to
+  the current configuration and vice versa. If no particle IDs are defined, the modifier assumes
+  that particles have the same ordering in both configurations.</p>
+  
+  <p>
+  Note that OVITO assumes particle positions to be column vectors. Some programs such as <span class="emphasis"><em>AtomEye</em></span> use a different convention
+  and assume them to be row vectors. The deformation gradient tensors calculated by OVITO will therefore be the transpose
+  of the output generated by <span class="emphasis"><em>AtomEye</em></span>.
+  </p>
+  
+  <div class="simplesect" id="idp631808"><div class="titlepage"><div><div><h4 class="title">Parameters</h4></div></div></div>
+    
+
+    <div class="variablelist"><dl class="variablelist"><dt><span class="term">Cutoff radius</span></dt><dd>
+          <p>Controls the range of neighbors that are taken
+          into account to compute the deformation gradient tensor of a particle.
+          This radius must be large enough to include at least three non-coplanar neighbors for
+          every particle in the reference configuration. The larger the cutoff, the larger 
+          the volume over which the local deformation gradient tensor is averaged.</p>
+        </dd><dt><span class="term">Eliminate homogeneous cell deformation</span></dt><dd>
+          <p>This option lets the modifier first rescale the current
+          simulation cell including all particle coordinates to match the 
+          cell shape in the reference configuration before calculating the deformation tensors. This effectively eliminates any
+          macroscopic, homogeneous deformation of the simulation cell, and the
+          calculated deformation tensors will reflect only the internal, microscopic displacements of particles.</p>
+        </dd><dt><span class="term">Assume unwrapped coordinates</span></dt><dd>
+          <p>This only affects the treatment of simulation cells with
+          periodic boundary conditions. If activated, the particle coordinates
+          in the reference and the current configuration are taken as is. If
+          this option is not active, the minimum image convention is used to
+          deal with particles that have crossed a periodic boundary.</p>
+        </dd><dt><span class="term">Output deformation gradient tensors</span></dt><dd>
+          <p>If activated, the modifier stores the nine components of the calculated per-particle
+          deformation gradient tensors in an output property. Turn this off to save memory if you
+          do not need the complete deformation gradient tensors.</p>
+        </dd><dt><span class="term">Output strain tensors</span></dt><dd>
+          <p>If activated, the modifier stores the six components of the calculated per-particle
+          strain tensors in an output property. Turn this off to save memory if you
+          do not need the complete strain tensor tensors.</p>
+        </dd><dt><span class="term">Output non-affine squared displacements</span></dt><dd>
+          <p>If activated, the modifier computes the non-affine displacements in an output
+          property. This is the residual of the least squares fit of the deformation gradient
+          tensor (i.e. the <span class="mathphrase">D<sup>2</sup><sub>min</sub></span>
+	  property of Falk &amp; Langer). Turn this off to save memory if you do not need non-affine
+	  displacements.</p>
+        </dd><dt><span class="term">Select invalid particles</span></dt><dd>
+          <p>If activated, the modifier selects those particles for which it
+          could not calculate the local deformation gradient and strain tensors
+          (due to too few neighbors within the cutoff radius).</p>
+        </dd><dt><span class="term">Fixed reference configuration</span></dt><dd>
+          <p>If this option is active, the selected animation frame from the reference simulation sequence is used
+          as a fixed reference to calculate the displacement vectors. This is the default mode.</p>
+        </dd><dt><span class="term">Relative to current frame</span></dt><dd>
+          <p>If this option is active, then a changing reference configuration is used to calculate the displacement vectors. 
+          This allows computing incremental displacement vectors (similar to discrete velocity vectors).
+          The frame offset controls the distance between reference and current frame and can be negative or positive. If it is negative, then the reference frame 
+          precedes the current frame in the simulation sequence.
+          Note that the displacement vectors will not be computed for simulation frames for which the resulting reference frame is negative or out of range.
+          </p>
+        </dd></dl></div>
+  </div>
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="particles.modifiers.assign_color.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="particles.modifiers.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="particles.modifiers.bin_and_reduce.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Assign color </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Bin and reduce</td></tr></table></div></body></html>

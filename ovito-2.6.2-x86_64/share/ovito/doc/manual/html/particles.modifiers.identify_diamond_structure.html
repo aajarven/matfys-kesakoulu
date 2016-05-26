@@ -1,0 +1,69 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Identify diamond structure</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="particles.modifiers.html" title="Modifiers"><link rel="prev" href="particles.modifiers.histogram.html" title="Histogram"><link rel="next" href="particles.modifiers.invert_selection.html" title="Invert selection"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Identify diamond structure</th><td width="20%" align="right"><a accesskey="u" href="particles.modifiers.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="particles.modifiers.histogram.html">Prev</a> </td><th width="60%" align="center">Modifiers</th><td width="20%" align="right"> <a accesskey="n" href="particles.modifiers.invert_selection.html">Next</a></td></tr></table></div><div class="section" id="particles.modifiers.identify_diamond_structure"><div class="titlepage"><div><div><h3 class="title">Identify diamond structure</h3></div></div></div>
+  
+
+  <p>  
+  This analysis modifier finds atoms that are arranged in a cubic or hexagonal diamond lattice. This structure identification method has been described in Appendix A of
+    </p><div class="blockquote"><blockquote class="blockquote"><p>
+</p><div class="literallayout"><p><a class="ulink" href="http://arxiv.org/abs/1601.06597" target="_top">E. Maras et al.<br>
+Global transition path search for dislocation formation in Ge on Si(001)<br>
+arXiv:1601.06597 (2016)</a></p></div><p>
+    </p></blockquote></div><p>
+    Please cite this paper when you use this method in your work.  
+  </p>
+
+  <p>
+  The algorithm analyzes the local enviroment of each atom up to the second neighbor shell to determine the local structure type.
+  The results are stored in the <code class="literal">Structure Type</code> particle property, with the type assigned to each atom encoded as an integer value:
+  </p><div class="informaltable">
+        <table class="informaltable" border="1"><colgroup><col class="id"><col class="name"><col class="descr"></colgroup><thead><tr><th>Type ID</th><th>Type name</th><th>Description</th></tr></thead><tbody><tr><td>0</td><td>Other</td><td>An atom with unknown coordination structure, which doesn't belong to any of the classes below.</td></tr><tr><td>1</td><td>Cubic diamond</td><td>An atom having all of its first and second nearest neighbors positioned on cubic diamond lattice sites</td></tr><tr><td>2</td><td>Cubic diamond (1st neighbor)</td><td>An atom being a first neighbor of an atom that was classified as <span class="emphasis"><em>cubic diamond</em></span>. 
+              Its four neighbors are positioned on lattice sites, but at least one of its second nearest neighbors is not.</td></tr><tr><td>3</td><td>Cubic diamond (2nd neighbor)</td><td>An atom being a second nearest neighbor of an atom that was classified as <span class="emphasis"><em>cubic diamond</em></span>.
+              The atom itself is positioned on a lattice site, but at least one of its neighbors is missing or is not positioned on a lattice site.</td></tr><tr><td>4</td><td>Hexagonal diamond</td><td>An atom having all of its first and second nearest neighbors positioned on hexagonal diamond lattice sites</td></tr><tr><td>5</td><td>Hexagonal diamond (1st neighbor)</td><td>An atom being a first neighbor of an atom that was classified as <span class="emphasis"><em>hexagonal diamond</em></span>. 
+              Its four neighbors are positioned on lattice sites, but at least one of its second nearest neighbors is not.</td></tr><tr><td>6</td><td>Hexagonal diamond (2nd neighbor)</td><td>An atom being a second nearest neighbor of an atom that was classified as <span class="emphasis"><em>hexagonal diamond</em></span>.
+              The atom itself is positioned on a lattice site, but at least one of its neighbors is missing or is not positioned on a lattice site.</td></tr></tbody></table>
+    </div><p>
+    </p>
+
+  <p>
+    The <span class="emphasis"><em>Use only selected particles</em></span> option restricts the analysis to the
+    currently selected atoms. If this option is activated, unselected atoms will be ignored 
+    (as if they did not exist) and will be assigned the structure type "Other".
+    This option can be useful if you want to identify defects in a crystal with a non-diamond structure, 
+    but which has a sublattice that is a diamond lattice
+    (and you do not want to delete atoms belonging to the other sublattice(s) for some reason).
+  </p>
+  
+  <div class="simplesect" id="idp1328080"><div class="titlepage"><div><div><h4 class="title">How it works</h4></div></div></div>
+    
+    <p>
+     </p><div class="informalfigure">
+      <div class="informaltable">
+        <table class="informaltable" border="0"><colgroup><col class="c1"><col class="c2"></colgroup><tbody><tr valign="top"><td colspan="2" valign="top">Central atom (green), nearest neighbors (blue), and neighbors of neighbors (yellow).</td></tr><tr valign="top"><td valign="top">
+		        <div class="mediaobject"><img src="images/modifiers/identify_diamond_cubic.png"></div>
+              </td><td valign="top">
+		        <div class="mediaobject"><img src="images/modifiers/identify_diamond_hexagonal.png"></div>
+              </td></tr><tr valign="top"><td valign="top">Cubic diamond</td><td valign="top">Hexagonal diamond</td></tr><tr valign="top"><td valign="top">
+		        <div class="mediaobject"><img src="images/modifiers/identify_diamond_cubic_fcc.png"></div>
+              </td><td valign="top">
+		        <div class="mediaobject"><img src="images/modifiers/identify_diamond_hexagonal_hcp.png"></div>
+              </td></tr><tr valign="top"><td valign="top">FCC</td><td valign="top">HCP</td></tr></tbody></table>
+      </div>
+    </div><p>
+    To classify a central atom, this structure identification method takes into account second nearest neighbors to 
+    discriminate between cubic and hexagonal diamond structures. The method can be considered
+    an extended version of the popular <a class="link" href="particles.modifiers.common_neighbor_analysis.html" title="Common neighbor analysis">common neighbor analysis (CNA)</a>, which is typically used to identify FCC, HCP, or BCC structures.
+    However, the conventional CNA is not suited for diamond structures, because nearest neighbor atoms don't have common neighbors,
+    and the second and third nearest neighbor shells are not well separated. 
+    </p>
+    <p>
+    These problems are solved as follows: First, the nearest neighbors of an atom are identified. Then, for each of these four neighbors, their respective nearest neighbors are identified.
+    This yields the list of second nearest neighbors of the central atom.
+    Finally, the CNA fingerprint is computed for these 12 second nearest neighbors and the central atom.
+    If they are arranged on a FCC lattice, then the central atom is classified as
+    cubic diamond. If they form a HCP structure, then the central atom is marked as an hexagonal diamond atom.
+    </p>
+    <p>
+    Further details can be found in the <a class="ulink" href="http://arxiv.org/abs/1601.06597" target="_top">paper</a>.
+    </p>
+  </div>
+
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="particles.modifiers.histogram.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="particles.modifiers.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="particles.modifiers.invert_selection.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Histogram </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Invert selection</td></tr></table></div></body></html>

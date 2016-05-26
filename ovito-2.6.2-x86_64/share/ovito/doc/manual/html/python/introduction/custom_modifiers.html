@@ -1,0 +1,350 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Writing new modifiers &mdash; OVITO 2.6.2 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/rtd.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.6.2',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/ovito.ico"/>
+    <link rel="top" title="OVITO 2.6.2 documentation" href="../index.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Rendering" href="rendering.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="rendering.html" title="Rendering"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="writing-new-modifiers">
+<span id="writing-custom-modifiers"></span><h1>Writing new modifiers<a class="headerlink" href="#writing-new-modifiers" title="Permalink to this headline">¶</a></h1>
+<p>OVITO provides a collection of built-in data manipulation and analysis modifiers, which can be found in the <a class="reference internal" href="../modules/ovito_modifiers.html#module-ovito.modifiers" title="ovito.modifiers"><code class="xref py py-mod docutils literal"><span class="pre">ovito.modifiers</span></code></a> module.
+These modifier types are all implemented in C++, and the Python interface allows you to instantiate them,
+insert them into the modification pipeline of an <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a>, and configure their parameters.
+However, sometimes the capabilities provided by these built-in modifiers are not sufficent and you may want to
+write your own, completely new type of modifier that can participate in the data pipeline system of OVITO.
+The following sections describe how this is done.</p>
+<div class="section" id="inserting-a-custom-modifier-into-the-pipeline">
+<h2>Inserting a custom modifier into the pipeline<a class="headerlink" href="#inserting-a-custom-modifier-into-the-pipeline" title="Permalink to this headline">¶</a></h2>
+<p>Creating a user-defined modifier essentially requires writing a Python function with the following signature,
+which is responsible for computing the effect of the custom modifier:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<p>The meaning of the parameters and the implementation of this function will be described
+in later sections. You can insert the custom modifier into the modification pipeline either by using
+OVITO&#8217;s graphical user interface or programmatically from Python:</p>
+<blockquote>
+<div><ol class="arabic">
+<li><p class="first">Within the graphical user interface, select <em>Python script</em> from the modifier drop-down list to insert
+a Python script modifier into the modification pipeline. OVITO provides a text input field
+which allows you to enter the code for the <code class="docutils literal"><span class="pre">modify()</span></code> function. The
+<a class="reference external" href="../../particles.modifiers.python_script.html">corresponding page</a> in the OVITO
+user manual provides more information on this procedure and on how you can save a custom script modifier
+for future use within the graphical program.</p>
+</li>
+<li><p class="first">Via the scripting interface, a custom modifier is inserted into the data pipeline
+of an <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a> by creating an instance of the <a class="reference internal" href="../modules/ovito_modifiers.html#ovito.modifiers.PythonScriptModifier" title="ovito.modifiers.PythonScriptModifier"><code class="xref py py-class docutils literal"><span class="pre">PythonScriptModifier</span></code></a>
+class as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ovito.modifiers</span> <span class="kn">import</span> <span class="n">PythonScriptModifier</span>
+
+<span class="c"># Our custom modifier function:</span>
+<span class="k">def</span> <span class="nf">my_modifier</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+    <span class="o">...</span>
+
+<span class="c"># Inserting it into the modification pipeline of the node:</span>
+<span class="n">node</span><span class="o">.</span><span class="n">modifiers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">PythonScriptModifier</span><span class="p">(</span><span class="n">function</span> <span class="o">=</span> <span class="n">my_modifier</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Note how our custom modifier function, which can have any name in this case,
+is assigned to the <a class="reference internal" href="../modules/ovito_modifiers.html#ovito.modifiers.PythonScriptModifier.function" title="ovito.modifiers.PythonScriptModifier.function"><code class="xref py py-attr docutils literal"><span class="pre">function</span></code></a> attribute of the
+<a class="reference internal" href="../modules/ovito_modifiers.html#ovito.modifiers.PythonScriptModifier" title="ovito.modifiers.PythonScriptModifier"><code class="xref py py-class docutils literal"><span class="pre">PythonScriptModifier</span></code></a> instance, which in turn is inserted into the modification pipeline.</p>
+</li>
+</ol>
+</div></blockquote>
+</div>
+<div class="section" id="the-modifier-function">
+<h2>The modifier function<a class="headerlink" href="#the-modifier-function" title="Permalink to this headline">¶</a></h2>
+<p>The custom modifier function defined above is called by OVITO every time the modification pipeline
+is evaluated. It receives the data produced by the upstream part of the pipeline (e.g. the particles
+loaded by a <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a> and further processed by other modifiers that
+precede the custom modifier in the pipeline). Our Python modifier function then has the possibility to modify or extend
+the data as needed. After the user-defined Python function returns, the output flows further down the pipeline, and, eventually,
+the final results are stored in the <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode.output" title="ovito.ObjectNode.output"><code class="xref py py-attr docutils literal"><span class="pre">output</span></code></a> cache of the <a class="reference internal" href="../modules/ovito.html#ovito.ObjectNode" title="ovito.ObjectNode"><code class="xref py py-class docutils literal"><span class="pre">ObjectNode</span></code></a> and rendered in the viewports.</p>
+<p>Our custom modifier function is invoked by the system with three arguments:</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>frame</strong> (<em>int</em>) &#8211; The animation frame number at which the pipeline is evaluated.</li>
+<li><strong>input</strong> (<a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a>) &#8211; Contains the input data objects that the modifier receives from upstream.</li>
+<li><strong>output</strong> (<a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a>) &#8211; This is where the modifier function should put its output data objects.</li>
+</ul>
+</div></blockquote>
+<p>The <em>input</em> <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a>, and in particular the data objects stored in it, should not be modified by the modifier function.
+They are owned by the upstream part of the modification pipeline and must be accessed in a read-only fashion (e.g. by using the <a class="reference internal" href="../modules/ovito_data.html#ovito.data.ParticleProperty.array" title="ovito.data.ParticleProperty.array"><code class="xref py py-attr docutils literal"><span class="pre">array</span></code></a>
+attribute instead of <a class="reference internal" href="../modules/ovito_data.html#ovito.data.ParticleProperty.marray" title="ovito.data.ParticleProperty.marray"><code class="xref py py-attr docutils literal"><span class="pre">marray</span></code></a> to access per-particle values of a <a class="reference internal" href="../modules/ovito_data.html#ovito.data.ParticleProperty" title="ovito.data.ParticleProperty"><code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code></a>).</p>
+<p>When the user-defined modifier function is invoked by the system, the <em>output</em> data collection already contains
+all data objects from the <em>input</em> collection. Thus, the default behavior is that all objects (e.g. particle properties, simulation cell, etc.) are passed
+through unmodified.</p>
+<div class="section" id="modifying-existing-data-objects">
+<h3>Modifying existing data objects<a class="headerlink" href="#modifying-existing-data-objects" title="Permalink to this headline">¶</a></h3>
+<p>For performance reasons no copies are made by default, and the <em>output</em> collection references the same data objects as the <em>input</em> collection.
+This means, before it is safe to modify a data object in the <em>output</em> data collection, you have to make a copy first. Otherwise you risk
+modifying data that is owned by the upstream part of the modification pipeline (e.g. the <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a>). An in-place copy of a data object
+is made using the <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection.copy_if_needed" title="ovito.data.DataCollection.copy_if_needed"><code class="xref py py-meth docutils literal"><span class="pre">DataCollection.copy_if_needed()</span></code></a> method. The following example demonstrates the
+principle:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+
+    <span class="c"># Simulation cell is passed through by default:</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">cell</span> <span class="ow">is</span> <span class="nb">input</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span>
+
+    <span class="c"># Make a copy of the simulation cell:</span>
+    <span class="n">cell</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">copy_if_needed</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span>
+
+    <span class="c"># Now we are allowed to modify the copy:</span>
+    <span class="n">cell</span><span class="o">.</span><span class="n">pbc</span> <span class="o">=</span> <span class="p">(</span><span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">,</span> <span class="bp">False</span><span class="p">)</span>
+
+    <span class="c"># The object was copied in place in the output data collection:</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">cell</span> <span class="ow">is</span> <span class="n">output</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">input</span><span class="o">.</span><span class="n">cell</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-new-data-objects">
+<h3>Adding new data objects<a class="headerlink" href="#adding-new-data-objects" title="Permalink to this headline">¶</a></h3>
+<p>The custom modifier function can inject new data objects into the modification pipeline simply by adding
+them to the <em>output</em> data collection:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+
+    <span class="c"># Create a new bonds data object and a bond between atoms 0 and 1.</span>
+    <span class="n">bonds</span> <span class="o">=</span> <span class="n">ovito</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Bonds</span><span class="p">()</span>
+    <span class="n">bonds</span><span class="o">.</span><span class="n">add_full</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c"># Insert into output collection:</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">bonds</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For adding new particle properties (or overwriting existing properties),
+a special method <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection.create_particle_property" title="ovito.data.DataCollection.create_particle_property"><code class="xref py py-meth docutils literal"><span class="pre">create_particle_property()</span></code></a> is provided
+by the <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a> class:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+    <span class="c"># Create the &#39;Color&#39; particle property and set the color of all particles to green:</span>
+    <span class="n">color_property</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">create_particle_property</span><span class="p">(</span><span class="n">ParticleProperty</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">Color</span><span class="p">)</span>
+    <span class="n">color_property</span><span class="o">.</span><span class="n">marray</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection.create_particle_property" title="ovito.data.DataCollection.create_particle_property"><code class="xref py py-meth docutils literal"><span class="pre">create_particle_property()</span></code></a> checks if the particle property already exists.
+If yes, it automatically copies it in place so you can overwrite its content. Otherwise a fresh <a class="reference internal" href="../modules/ovito_data.html#ovito.data.ParticleProperty" title="ovito.data.ParticleProperty"><code class="xref py py-class docutils literal"><span class="pre">ParticleProperty</span></code></a> instance
+is created and added to the output data collection. That means <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection.create_particle_property" title="ovito.data.DataCollection.create_particle_property"><code class="xref py py-meth docutils literal"><span class="pre">create_particle_property()</span></code></a>
+can be used in both scenarios: to modify an existing particle property or to output a new property.</p>
+<p>Furthermore, there exists a second method, <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection.create_user_particle_property" title="ovito.data.DataCollection.create_user_particle_property"><code class="xref py py-meth docutils literal"><span class="pre">create_user_particle_property()</span></code></a>,
+which is used to create custom particle properties (in contrast to
+<a class="reference internal" href="../modules/ovito_data.html#ovito.data.ParticleProperty.type" title="ovito.data.ParticleProperty.type"><code class="xref py py-attr docutils literal"><span class="pre">standard</span> <span class="pre">properties</span></code></a> like color, radius, etc.).</p>
+</div>
+<div class="section" id="initialization-phase">
+<h3>Initialization phase<a class="headerlink" href="#initialization-phase" title="Permalink to this headline">¶</a></h3>
+<p>Initialization of parameters and other inputs needed by our custom modifier function should be done outside the function.
+For example, our modifier may require reference coordinates of particles, which need to be loaded from an external file.
+One example is the <em>Displacement vectors</em> modifier of OVITO, which asks the user to load a reference configuration file with the
+coordinates that should be subtracted from the current particle coordinates. A corresponding implementation of this modifier in Python
+would look as follows:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">ovito.data</span> <span class="kn">import</span> <span class="n">ParticleProperty</span>
+<span class="kn">from</span> <span class="nn">ovito.io</span> <span class="kn">import</span> <span class="n">FileSource</span>
+
+<span class="n">reference</span> <span class="o">=</span> <span class="n">FileSource</span><span class="p">(</span><span class="n">adjust_animation_interval</span> <span class="o">=</span> <span class="bp">False</span><span class="p">)</span>
+<span class="n">reference</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="s">&quot;simulation.0.dump&quot;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+    <span class="n">prop</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">create_particle_property</span><span class="p">(</span><span class="n">ParticleProperty</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">Displacement</span><span class="p">)</span>
+
+    <span class="n">prop</span><span class="o">.</span><span class="n">marray</span><span class="p">[:]</span> <span class="o">=</span> <span class="p">(</span>    <span class="nb">input</span><span class="o">.</span><span class="n">particle_properties</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">array</span> <span class="o">-</span>
+                      <span class="n">reference</span><span class="o">.</span><span class="n">particle_properties</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">array</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The script above creates a <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource" title="ovito.io.FileSource"><code class="xref py py-class docutils literal"><span class="pre">FileSource</span></code></a> to load the reference particle positions from an external
+simulation file. Setting <a class="reference internal" href="../modules/ovito_io.html#ovito.io.FileSource.adjust_animation_interval" title="ovito.io.FileSource.adjust_animation_interval"><code class="xref py py-attr docutils literal"><span class="pre">adjust_animation_interval</span></code></a> to false is required to
+prevent OVITO from automatically changing the animation length.</p>
+<p>Within the <code class="docutils literal"><span class="pre">modify()</span></code> function we can access the particle coordinates stored in the file source, which is a subclass
+of <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataCollection" title="ovito.data.DataCollection"><code class="xref py py-class docutils literal"><span class="pre">DataCollection</span></code></a>.</p>
+</div>
+<div class="section" id="asynchronous-modifiers-and-progress-reporting">
+<h3>Asynchronous modifiers and progress reporting<a class="headerlink" href="#asynchronous-modifiers-and-progress-reporting" title="Permalink to this headline">¶</a></h3>
+<p>Due to technical limitations the custom modifier function is always executed in the main thread of the application.
+This is in contrast to the built-in asynchronous modifiers of OVITO, which are implemented in C++.
+They are executed in a background thread to not block the graphical user interface during long-running operations.</p>
+<p>That means, if our Python modifier function takes a long time to compute before returning control to OVITO, no input events
+can be processed by the application and the user interface will freeze. To avoid this, you can make your modifier function asynchronous using
+the <code class="docutils literal"><span class="pre">yield</span></code> Python statement (see the <a class="reference external" href="https://docs.python.org/3/reference/expressions.html#yieldexpr">Python docs</a> for more information).
+Calling <code class="docutils literal"><span class="pre">yield</span></code> within the modifier function temporarily yields control to the
+main program, giving it the chance to process waiting user input events or repaint the viewports:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">input</span><span class="o">.</span><span class="n">number_of_particles</span><span class="p">):</span>
+        <span class="c"># Perform a small computation step</span>
+        <span class="o">...</span>
+        <span class="c"># Temporarily yield control to the system</span>
+        <span class="k">yield</span>
+</pre></div>
+</div>
+<p>In general, <code class="docutils literal"><span class="pre">yield</span></code> should be called periodically and as frequently as possible, for example after processing one particle from the input as
+in the code above.</p>
+<p>The <code class="docutils literal"><span class="pre">yield</span></code> keyword also gives the user (and the system) the possibility to cancel the execution of the custom
+modifier function. When the evaluation of the modification pipeline is interrupted by the system, the <code class="docutils literal"><span class="pre">yield</span></code> statement does not return
+and the Python function execution is discontinued.</p>
+<p>Finally, the <code class="docutils literal"><span class="pre">yield</span></code> mechanism gives the custom modifier function the possibility to report its progress back to the system.
+The progress must be reported as a fraction in the range 0.0 to 1.0 using the <code class="docutils literal"><span class="pre">yield</span></code> statement. For example:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+    <span class="n">total_count</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">number_of_particles</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">total_count</span><span class="p">):</span>
+        <span class="o">...</span>
+        <span class="k">yield</span> <span class="p">(</span><span class="n">i</span><span class="o">/</span><span class="n">total_count</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The current progress value will be displayed in the status bar by OVITO.
+Moreover, a string describing the current status can be yielded, which will also be displayed in the status bar:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+    <span class="k">yield</span> <span class="s">&quot;Performing an expensive analysis...&quot;</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="setting-display-parameters">
+<h3>Setting display parameters<a class="headerlink" href="#setting-display-parameters" title="Permalink to this headline">¶</a></h3>
+<p>Many data objects such as the <a class="reference internal" href="../modules/ovito_data.html#ovito.data.Bonds" title="ovito.data.Bonds"><code class="xref py py-class docutils literal"><span class="pre">Bonds</span></code></a> or <a class="reference internal" href="../modules/ovito_data.html#ovito.data.SimulationCell" title="ovito.data.SimulationCell"><code class="xref py py-class docutils literal"><span class="pre">SimulationCell</span></code></a> object are associated with
+a corresponding <a class="reference internal" href="../modules/ovito_vis.html#ovito.vis.Display" title="ovito.vis.Display"><code class="xref py py-class docutils literal"><span class="pre">Display</span></code></a> object, which is responsible for rendering (visualizing) the data in the viewports.
+The necessary <a class="reference internal" href="../modules/ovito_vis.html#ovito.vis.Display" title="ovito.vis.Display"><code class="xref py py-class docutils literal"><span class="pre">Display</span></code></a> object is created automatically when the data object is created and is attached to it by OVITO.
+It can be accessed through the <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataObject.display" title="ovito.data.DataObject.display"><code class="xref py py-attr docutils literal"><span class="pre">display</span></code></a> attribute of the <a class="reference internal" href="../modules/ovito_data.html#ovito.data.DataObject" title="ovito.data.DataObject"><code class="xref py py-class docutils literal"><span class="pre">DataObject</span></code></a> base class.</p>
+<p>If the script modifier function injects a new data objects into the pipeline, it can configure the parameters of the attached display object.
+In the following example, the parameters of the <a class="reference internal" href="../modules/ovito_vis.html#ovito.vis.BondsDisplay" title="ovito.vis.BondsDisplay"><code class="xref py py-class docutils literal"><span class="pre">BondsDisplay</span></code></a> are being initialized:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+
+    <span class="c"># Create a new bonds data object.</span>
+    <span class="n">bonds</span> <span class="o">=</span> <span class="n">ovito</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Bonds</span><span class="p">()</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">bonds</span><span class="p">)</span>
+    <span class="o">...</span>
+
+    <span class="c"># Configure visual appearance of bonds.</span>
+    <span class="n">bonds</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">bonds</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">use_particle_colors</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="n">bonds</span><span class="o">.</span><span class="n">display</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="mf">0.4</span>
+</pre></div>
+</div>
+<p>However, every time our modifier function is executed, it will create a new <a class="reference internal" href="../modules/ovito_data.html#ovito.data.Bonds" title="ovito.data.Bonds"><code class="xref py py-class docutils literal"><span class="pre">Bonds</span></code></a> object together with a
+new <a class="reference internal" href="../modules/ovito_vis.html#ovito.vis.BondsDisplay" title="ovito.vis.BondsDisplay"><code class="xref py py-class docutils literal"><span class="pre">BondsDisplay</span></code></a> instance. If the modifier is used in an interactive OVITO session, this will lead to unexpected behavior
+when the user tries to change the display settings.
+All parameter changes made by the user will get lost as soon as the modification pipeline is re-evaluated. To mitigate the problem, it is a good idea to
+create the <a class="reference internal" href="../modules/ovito_vis.html#ovito.vis.BondsDisplay" title="ovito.vis.BondsDisplay"><code class="xref py py-class docutils literal"><span class="pre">BondsDisplay</span></code></a> just once outside the modifier function and then attach it to the <a class="reference internal" href="../modules/ovito_data.html#ovito.data.Bonds" title="ovito.data.Bonds"><code class="xref py py-class docutils literal"><span class="pre">Bonds</span></code></a>
+object created by the modifier function:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">bonds_display</span> <span class="o">=</span> <span class="n">BondsDisplay</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">use_particle_colors</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">modify</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="nb">input</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+    <span class="n">bonds</span> <span class="o">=</span> <span class="n">ovito</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">Bonds</span><span class="p">(</span><span class="n">display</span> <span class="o">=</span> <span class="n">bonds_display</span><span class="p">)</span>
+    <span class="n">output</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">bonds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="running.html">Running scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_io.html">File I/O</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modifiers.html">Modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particle_properties.html">Particle properties</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rendering.html">Rendering</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Writing new modifiers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito.html"><code class="docutils literal"><span class="pre">ovito</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_anim.html"><code class="docutils literal"><span class="pre">ovito.anim</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_data.html"><code class="docutils literal"><span class="pre">ovito.data</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_io.html"><code class="docutils literal"><span class="pre">ovito.io</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_modifiers.html"><code class="docutils literal"><span class="pre">ovito.modifiers</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ovito_vis.html"><code class="docutils literal"><span class="pre">ovito.vis</span></code></a></li>
+</ul>
+
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="examples.html" title="Examples"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="rendering.html" title="Rendering"
+             >previous</a> |</li>
+        <li><a href="../index.html">OVITO 2.6.2 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, Alexander Stukowski.
+    </div>
+  </body>
+</html>

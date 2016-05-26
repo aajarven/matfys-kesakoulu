@@ -1,0 +1,177 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Compute property</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="particles.modifiers.html" title="Modifiers"><link rel="prev" href="particles.modifiers.common_neighbor_analysis.html" title="Common neighbor analysis"><link rel="next" href="particles.modifiers.construct_surface_mesh.html" title="Construct surface mesh"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Compute property</th><td width="20%" align="right"><a accesskey="u" href="particles.modifiers.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="particles.modifiers.common_neighbor_analysis.html">Prev</a> </td><th width="60%" align="center">Modifiers</th><td width="20%" align="right"> <a accesskey="n" href="particles.modifiers.construct_surface_mesh.html">Next</a></td></tr></table></div><div class="section" id="particles.modifiers.compute_property"><div class="titlepage"><div><div><h3 class="title">Compute property</h3></div></div></div>
+  
+
+  <p>
+  
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/modifiers/compute_property_panel.png"></div></div></div><p>
+  
+  This modifier evaluates a user-defined mathematical expression for every particle 
+  and assigns the results to a particle property. It can be used to assign new 
+  properties to particles or to modify existing properties.</p>
+
+  <p>
+  The math formula specified by the user can depend on existing particle properties or global parameters such as the simulation box size or animation time. 
+  The list of available input variables that can be referenced in the formula is displayed in the lower panel.
+  </p> 
+  
+  <div class="simplesect" id="idp785184"><div class="titlepage"><div><div><h4 class="title">Output property</h4></div></div></div>
+    
+  
+  <p>OVITO differentiates between <span class="emphasis"><em>standard</em></span> particle properties and <span class="emphasis"><em>custom</em></span> particle properties.
+  The properties of the former type have specific meanings to OVITO (e.g. <code class="literal">Position</code> or <code class="literal">Particle Identifier</code>) while custom properties
+  have arbitrary, user-defined names (e.g. <code class="literal">MyPropertyA</code>) and the stored data is not interpreted by OVITO in any way.
+  The <span class="emphasis"><em>Compute property</em></span> modifier allows you to create or modify both types of particle properties. If you use the 
+  modifier to assign values to certain standard properties such as <code class="literal">Position</code>, <code class="literal">Color</code>, or <code class="literal">Radius</code>,
+  it will immediately affect the visual appearance of particles (see this <a class="link" href="howto.transparent_particles.html" title="Semi-transparent particles">example</a>).
+  </p>
+  
+  <p>
+  The list of all standard properties known to OVITO can be found in the <span class="emphasis"><em>Output property</em></span> drop-down list. If you want to create a custom particle property,
+  simply enter a name of your choice into the text field. Note that property names in OVITO are case-sensitive.
+  </p>
+  
+  </div>
+  
+  <div class="simplesect" id="idp792784"><div class="titlepage"><div><div><h4 class="title">Vector properties</h4></div></div></div>
+    
+  
+  <p>
+  Some particle properties (e.g. <code class="literal">Position</code> or <code class="literal">Color</code>) are vector quantities, which consist of multiple components per particle. If you want to use the <span class="emphasis"><em>Compute property</em></span>
+  modifier to assign values to such a vector property, then you'll have to enter multiple math expressions, one for each vector component.
+  Note that the modifier does not allow you to create custom properties with multiple vector components. 
+  </p>
+  
+  </div>
+  
+  <div class="simplesect" id="idp797424"><div class="titlepage"><div><div><h4 class="title">Conditional assignments</h4></div></div></div>
+    
+  
+  <p>
+  If the particle property that you are computing already exists, then the existing values will be overwritten with the new ones 
+  computed by the modifier. The <span class="emphasis"><em>Compute only for selected particles</em></span> option, however, makes it possible to restrict the 
+  assignment to a subset of particles and preserve the existing property values for unselected particles. 
+  If the computed property did not exist before, then unselected particles will be assigned the default value 0 if this option is active.
+  </p>
+  
+  <p>
+  Furthermore, the ternary operator <code class="literal">?:</code> (see table below) allows you to make use of simple <span class="emphasis"><em>if-else</em></span> conditions. For example, to make all particles
+  in the upper half of the simulation box semi-transparent and the particles in the lower half fully opaque, use the following conditional expression to 
+  compute the values of the <code class="literal">Transparency</code> particle property: 
+  </p><pre class="programlisting">(ReducedPosition.Z &gt; 0.5) ? 0.7 : 0.0</pre><p>
+  </p>
+  
+  <p>
+  For more demanding computation or analysis tasks, which cannot be accomplished with static expressions, please 
+  consider using the <a class="link" href="particles.modifiers.python_script.html" title="Python script modifier">Python script</a> modifier, 
+  which lets you write a modification function in a procedural programming language.
+  </p>
+  
+  </div>
+
+  <div class="simplesect" id="idp803648"><div class="titlepage"><div><div><h4 class="title">Including neighbor particles</h4></div></div></div>
+    
+    <p>By default the property value computed for a particle can only depend on other properties of the same particle (or global quantities).
+    The <span class="emphasis"><em>Include neighbor terms</em></span> options allows to also include nearby particles within a certain cutoff radius
+    of the central particle when computing its property value. If this option is active, the final property value <span class="emphasis"><em>P(i)</em></span> of a central particle <span class="emphasis"><em>i</em></span> is computed
+    as
+    </p><div class="screenshot"><div class="mediaobject"><img src="images/modifiers/compute_property_modifier_neighbor_formula.png"></div></div><p>
+    The first term, <span class="emphasis"><em>F(i)</em></span>, is the first user-defined function, which is evaluated once for the central particle. 
+    The second term consists of contributions from all neighbors within the cutoff radius <span class="emphasis"><em>R<sub>c</sub></em></span>. Each contribution is determined by a second user-defined
+    function, <span class="emphasis"><em>G(j)</em></span>, which is evaluated for every neighbor particle <span class="emphasis"><em>j</em></span>. The function <span class="emphasis"><em>G(j)</em></span>
+    must be entered into the input field <span class="emphasis"><em>Neighbor expression</em></span>, and it may only depend on properties
+    of the current neighbor and on global parameters. In addition it may depend on the distance of the neighbor from the central particle.
+    </p>
+    <p>
+    This allows you to perform advanced computions that take into account the local neighborhood of particles. For example, we can
+    average a particle property over a spherical volume around each particle by using the following expressions:
+    </p><pre class="programlisting">F(i) := InputProperty / (NumNeighbors+1)
+G(j) := InputProperty / (NumNeighbors+1)</pre><p>
+    Note that <code class="literal">NumNeighbors</code> is a dynamic variable, which is queried in this example to normalize the resulting property value.
+    We could even weight the contributions from different neighbors based on their distance from the central particle by incorporating the <code class="literal">Distance</code>
+    dynamic variable in the function <span class="emphasis"><em>G(j)</em></span>. For example, these expressions compute the potential energy according to a Lennard-Jones potential:
+    </p><pre class="programlisting">F(i) := 0
+G(j) := 4 * (Distance^-12 - Distance^-6)</pre><p>
+    Here, no contribution is coming from the central particle.
+    </p>
+  </div>
+  
+  <div class="simplesect" id="idp815088"><div class="titlepage"><div><div><h4 class="title">Parameters</h4></div></div></div>
+    
+
+    <div class="variablelist"><dl class="variablelist"><dt><span class="term">Output property</span></dt><dd>
+          <p>Specifies the output property that receives the values computed by the modifier.
+          You can either create a new property by entering a user-defined name in the field, or pick one of the <a class="link" href="usage.particle_properties.html" title="Particle properties">standard properties</a> from the drop-down list.</p>
+        </dd><dt><span class="term">Compute only for selected particles</span></dt><dd>
+          <p>Restricts the evaluation of the math expression and the assignment of results to the subset of selected particles. 
+          This option is useful if you want to selectively overwrite the property values of certain particles.</p>
+        </dd></dl></div>
+  </div>
+            
+  <div class="simplesect" id="idp818432"><div class="titlepage"><div><div><h4 class="title">Expression syntax</h4></div></div></div>
+    
+    <p>          
+   The expression syntax supported by the modifier is very
+   similar to the one of the C programming language. Variable names and function names are case-sensitive.   
+   Arithmetic expressions can be created from
+   float literals, variables, or functions using the following operators
+   in the given order of precedence: 
+   </p><div class="informaltable">
+   <table class="informaltable" border="1"><colgroup><col><col></colgroup><thead><tr><th>Operator</th><th>Description</th></tr></thead><tbody><tr><td>(...)</td><td>expressions in parentheses are evaluated first</td></tr><tr><td>A^B</td><td>exponentiation (A raised to the power B)</td></tr><tr><td>A*B, A/B</td><td>multiplication and division</td></tr><tr><td>A+B, A-B</td><td>addition and subtraction</td></tr><tr><td>A==B, A!=B, A&lt;B, A&lt;=B, A&gt;B, A&gt;=B</td><td>comparison between A and B (result is either 0 or
+           1)</td></tr><tr><td>A &amp;&amp; B</td><td>logical AND operator: result is 1 if A and B differ from
+           0, else 0</td></tr><tr><td>A || B</td><td>logical OR operator: result is 1 if A or B differ from
+           0, else 0</td></tr><tr><td>A ? B : C</td><td>If A differs from 0 (i.e. is true), the resulting value of this expression
+           is B, else C.</td></tr></tbody></table>
+     </div>
+
+   <p>The expression parser supports the following functions:
+   </p><div class="informaltable">
+   <table class="informaltable" border="1"><colgroup><col><col></colgroup><thead><tr><th>Function name</th><th>Description</th></tr></thead><tbody><tr><td>abs(A)</td><td>Absolute value of A. If A is negative, returns -A
+           otherwise returns A.</td></tr><tr><td>acos(A)</td><td>Arc-cosine of A. Returns the angle, measured in radians,
+           whose cosine is A.</td></tr><tr><td>acosh(A)</td><td>Same as acos() but for hyperbolic cosine.</td></tr><tr><td>asin(A)</td><td>Arc-sine of A. Returns the angle, measured in radians,
+           whose sine is A.</td></tr><tr><td>asinh(A)</td><td>Same as asin() but for hyperbolic sine.</td></tr><tr><td>atan(A)</td><td>Arc-tangent of A. Returns the angle, measured in
+           radians, whose tangent is A.</td></tr><tr><td>atan2(Y,X)</td><td>Two argument variant of the arctangent function. Returns
+           the angle, measured in radians. This function is documented
+           <a class="ulink" href="http://en.wikipedia.org/wiki/Atan2" target="_top">here</a>.</td></tr><tr><td>atanh(A)</td><td>Same as atan() but for hyperbolic tangent.</td></tr><tr><td>avg(A,B,...)</td><td>Returns the average of all arguments.</td></tr><tr><td>cos(A)</td><td>Cosine of A. Returns the cosine of the angle A, where A
+           is measured in radians.</td></tr><tr><td>cosh(A)</td><td>Same as cos() but for hyperbolic cosine.</td></tr><tr><td>exp(A)</td><td>Exponential of A. Returns the value of e raised to the
+           power A where e is the base of the natural logarithm, i.e.
+           the non-repeating value approximately equal to
+           2.71828182846.</td></tr><tr><td>fmod(A,B)</td><td>Returns the floating-point remainder of A/B (rounded towards zero).</td></tr><tr><td>rint(A)</td><td>Rounds A to the closest integer. 0.5 is rounded to
+           1.</td></tr><tr><td>ln(A)</td><td>Natural (base e) logarithm of A.</td></tr><tr><td>log10(A)</td><td>Base 10 logarithm of A.</td></tr><tr><td>log2(A)</td><td>Base 2 logarithm of A.</td></tr><tr><td>max(A,B,...)</td><td>Returns the maximum of all parameter values.</td></tr><tr><td>min(A,B,...)</td><td>Returns the minimum of all parameter values.</td></tr><tr><td>sign(A)</td><td>Returns: 1 if A is positive; -1 if A is negative; 0 if A is zero.</td></tr><tr><td>sin(A)</td><td>Sine of A. Returns the sine of the angle A, where A is
+           measured in radians.</td></tr><tr><td>sinh(A)</td><td>Same as sin() but for hyperbolic sine.</td></tr><tr><td>sqrt(A)</td><td>Square root of a value.</td></tr><tr><td>sum(A,B,...)</td><td>Returns the sum of all parameter values.</td></tr><tr><td>tan(A)</td><td>Tangent of A. Returns the tangent of the angle A, where
+           A is measured in radians.</td></tr></tbody></table>
+     </div><p>
+     </p>
+     <p> </p>
+  </div>
+
+  <div class="simplesect" id="idp878608"><div class="titlepage"><div><div><h4 class="title">Example 1</h4></div></div></div>
+    
+    <p>Our aim is to compute the linear velocity of each
+    particle based on the components v<sub>x</sub>,
+    v<sub>y</sub>, and v<sub>z</sub> of their velocity
+    vectors. For this, we create a new user-defined property with the name "<code class="literal">Speed</code>". The following
+    formula is entered into the expression field: </p><pre class="programlisting">sqrt(Velocity.X^2 + Velocity.Y^2 + Velocity.Z^2)</pre><p>
+    Here we reference the X, Y, and Z components of the standard
+    <code class="literal">Velocity</code> particle property, which must be present in the
+    input dataset. The computed linear velocity property can 
+    subsequently be used, for instance, to color particles with the <span class="emphasis"><em><a class="link" href="particles.modifiers.color_coding.html" title="Color coding">Color Coding</a></em></span>
+    modifier.</p>
+  </div>
+
+  <div class="simplesect" id="idp884096"><div class="titlepage"><div><div><h4 class="title">Example 2</h4></div></div></div>
+    
+    <p>The <span class="emphasis"><em>Compute property</em></span> modifier can also be used to set
+    particle properties which are not accessible by other means. One such example is
+    the per-particle radius: Let us assume we have already selected a subset of particles that 
+    we want to give a different size.
+    We can use the <span class="emphasis"><em>Compute property</em></span> modifier to set
+    the value of the <code class="literal">Radius</code> particle property, which determines the
+    per-particle display radii. The selection state of particles is given by the
+    <code class="literal">Selection</code> property. With the
+    formula </p><pre class="programlisting">Selection ? 1.5 : 1.0</pre><p> we assign a
+    radius that depends on the selection state of each particle, which can be either 1 or 0. 
+    That is, the above radius expression will evaluate to 1.5 for selected particles, and to 1.0 for unselected
+    particles.
+    </p>
+  </div>
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="particles.modifiers.common_neighbor_analysis.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="particles.modifiers.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="particles.modifiers.construct_surface_mesh.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Common neighbor analysis </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Construct surface mesh</td></tr></table></div></body></html>

@@ -1,0 +1,71 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>Displacement vectors</title><link rel="stylesheet" type="text/css" href="manual.css"><meta name="generator" content="DocBook XSL Stylesheets V1.79.1"><link rel="home" href="index.html" title="OVITO User Manual"><link rel="up" href="particles.modifiers.html" title="Modifiers"><link rel="prev" href="particles.modifiers.dislocation_analysis.html" title="Dislocation analysis (DXA)"><link rel="next" href="particles.modifiers.elastic_strain.html" title="Elastic strain calculation"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><a href="http://www.ovito.org/"><img src="images/ovito_logo.png" border="0"></a><table width="100%" summary="Navigation header"><tr><td width="20%" align="left"><a accesskey="h" href="index.html">Table of Contents</a></td><th width="60%" align="center">Displacement vectors</th><td width="20%" align="right"><a accesskey="u" href="particles.modifiers.html">Up</a></td></tr><tr><td width="20%" align="left"><a accesskey="p" href="particles.modifiers.dislocation_analysis.html">Prev</a> </td><th width="60%" align="center">Modifiers</th><td width="20%" align="right"> <a accesskey="n" href="particles.modifiers.elastic_strain.html">Next</a></td></tr></table></div><div class="section" id="particles.modifiers.displacement_vectors"><div class="titlepage"><div><div><h3 class="title">Displacement vectors</h3></div></div></div>
+  
+
+  <p>
+  
+    </p><div class="informalfigure"><div class="screenshot"><div class="mediaobject"><img src="images/modifiers/displacement_vectors_panel.png"></div></div></div><p>
+  
+  This modifier calculates the displacement vectors of particles based on two 
+  configurations of the simulated system.</p>
+
+  <p>The current particle set (the one you apply the modifier to) is used as the
+  <span class="emphasis"><em>current</em></span> (or deformed) configuration of the system. The
+  <span class="emphasis"><em>reference</em></span> (or initial) particle coordinates are
+  loaded from a separate input file by the modifier.</p>
+
+  <p>
+  The modifier calculates the displacement vector of each particle by subtracting its
+  position in the reference configuration from the particle's position in the
+  current configuration. The calculated vectors are stored in the <code class="literal">Displacement</code>
+  particle property and may be visualized as arrows.
+  Alternatively, you can use the <a class="link" href="particles.modifiers.color_coding.html" title="Color coding">Color coding modifier</a> to
+  visualize the displacement magnitude of each particle.</p>
+
+  <p>Use the <span class="guilabel">"Reference: External file"</span> panel to select the
+  file containing the initial particle positions. If particles do not possess identifiers, then
+  the reference file must contain the same number of particles as the current configuration
+  and they must be stored in the exact same order. If particles have IDs, then
+  the modifier uses these unique IDs to map particles from the current configuration
+  to the reference configuration. The storage orders in the simulation files do not have to be the same in this case.
+  </p>
+
+  <p>The vectors computed by the modifier are stored in the <code class="literal">Displacement</code>
+  particle property. In addition, the magnitude of each displacement vector is stored in the 
+  <code class="literal">Displacement Magnitude</code> particle property.
+  </p>
+  
+  <p>    
+    The visual appearance of the computed vectors is controlled by the attached 
+    <a class="link" href="display_objects.vectors.html" title="Vector display">vector display object</a>. Note that this display object
+    is disabled by default and you have to explicitly enable it in the pipeline editor to see the displacement arrows
+    in the viewports.
+  </p>
+
+  <div class="simplesect" id="idp1094752"><div class="titlepage"><div><div><h4 class="title">Parameters</h4></div></div></div>
+    
+
+    <div class="variablelist"><dl class="variablelist"><dt><span class="term">Eliminate homogeneous cell deformation</span></dt><dd>
+          <p>This option lets the modifier first rescale the current
+          simulation cell including all particle coordinates to match the 
+          cell shape in the reference configuration before calculating the displacement vectors. 
+          This effectively eliminates any macroscopic, homogeneous deformation of the simulation cell, and the
+          calculated vectors will reflect only the internal, microscopic displacements of particles.</p>
+        </dd><dt><span class="term">Assume unwrapped coordinates</span></dt><dd>
+          <p>This only affects the treatment of simulation cells with
+          periodic boundary conditions. If activated, the particle coordinates
+          in the reference and the current configuration are taken as is. If
+          this option is not checked, the minimum image convention is used to
+          deal with particles that have crossed a periodic boundary.</p>
+        </dd><dt><span class="term">Fixed reference configuration</span></dt><dd>
+          <p>If this option is active, the selected animation frame from the reference simulation sequence is used
+          as a fixed reference to calculate the displacement vectors. This is the default mode.</p>
+        </dd><dt><span class="term">Relative to current frame</span></dt><dd>
+          <p>If this option is active, then a changing reference configuration is used to calculate the displacement vectors. 
+          This allows computing incremental displacement vectors (similar to discrete velocity vectors).
+          The frame offset controls the distance between reference and current frame and can be negative or positive. If it is negative, then the reference frame 
+          precedes the current frame in the simulation sequence.
+          Note that the displacement vectors will not be computed for simulation frames for which the resulting reference frame is negative or out of range.
+          </p>
+        </dd></dl></div>
+  </div>
+</div><p class="footer_copyright">© 2016  Alexander Stukowski</p><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="particles.modifiers.dislocation_analysis.html">Prev</a> </td><td width="20%" align="center"><a accesskey="u" href="particles.modifiers.html">Up</a></td><td width="40%" align="right"> <a accesskey="n" href="particles.modifiers.elastic_strain.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Dislocation analysis (DXA) </td><td width="20%" align="center"><a accesskey="h" href="index.html">Table of Contents</a></td><td width="40%" align="right" valign="top"> Elastic strain calculation</td></tr></table></div></body></html>
