@@ -1,0 +1,6 @@
+LAMMPS (1 Mar 2016)
+# NVE simulation of a cubic box of EAM copper
+
+variable	NAME string case1
+log	     	${NAME}.log
+log	     	case1.log

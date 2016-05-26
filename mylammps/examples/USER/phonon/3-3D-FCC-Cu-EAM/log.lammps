@@ -1,0 +1,16 @@
+LAMMPS (1 Mar 2016)
+# 3D copper block simulation
+boundary    p p p
+units       metal
+atom_style  atomic
+
+# geometry
+read_data	data.pos
+  triclinic box = (0 0 0) to (20.4495 17.7098 16.697) with tilt (10.2248 10.2248 5.90327)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  512 atoms
+
+# EAM potential
+pair_style  	eam/opt
+ERROR: Unknown pair style (../force.cpp:190)
